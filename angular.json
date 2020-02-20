@@ -1,11 +1,15 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "toolots-app": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -24,7 +28,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -67,6 +71,10 @@
           "configurations": {
             "production": {
               "browserTarget": "toolots-app:build:production"
+            },
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "toolots-app:build:hmr"
             }
           }
         },
@@ -119,6 +127,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "toolots-app"
+    }
+  },
+  "defaultProject": "toolots-app",
+  "cli": {
+    "analytics": "eee38d68-b051-4bf6-b6a0-31b946005349"
+  }
 }
