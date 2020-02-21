@@ -23,6 +23,7 @@ import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 export class AppComponent implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
+    signedIn: boolean;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -121,6 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        // this._fuseSplashScreenService.hide();
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -135,17 +137,21 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.document.body.classList.remove('boxed');
                 }
 
-                // tslint:disable-next-line: prefer-for-of
-                for (let i = 0; i < this.document.body.classList.length; i++) {
-                    const className = this.document.body.classList[i];
-
+                for (const className of this.document.body.classList) {
                     if (className.startsWith('theme-')) {
                         this.document.body.classList.remove(className);
                     }
                 }
-
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
+
+        // setTimeout(() => {
+        //     this._fuseSplashScreenService.show();
+        // }, 4000);
+
+        // setTimeout(() => {
+        //     this._fuseSplashScreenService.hide();
+        // }, 10000);
     }
 
     /**

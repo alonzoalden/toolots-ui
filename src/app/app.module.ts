@@ -21,11 +21,12 @@ import { SampleModule } from 'app/main/sample/sample.module';
 import { FileManagerModule } from './main/file-manager/file-manager.module';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FakeDbService } from './fake-db/fake-db.service';
+import { LandingPageModule } from './main/landing/landing.module';
 
 const appRoutes: Routes = [
     {
         path: '**',
-        redirectTo: 'sample'
+        redirectTo: ''
     }
 ];
 
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
+        LandingPageModule,
         SampleModule,
         FileManagerModule
     ],
