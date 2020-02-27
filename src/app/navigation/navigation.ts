@@ -2,15 +2,15 @@ import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
     {
-        id       : 'applications',
-        title    : 'Applications',
-        translate: 'NAV.APPLICATIONS',
+        id       : 'Gadgets',
+        title    : 'Gadgets',
+        translate: 'NAV.GADGETS',
         type     : 'group',
         children : [
             {
-                id       : 'gadget',
-                title    : 'Gadget',
-                translate: 'Gadget',
+                id       : 'warehouse',
+                title    : 'Warehouse',
+                translate: 'NAV.WAREHOUSE',
                 type     : 'item',
                 icon     : 'pie_chart',
                 url      : '/file-manager',

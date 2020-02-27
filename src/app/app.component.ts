@@ -14,7 +14,10 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
-
+import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { authConfig } from './auth/auth.config';
+import { Router } from '@angular/router';
+import { AppService } from './app.service';
 @Component({
     selector   : 'app',
     templateUrl: './app.component.html',
@@ -47,7 +50,10 @@ export class AppComponent implements OnInit, OnDestroy {
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _platform: Platform
+        private _platform: Platform,
+        private oauthService: OAuthService,
+        private router: Router,
+        public appService: AppService
     ) {
         // Get default navigation
         this.navigation = navigation;
@@ -112,7 +118,22 @@ export class AppComponent implements OnInit, OnDestroy {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
-
+    get wasLoggedIn() {
+        return (this.appService.wasLoggedIn || this.appService.isLoggedin) && !(this.router.url === '/home' || this.router.url === '/');
+    }
+    private configureWithNewConfigApi() {
+        this.oauthService.configure(authConfig);
+        this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+        this.oauthService.setupAutomaticSilentRefresh();
+        this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    }
+    private initInterval() {
+        setInterval(() => {
+            if (this.appService.wasLoggedIn && !this.appService.isLoggedin) {
+                this.appService.logout();
+            }
+        }, 5000);
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -121,6 +142,8 @@ export class AppComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        this.configureWithNewConfigApi();
+        // this.initInterval();
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -135,17 +158,24 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.document.body.classList.remove('boxed');
                 }
 
-                // tslint:disable-next-line: prefer-for-of
-                for (let i = 0; i < this.document.body.classList.length; i++) {
-                    const className = this.document.body.classList[i];
-
+                for (const className of this.document.body.classList) {
                     if (className.startsWith('theme-')) {
                         this.document.body.classList.remove(className);
                     }
                 }
-
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
+
+        this.oauthService.events.subscribe(e => {
+            console.log(e);
+            if (e.type === 'token_received') {
+                this.appService.setWasLoggedIn();
+                this.router.navigate(['/file-manager']);
+            }
+        });
+        if (this.appService.isLoggedin) {
+            this.router.navigate(['/file-manager']);
+        }
     }
 
     /**
