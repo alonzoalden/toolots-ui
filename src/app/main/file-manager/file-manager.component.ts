@@ -6,6 +6,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
 
 @Component({
     selector     : 'file-manager',
@@ -18,6 +21,7 @@ export class FileManagerComponent implements OnInit, OnDestroy
 {
     selected: any;
     pathArr: string[];
+    dialogRef: any;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -30,7 +34,8 @@ export class FileManagerComponent implements OnInit, OnDestroy
      */
     constructor(
         private _fileManagerService: FileManagerService,
-        private _fuseSidebarService: FuseSidebarService
+        private _fuseSidebarService: FuseSidebarService,
+        public _matDialog: MatDialog
     )
     {
         // Set the private defaults
@@ -76,5 +81,36 @@ export class FileManagerComponent implements OnInit, OnDestroy
     toggleSidebar(name): void
     {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+
+    composeDialog(): void
+    {
+        this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
+            panelClass: 'mail-compose-dialog'
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if ( !response )
+                {
+                    return;
+                }
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+                switch ( actionType )
+                {
+                    /**
+                     * Send
+                     */
+                    case 'send':
+                        console.log('new Mail', formData.getRawValue());
+                        break;
+                    /**
+                     * Delete
+                     */
+                    case 'delete':
+                        console.log('delete Mail');
+                        break;
+                }
+            });
     }
 }
