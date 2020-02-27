@@ -6,16 +6,16 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FileManagerService } from 'app/main/file-manager/file-manager.service';
+import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 
 @Component({
-    selector     : 'file-manager',
-    templateUrl  : './file-manager.component.html',
-    styleUrls    : ['./file-manager.component.scss'],
+    selector: 'file-manager',
+    templateUrl: './file-manager.component.html',
+    styleUrls: ['./file-manager.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class FileManagerComponent implements OnInit, OnDestroy
-{
+export class FileManagerComponent implements OnInit, OnDestroy {
     selected: any;
     pathArr: string[];
 
@@ -30,9 +30,9 @@ export class FileManagerComponent implements OnInit, OnDestroy
      */
     constructor(
         private _fileManagerService: FileManagerService,
-        private _fuseSidebarService: FuseSidebarService
-    )
-    {
+        private _fuseSidebarService: FuseSidebarService,
+        private _fuseSplashScreenService: FuseSplashScreenService,
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -44,21 +44,19 @@ export class FileManagerComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._fileManagerService.onFileSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
-            this.selected = selected;
-            this.pathArr = selected.location.split('>');
-        });
+                this.selected = selected;
+                this.pathArr = selected.location.split('>');
+            });
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -73,8 +71,7 @@ export class FileManagerComponent implements OnInit, OnDestroy
      *
      * @param name
      */
-    toggleSidebar(name): void
-    {
+    toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 }

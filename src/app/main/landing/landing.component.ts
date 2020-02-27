@@ -5,16 +5,17 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { AppService } from 'app/app.service';
 
 @Component({
-    selector     : 'app-landing-page',
-    templateUrl  : './landing.component.html',
-    styleUrls    : ['./landing.component.scss'],
+    selector: 'app-landing-page',
+    templateUrl: './landing.component.html',
+    styleUrls: ['./landing.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class LandingPageComponent implements OnInit
-{
+export class LandingPageComponent implements OnInit {
     loginForm: FormGroup;
 
     /**
@@ -28,18 +29,19 @@ export class LandingPageComponent implements OnInit
         private _formBuilder: FormBuilder,
         private _router: Router,
         public _fuseSplashScreenService: FuseSplashScreenService,
-    )
-    {
+        private oauthService: OAuthService,
+        public appService: AppService
+    ) {
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
-                navbar   : {
+                navbar: {
                     hidden: true
                 },
-                toolbar  : {
+                toolbar: {
                     hidden: true
                 },
-                footer   : {
+                footer: {
                     hidden: true
                 },
                 sidepanel: {
@@ -54,18 +56,16 @@ export class LandingPageComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * On init
+     * On initprivate oauthService: OAuthService,
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.loginForm = this._formBuilder.group({
-            email   : ['', [Validators.required, Validators.email]],
+            email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required]
         });
     }
 
-    goToDashboard(): void {
-        this._fuseSplashScreenService.show();
-        setTimeout(() => this._router.navigateByUrl('/sample'), 4100);
+    login() {
+        this.oauthService.initImplicitFlow();
     }
 }

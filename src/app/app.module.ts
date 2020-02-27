@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../environments/environment';
 import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
@@ -22,6 +24,10 @@ import { FileManagerModule } from './main/file-manager/file-manager.module';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FakeDbService } from './fake-db/fake-db.service';
 import { LandingPageModule } from './main/landing/landing.module';
+import { AuthGuard } from './auth/auth.guard';
+import { APP_BASE_HREF } from '@angular/common';
+import { RequestInterceptor } from './core/request.interceptor';
+import { ResponseInterceptor } from './core/response.interceptor';
 
 const appRoutes: Routes = [
     {
@@ -39,7 +45,12 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
-
+        OAuthModule.forRoot({
+            resourceServer: {
+                allowedUrls: [ environment.webapiURL ],
+                sendAccessToken: true
+            }
+        }),
         TranslateModule.forRoot(),
         InMemoryWebApiModule.forRoot(FakeDbService, {
             delay: 0,
@@ -65,6 +76,13 @@ const appRoutes: Routes = [
         LandingPageModule,
         SampleModule,
         FileManagerModule
+    ],
+    providers: [
+        AuthGuard,
+        { provide: APP_BASE_HREF, useValue: '/'},
+        { provide: OAuthStorage, useValue: localStorage },
+        { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptor, multi: true },
     ],
     bootstrap: [
         AppComponent
