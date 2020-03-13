@@ -11,7 +11,7 @@ export class RequestInterceptor implements HttpInterceptor {
         // let jsonReq: HttpRequest<any> = req.clone({
         //     setHeaders: {'Content-Type': 'application/json'}
         //   });
-
+        console.log(req);
         return next.handle(req);
     }
 }

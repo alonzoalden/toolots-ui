@@ -82,6 +82,8 @@ $typography: mat-typography-config(
 @import "src/app/layout/components/toolbar/toolbar.theme";
 @import "src/app/main/file-manager/file-manager.theme";
 @import "src/app/main/landing/landing.theme";
+@import "src/app/main/warehouse/warehouse.theme";
+
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {

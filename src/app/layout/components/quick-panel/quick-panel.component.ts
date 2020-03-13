@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 
 @Component({
     selector     : 'quick-panel',
@@ -6,11 +6,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
     styleUrls    : ['./quick-panel.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class QuickPanelComponent
+export class QuickPanelComponent implements OnInit
 {
     date: Date;
-    events: any[];
-    notes: any[];
+    events: any[] = [];
+    notes: any[] = [];
     settings: any;
 
     /**
@@ -26,4 +26,9 @@ export class QuickPanelComponent
             retro : true
         };
     }
+    ngOnInit() {
+        this.notes.push({detail: 'Clean all aisles and follow procedures.', title: 'Inspection'});
+        this.events.push({detail: 'Inspection this Friday. Mar 6. Clean all aisles and follow procedures.', title: 'Inspection'});
+    }
+
 }

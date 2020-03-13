@@ -1,0 +1,72 @@
+<div id="academy-courses" class="page-layout simple">
+
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="center center">
+        
+        <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+
+            <div class="left-side" fxLayout="row">
+                
+            </div>
+
+            <div class="right-side" fxLayout="row">
+
+                <button *ngIf="!searchEnabled" (click)="searchEnabled = !searchEnabled" mat-icon-button aria-label="Search" matTooltip="Search">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <mat-form-field *ngIf="searchEnabled" appearance="outline" floatLabel="always" >
+                    <mat-label>Search for a course</mat-label>
+                    <div fxFlex fxLayout="row" >
+                        <input matInput placeholder="Enter a keyword..."
+                            [(ngModel)]="searchTerm"
+                            (input)="filterCoursesByTerm()">
+                        
+                        <mat-icon style="cursor: pointer;"(click)="cancelSearch()">cancel</mat-icon>
+                    </div>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="hero-text">
+            <mat-icon class="hero-icon">business</mat-icon>
+            <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                WAREHOUSE GADGETS
+            </h1>
+            <!-- <h3 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                Here you will find the Gadgets for the Warehouse Department.
+            </h3> -->
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <div fxLayout="column" fxLayoutAlign="center">
+            <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+                <div class="course" *ngFor="let course of filteredCourses; index as i" fxFlex="50" fxFlex.gt-xs="50"
+                     fxFlex.gt-sm="20" [ngClass]="course.category" [@animate]="{value:'*',params:{y:'100%'}}">
+                    <div class="course-content" fxLayout="column" fxFlex="1 1 auto">
+                        <div class="content" fxLayout="column" fxLayoutAlign="center center" fxFlex="1 1 auto">
+                            <a class="button-link"  >
+                                <button #matRipple mat-fab color="primary" style="width: 90px; height: 90px;"
+                                        (click)="goto('file-manager')">
+                                    <mat-icon class="main-icon">{{course.icon}}</mat-icon>
+                                    <mat-icon class="bg-icon">business</mat-icon>
+                                </button>
+                                <div class="title">
+                                    {{course.title}}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-courses" *ngIf="filteredCourses.length === 0">
+                    No gadgets found!
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

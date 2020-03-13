@@ -19,7 +19,7 @@ export const environment = {
   siteURL: 'https://localhost:4200',
 
   // webapiURL: 'https://webapi.toolots.com/merchantportal',
-  webapiURL: 'https://staging-webapi.toolots.com.cn/merchantportal',
+  webapiURL: 'https://staging-webapi.toolots.com.cn/gadget',
   // webapiURL: 'https://localhost:44360',
 
   // authIssuer: 'https://login.toolots.com/identity',

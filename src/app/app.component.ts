@@ -134,6 +134,11 @@ export class AppComponent implements OnInit, OnDestroy {
             }
         }, 5000);
     }
+
+    private setCustomConfig(fuseconfig) {
+        fuseconfig.layout.footer.hidden = true;
+        return fuseconfig;
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -147,9 +152,9 @@ export class AppComponent implements OnInit, OnDestroy {
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((config) => {
+            .subscribe((defaultConfig) => {
 
-                this.fuseConfig = config;
+                this.fuseConfig = this.setCustomConfig(defaultConfig);
 
                 // Boxed
                 if (this.fuseConfig.layout.width === 'boxed') {
@@ -170,11 +175,11 @@ export class AppComponent implements OnInit, OnDestroy {
             console.log(e);
             if (e.type === 'token_received') {
                 this.appService.setWasLoggedIn();
-                this.router.navigate(['/file-manager']);
+                this.router.navigate(['/warehouse']);
             }
         });
         if (this.appService.isLoggedin) {
-            this.router.navigate(['/file-manager']);
+            this.router.navigate(['/warehouse']);
         }
     }
 

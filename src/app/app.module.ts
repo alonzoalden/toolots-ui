@@ -28,6 +28,9 @@ import { AuthGuard } from './auth/auth.guard';
 import { APP_BASE_HREF } from '@angular/common';
 import { RequestInterceptor } from './core/request.interceptor';
 import { ResponseInterceptor } from './core/response.interceptor';
+import { WarehouseModule } from './main/warehouse/warehouse.module';
+import { Error404Module } from './main/errors/404/error-404.module';
+import { Error500Module } from './main/errors/500/error-500.module';
 
 const appRoutes: Routes = [
     {
@@ -75,7 +78,10 @@ const appRoutes: Routes = [
         LayoutModule,
         LandingPageModule,
         SampleModule,
-        FileManagerModule
+        FileManagerModule,
+        WarehouseModule,
+        Error404Module,
+        Error500Module,
     ],
     providers: [
         AuthGuard,

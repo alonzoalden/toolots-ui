@@ -9,7 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
 
-import { FileManagerService } from 'app/main/file-manager/file-manager.service';
+import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 import { FileManagerComponent } from 'app/main/file-manager/file-manager.component';
 import { FileManagerDetailsSidebarComponent } from 'app/main/file-manager/sidebars/details/details.component';
 import { FileManagerFileListComponent } from 'app/main/file-manager/file-list/file-list.component';
@@ -22,26 +22,28 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { WarehouseComponent } from './warehouse.component';
+import { WarehouseDashboardComponent } from './warehouse-dashboard/warehouse-dashboard.component';
 const routes: Routes = [
     {
-        path: 'file-manager',
-        component: FileManagerComponent,
-        children: [],
+        path: 'warehouse',
+        component: WarehouseComponent,
+        children: [
+          {
+            path: '',
+            component: WarehouseDashboardComponent
+          },
+        ],
         resolve: {
-            files: FileManagerService
-        },
-        data: {
+            files: WarehouseService
         }
     }
 ];
 
 @NgModule({
     declarations: [
-        FileManagerComponent,
-        FileManagerFileListComponent,
-        FileManagerMainSidebarComponent,
-        FileManagerDetailsSidebarComponent,
-        MailComposeDialogComponent
+        WarehouseComponent,
+        WarehouseDashboardComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -65,11 +67,11 @@ const routes: Routes = [
         FuseSidebarModule
     ],
     providers: [
-        FileManagerService
+        WarehouseService
     ],
     entryComponents: [
         MailComposeDialogComponent
     ]
 })
-export class FileManagerModule {
+export class WarehouseModule {
 }

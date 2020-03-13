@@ -7,6 +7,8 @@ export const authConfig: AuthConfig = {
     // Url of the Identity Provider
     issuer: environment.authIssuer,
 
+    // userinfoEndpoint: environment.authIssuer + 'openid/connect/v1/userinfo',
+
     // URL of the SPA to redirect the user to after login
     redirectUri: window.location.origin + '/',
 
