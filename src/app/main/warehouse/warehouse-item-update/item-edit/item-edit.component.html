@@ -1,0 +1,150 @@
+<div id="product" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <!-- <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center"> -->
+
+            <!-- APP TITLE -->
+            <!-- <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/e-commerce/products'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img [src]="'assets/images/no-image-icon.png'">
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{product.ItemName}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New Product
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Product Detail</span>
+                    </div>
+                </div>
+            </div> -->
+            <!-- / APP TITLE -->
+
+            <!-- <button mat-raised-button
+                    class="save-product-button"
+                    [disabled]="productForm.invalid"
+                    *ngIf="pageType ==='new'" >
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-product-button"
+                    [disabled]="productForm.invalid || productForm.pristine"
+                    *ngIf="pageType ==='edit'">
+                <span>SAVE</span>
+            </button>
+        </div> -->
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="productForm" [formGroup]="productForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+                    <!-- <mat-tab-group>
+
+                        <mat-tab label="Basic Info"> -->
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product Name</mat-label>
+                                    <input matInput placeholder="Item Name"
+                                           name="ItemName"
+                                           formControlName="ItemName"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product Description</mat-label>
+                                    <textarea matInput placeholder="Item Description"
+                                              name="Description"
+                                              formControlName="Description"
+                                              rows="5">
+                                    </textarea>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product Description</mat-label>
+                                    <textarea matInput placeholder="FOB Price"
+                                              name="FOBPrice"
+                                              formControlName="FOBPrice"
+                                              rows="5">
+                                    </textarea>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product Description</mat-label>
+                                    <textarea matInput placeholder="Image Path"
+                                              name="ImagePath"
+                                              formControlName="ImagePath"
+                                              rows="5">
+                                    </textarea>
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Categories</mat-label>
+
+                                     <mat-chip-list #categoryList name="categories" formControlName="categories">
+
+                                        <mat-chip *ngFor="let category of product.categories"
+                                                  [removable]="true" (removed)="product.removeCategory(category)">
+                                            {{category}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="categoryList"
+                                               [matChipInputAddOnBlur]="true"
+                                               (matChipInputTokenEnd)="product.addCategory($event)"/>
+
+                                    </mat-chip-list> 
+
+                                </mat-form-field> -->
+
+                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Tags</mat-label>
+
+                                    <mat-chip-list #tagList name="tags" formControlName="tags">
+
+                                        <mat-chip *ngFor="let tag of product.tags"
+                                                  [removable]="true" (removed)="product.removeTag(tag)">
+                                            {{tag}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="tagList"
+                                               [matChipInputAddOnBlur]="true"
+                                               (matChipInputTokenEnd)="product.addTag($event)"/>
+
+                                    </mat-chip-list>
+                                </mat-form-field> -->
+                            </div>
+                        <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject, throwError, forkJoin, of } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { catchError, tap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 @Injectable()
-export class FileManagerService implements Resolve<any>
+export class WarehouseItemUpdateService implements Resolve<any>
 {
     onFilesChanged: BehaviorSubject<any>;
     onFileSelected: BehaviorSubject<any>;
@@ -87,13 +87,13 @@ export class FileManagerService implements Resolve<any>
             .pipe(
                 tap(data => {
                         this.onFilesChanged.next(data);
-                        this.onFileSelected.next(data[0]);
+                        // this.onFileSelected.next(data[0]);
                 }),
                 catchError(this.handleError)
             );
     }
 
-    getItems(): Observable<any> {
+    getAllItemList(): Observable<any> {
         return this._httpClient.get<any>(this.apiURL + '/warehouse/allitemlist')
             .pipe(
                 tap(data => {

@@ -31,6 +31,8 @@ import { ResponseInterceptor } from './core/response.interceptor';
 import { WarehouseModule } from './main/warehouse/warehouse.module';
 import { Error404Module } from './main/errors/404/error-404.module';
 import { Error500Module } from './main/errors/500/error-500.module';
+import { AppService } from './app.service';
+import { WarehouseItemUpdateModule } from './main/warehouse/warehouse-item-update/warehouse-item-update.module';
 
 const appRoutes: Routes = [
     {
@@ -47,7 +49,9 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes),
+        RouterModule.forRoot(appRoutes, {
+            scrollPositionRestoration: 'enabled', // Add options right here
+        }),
         OAuthModule.forRoot({
             resourceServer: {
                 allowedUrls: [ environment.webapiURL ],
@@ -78,12 +82,14 @@ const appRoutes: Routes = [
         LayoutModule,
         LandingPageModule,
         SampleModule,
-        FileManagerModule,
+        // FileManagerModule,
+        WarehouseItemUpdateModule,
         WarehouseModule,
         Error404Module,
         Error500Module,
     ],
     providers: [
+        AppService,
         AuthGuard,
         { provide: APP_BASE_HREF, useValue: '/'},
         { provide: OAuthStorage, useValue: localStorage },

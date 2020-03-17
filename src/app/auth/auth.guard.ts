@@ -16,16 +16,24 @@ export class AuthGuard implements CanLoad {
             // console.log("passed guard");
             return true;
         } else {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/']);
         }
         return false;
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-        return this.oauthService
-            .loadDiscoveryDocumentAndTryLogin()
-            .then((res) => {
-                return this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken();
-            });
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        // return this.oauthService
+        //     .loadDiscoveryDocumentAndTryLogin()
+        //     .then((res) => {
+        //         console.log(res);
+        //         return this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken();
+        //     });
+        if (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken()) {
+            // console.log("passed guard");
+            return true;
+        } else {
+            this.router.navigate(['/']);
+        }
+        return false;
     }
 }

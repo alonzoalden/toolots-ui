@@ -1,0 +1,62 @@
+<mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="ImagePath">
+        <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="64px">
+            <img *ngIf="row.ImagePath" src="{{fileURL}}{{row.ImagePath}}">
+        </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="ItemName">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.ItemName}}</mat-cell>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="TPIN">
+        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>TPIN</mat-header-cell>
+        <mat-cell *matCellDef="let row" fxHide fxShow.gt-md> {{row.TPIN}}</mat-cell>
+    </ng-container>
+
+    <!-- Owner Column -->
+    <ng-container matColumnDef="VendorSKU">
+        <mat-header-cell *matHeaderCellDef fxHide.xs>Vendor SKU</mat-header-cell>
+        <mat-cell *matCellDef="let row" fxHide.xs> {{row.VendorSKU}}</mat-cell>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="FOBPrice">
+        <mat-header-cell *matHeaderCellDef fxHide.xs>FOB Price</mat-header-cell>
+        <mat-cell *matCellDef="let row" fxHide.xs>{{row.FOBPrice}}</mat-cell>
+    </ng-container>
+
+    <!-- Modified Column -->
+    <ng-container matColumnDef="Description">
+        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Description</mat-header-cell>
+        <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>{{row.Description}}</mat-cell>
+    </ng-container>
+
+    <!-- Detail Button Column -->
+    <ng-container matColumnDef="detail-button">
+        <mat-header-cell *matHeaderCellDef fxFlex="48px" fxHide.gt-md></mat-header-cell>
+        <mat-cell *matCellDef="let row" fxFlex="48px" fxHide.gt-md>
+            <button mat-icon-button class="sidebar-toggle" fxHide.gt-md
+                    (click)="toggleSidebar('file-manager-details-sidebar')">
+                <mat-icon class="secondary-text">info</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             (click)="onSelect(row)"
+             [ngClass]="{'selected' : row == selected}"
+             [@animate]="{value:'*',params:{y:'100%'}}"
+    >
+    </mat-row>
+</mat-table>
+<div *ngIf="!dataSource" style="height: 80%; display: flex; justify-content: center; align-items: center;">
+    <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
+</div>

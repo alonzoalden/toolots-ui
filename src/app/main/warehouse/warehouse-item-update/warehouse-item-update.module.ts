@@ -5,15 +5,11 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
-
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
 
-import { WarehouseService } from 'app/main/warehouse/warehouse.service';
-import { FileManagerComponent } from 'app/main/file-manager/file-manager.component';
-import { FileManagerDetailsSidebarComponent } from 'app/main/file-manager/sidebars/details/details.component';
-import { FileManagerFileListComponent } from 'app/main/file-manager/file-list/file-list.component';
-import { FileManagerMainSidebarComponent } from 'app/main/file-manager/sidebars/main/main.component';
 import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -22,36 +18,56 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { WarehouseComponent } from './warehouse.component';
-import { WarehouseDashboardComponent } from './warehouse-dashboard/warehouse-dashboard.component';
 import { AuthGuard } from 'app/auth/auth.guard';
-import { WarehouseItemUpdateService } from './warehouse-item-update/warehouse-item-update.service';
+import { WarehouseItemUpdateComponent } from './warehouse-item-update.component';
+import { WarehouseItemUpdateService } from './warehouse-item-update.service';
+import { WarehouseItemUpdateListComponent } from './item-list/item-list.component';
+import { WarehouseItemUpdateMainSidebarComponent } from './sidebars/main/main.component';
+import { WarehouseItemUpdateDetailsSidebarComponent } from './sidebars/details/details.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { WarehouseItemEditComponent } from './item-edit/item-edit.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 
 const routes: Routes = [
     {
-        path: 'warehouse',
-        component: WarehouseComponent,
+        path: 'warehouse-item-update',
+        component: WarehouseItemUpdateComponent,
         canActivate: [ AuthGuard ],
         children: [
-          {
-            path: '',
-            component: WarehouseDashboardComponent,
-          },
+            {
+              path: '',
+              component: WarehouseItemUpdateListComponent,
+            },
+            {
+                path: 'edit/:id',
+                component: WarehouseItemEditComponent,
+            },
         ],
         resolve: {
-            files: WarehouseService
+            files: WarehouseItemUpdateService
         },
-    },
+    }
 ];
 
 @NgModule({
     declarations: [
-        WarehouseComponent,
-        WarehouseDashboardComponent,
+        WarehouseItemUpdateComponent,
+        WarehouseItemUpdateListComponent,
+        WarehouseItemUpdateDetailsSidebarComponent,
+        WarehouseItemUpdateMainSidebarComponent,
+        WarehouseItemEditComponent
+        // FileManagerComponent,
+        // FileManagerFileListComponent,
+        // FileManagerMainSidebarComponent,
+        // FileManagerDetailsSidebarComponent,
+        // MailComposeDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
-
+        MatProgressSpinnerModule,
         MatButtonModule,
         MatIconModule,
         MatRippleModule,
@@ -67,17 +83,19 @@ const routes: Routes = [
         MatRippleModule,
         MatSelectModule,
         MatToolbarModule,
+        MatTooltipModule,
+        MatTabsModule,
+        MatChipsModule,
         FuseSharedModule,
         FuseSidebarModule
     ],
     providers: [
-        WarehouseService,
         WarehouseItemUpdateService,
-        AuthGuard
+        MatSnackBar
     ],
     entryComponents: [
         MailComposeDialogComponent
     ]
 })
-export class WarehouseModule {
+export class WarehouseItemUpdateModule {
 }

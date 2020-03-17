@@ -10,7 +10,7 @@
             Just kidding, looks like we have an internal issue, please try again in couple minutes
         </div>
 
-        <a class="report-link" [routerLink]="'/apps/dashboards/project'">Report this problem</a>
+        <a class="report-link" [routerLink]="'/'">Back</a>
 
         <div *ngIf="errorMessage" style="margin-top: 50px; color: red;" [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
             <div class="message">Problem:</div>
@@ -18,7 +18,5 @@
                 {{errorMessage}}
             </div>
         </div>
-
     </div>
-
 </div>

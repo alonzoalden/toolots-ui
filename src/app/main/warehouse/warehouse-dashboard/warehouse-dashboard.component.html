@@ -49,9 +49,8 @@
                      fxFlex.gt-sm="20" [ngClass]="course.category" [@animate]="{value:'*',params:{y:'100%'}}">
                     <div class="course-content" fxLayout="column" fxFlex="1 1 auto">
                         <div class="content" fxLayout="column" fxLayoutAlign="center center" fxFlex="1 1 auto">
-                            <a class="button-link"  >
-                                <button #matRipple mat-fab color="primary" style="width: 90px; height: 90px;"
-                                        (click)="goto('file-manager')">
+                            <a class="button-link" (click)="goto('warehouse-item-update')" >
+                                <button #matRipple mat-fab color="primary" style="width: 90px; height: 90px;">
                                     <mat-icon class="main-icon">{{course.icon}}</mat-icon>
                                     <mat-icon class="bg-icon">business</mat-icon>
                                 </button>

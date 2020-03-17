@@ -15,16 +15,14 @@ export class AppService {
         private oauthService: OAuthService,
         private _httpClient: HttpClient
     ) { }
-
+    get isLoggedin() {
+        return (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken());
+    }
     setWasLoggedIn() {
         this.wasLoggedIn = true;
     }
-
     getWasLoggedIn() {
         return this.wasLoggedIn;
-    }
-    get isLoggedin() {
-        return (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken());
     }
     logout() {
         this.oauthService.logOut();

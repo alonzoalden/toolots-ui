@@ -1,0 +1,62 @@
+<!-- SIDEBAR HEADER -->
+<div class="header accent p-24" style="border-left: 0px" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-icon-button [routerLink]="['edit', selected.ItemID]">
+            <mat-icon matTooltip="Edit">build</mat-icon>
+        </button>
+
+        <button mat-icon-button aria-label="More" matTooltip="More">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+
+    <div>
+        <div class="title mb-8">{{selected.name}}</div>
+        <div class="subtitle secondary-text">
+            <span>{{selected.ItemName}}</span>
+        </div>
+    </div>
+</div> 
+<!-- / SIDEBAR HEADER -->
+
+<!-- SIDEBAR CONTENT -->
+<div class="content p-24" fusePerfectScrollbar>
+
+    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+
+        <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+            <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png">
+            <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}">
+        </div>
+
+        <table>
+            <!-- <tr class="type">
+                <th>Name</th>
+                <td>{{selected.ItemName}}</td>
+            </tr> -->
+
+            <tr class="size">
+                <th>TPIN</th>
+                <td>{{selected.TPIN}}</td>
+            </tr>
+
+            <tr class="location">
+                <th>Vendor SKU</th>
+                <td>{{selected.VendorSKU}}</td>
+            </tr>
+
+            <tr class="owner">
+                <th>FOBPrice</th>
+                <td>{{selected.FOBPrice}}</td>
+            </tr>
+
+            <tr class="owner">
+                <th>Description</th>
+                <td>{{selected.Description}}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<!-- / SIDEBAR CONTENT -->

@@ -16,7 +16,7 @@ import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { authConfig } from './auth/auth.config';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AppService } from './app.service';
 @Component({
     selector   : 'app',
@@ -53,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private _platform: Platform,
         private oauthService: OAuthService,
         private router: Router,
+        private route: ActivatedRoute,
         public appService: AppService
     ) {
         // Get default navigation
@@ -147,22 +148,20 @@ export class AppComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        // Configure Auth
         this.configureWithNewConfigApi();
-        // this.initInterval();
+
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((defaultConfig) => {
-
                 this.fuseConfig = this.setCustomConfig(defaultConfig);
-
                 // Boxed
                 if (this.fuseConfig.layout.width === 'boxed') {
                     this.document.body.classList.add('boxed');
                 } else {
                     this.document.body.classList.remove('boxed');
                 }
-
                 for (const className of this.document.body.classList) {
                     if (className.startsWith('theme-')) {
                         this.document.body.classList.remove(className);
@@ -171,16 +170,24 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
 
+        // If Oauth token received, navigate to main app
         this.oauthService.events.subscribe(e => {
-            console.log(e);
-            if (e.type === 'token_received') {
+            if (e.type === 'token_received' && this.appService.isLoggedin) {
                 this.appService.setWasLoggedIn();
                 this.router.navigate(['/warehouse']);
             }
         });
-        if (this.appService.isLoggedin) {
-            this.router.navigate(['/warehouse']);
-        }
+        // Use NavigationEnd to avoid url as alwys being '/'
+        this.router.events.subscribe(
+            (event: any) => {
+                if (event instanceof NavigationEnd) {
+                    // Navigate to main app if we're at home page and user is logged in.
+                    if (this.router.url === '/' && this.appService.isLoggedin) {
+                        this.router.navigate(['/warehouse']);
+                    }
+                }
+            }
+        );
     }
 
     /**
