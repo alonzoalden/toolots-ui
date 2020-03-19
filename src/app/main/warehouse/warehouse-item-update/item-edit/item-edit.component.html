@@ -5,7 +5,7 @@
     <!-- / TOP BACKGROUND -->
 
     <!-- CENTER -->
-    <div class="center">
+    <div class="center" style="padding: 0;">
 
         <!-- HEADER -->
         <!-- <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center"> -->
@@ -67,15 +67,30 @@
                             <div class="tab-content p-24" fusePerfectScrollbar>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Product Name</mat-label>
+                                    <mat-label>Item Name</mat-label>
                                     <input matInput placeholder="Item Name"
                                            name="ItemName"
                                            formControlName="ItemName"
                                            required>
                                 </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Vendor SKU</mat-label>
+                                    <input matInput placeholder="VendorSKU"
+                                              name="VendorSKU"
+                                              formControlName="VendorSKU"
+                                              rows="5">
+                                </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Product Description</mat-label>
+                                    <mat-label>FOB Price</mat-label>
+                                    <input matInput placeholder="FOB Price"
+                                              name="FOBPrice"
+                                              formControlName="FOBPrice"
+                                              rows="5"
+                                              type="number">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Description</mat-label>
                                     <textarea matInput placeholder="Item Description"
                                               name="Description"
                                               formControlName="Description"
@@ -83,21 +98,35 @@
                                     </textarea>
                                 </mat-form-field>
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Product Description</mat-label>
-                                    <textarea matInput placeholder="FOB Price"
-                                              name="FOBPrice"
-                                              formControlName="FOBPrice"
-                                              rows="5">
-                                    </textarea>
+                                    <mat-label>Image</mat-label>
+                                    <div fxFlex fxLayout="row">
+                                        <div class="file-uploader">
+                                            <input hidden type="file" #fileInput/>
+                                            <button mat-stroked-button
+                                                    color="warn"
+                                                    class="add-file-button"
+                                                    (click)="fileInput.click()"
+                                                    aria-label="Add file"
+                                                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </div>
+                                        <input matInput placeholder="Image"
+                                                name="ImagePath"
+                                                formControlName="ImagePath" 
+                                                style="display: none;">
+                                        <div>
+                                            <img *ngIf="productForm.value.ImagePath" src="{{fileURL}} + ImagePath">
+                                        </div>
+                                    </div>
                                 </mat-form-field>
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Product Description</mat-label>
-                                    <textarea matInput placeholder="Image Path"
+                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Image</mat-label>
+                                    <input matInput placeholder="Image Path"
                                               name="ImagePath"
                                               formControlName="ImagePath"
                                               rows="5">
-                                    </textarea>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
 

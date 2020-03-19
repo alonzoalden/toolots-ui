@@ -1,10 +1,27 @@
 @mixin file-manager-theme($theme) {
 
     $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
     $accent: map-get($theme, accent);
     $is-dark: map-get($theme, is-dark);
 
     file-list {
+
+        .search-wrapper {
+            background: map-get($background, card);
+
+            .sidebar-toggle {
+                border-right-color: map-get($foreground, divider);
+            }
+
+            .search {
+
+                input {
+                    background: map-get($background, card);
+                    color: map-get($foreground, text);
+                }
+            }
+        }
 
         .mat-table {
 

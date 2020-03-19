@@ -8,60 +8,20 @@
 
     <!-- CENTER -->
     <div class="center" fxFlex>
-        <!-- <div style="border-right: 0;" class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
-            <div fxLayout="column" fxLayoutAlign="center start">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon class="secondary-text s-18">business</mat-icon>
-                    <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                    <span class="secondary-text">Items</span>
-                </div>
-                <div class="h2 mt-16">Items</div>
-            </div>
-        </div> -->
-        <div class="header accent p-24" fxLayout="column" fxLayoutAlign="space-between start">
 
-            <!-- TOOLBAR -->
-            <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
-
-                <div class="right-side" fxLayout="row">
-                    <button mat-icon-button aria-label="Search" matTooltip="Search">
-                        <mat-icon>search</mat-icon>
-                        <!-- <mat-icon>arrow_back</mat-icon> -->
-                    </button>
-                </div>
-            </div>
-            <!-- / TOOLBAR -->
-
-            <!-- BREADCRUMB -->
-            <div class="breadcrumb text-truncate h1 pl-72" fxLayout="row" fxLayoutAlign="start center"
-                 [@animate]="{value:'*',params:{x:'50px'}}">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <span>Items</span>
-                </div>
-            </div>
-            <!-- / BREADCRUMB -->
-
-
-        </div>
-
+        
         <!-- CONTENT -->
-        <div class="content" fusePerfectScrollbar #scrollContainer>
+        <div class="content" #scrollContainer>
             <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet>
         </div>
         <!-- / CONTENT -->
-
+        
     </div>
     <!-- / CENTER -->
 
-    <!-- SIDEBAR    *ngIf="selected.ItemID"-->
+    <!-- SIDEBAR *ngIf="selected.ItemID"-->
     <fuse-sidebar  class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right"
                   lockedOpen="gt-md">
         <file-manager-details-sidebar></file-manager-details-sidebar>
     </fuse-sidebar>
-
-    <!-- <div class="mobile-details">
-        <file-manager-details-sidebar></file-manager-details-sidebar>
-    </div> -->
-    <!-- / SIDEBAR -->
-
 </div>

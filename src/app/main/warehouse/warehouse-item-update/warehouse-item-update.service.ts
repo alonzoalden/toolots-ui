@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, RouterLink, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Observable, BehaviorSubject, throwError, forkJoin, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { catchError, tap, map } from 'rxjs/operators';
@@ -12,6 +12,11 @@ export class WarehouseItemUpdateService implements Resolve<any>
     onFilesChanged: BehaviorSubject<any>;
     onFileSelected: BehaviorSubject<any>;
     allitemlist: BehaviorSubject<any>;
+    isEdit: BehaviorSubject<any>;
+    filteredCourses: any[];
+    currentCategory: string;
+    searchTerm: BehaviorSubject<any>;
+
     private apiURL = environment.webapiURL;
 
     /**
@@ -28,6 +33,8 @@ export class WarehouseItemUpdateService implements Resolve<any>
         this.onFilesChanged = new BehaviorSubject({});
         this.onFileSelected = new BehaviorSubject({});
         this.allitemlist = new BehaviorSubject({});
+        this.isEdit = new BehaviorSubject({});
+        this.searchTerm = new BehaviorSubject('');
     }
 
     /**
@@ -41,19 +48,6 @@ export class WarehouseItemUpdateService implements Resolve<any>
         return combineLatest([
             this.getFiles()
         ]);
-
-        // return new Promise((resolve, reject) => {
-
-        //     Promise.all([
-        //         this.getFiles(),
-        //         // this.getItems()
-        //     ]).then(
-        //         ([files]) => {
-        //             resolve();
-        //         },
-        //         reject
-        //     );
-        // });
     }
 
     /**
@@ -61,28 +55,8 @@ export class WarehouseItemUpdateService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    // getFiles(): Promise<any> {
-    //     return new Promise((resolve, reject) => {
-    //         this._httpClient.get('api/file-manager')
-    //             .subscribe((response: any) => {
-    //                 this.onFilesChanged.next(response);
-    //                 this.onFileSelected.next(response[0]);
-    //                 resolve(response);
-    //             }, reject);
-    //     });
-    // }
-
-    // getItems(): Promise<any> {
-    //     return new Promise((resolve, reject) => {
-    //         this._httpClient.get(this.apiURL + '/item/2')
-    //             .subscribe((response: any) => {
-    //                 resolve(response);
-    //             }, reject);
-    //     });
-    // }
 
     getFiles(): Observable<any> {
-
         return this._httpClient.get('api/file-manager')
             .pipe(
                 tap(data => {
@@ -94,6 +68,9 @@ export class WarehouseItemUpdateService implements Resolve<any>
     }
 
     getAllItemList(): Observable<any> {
+        if (this.allitemlist.value.length) {
+            return this.allitemlist;
+        }
         return this._httpClient.get<any>(this.apiURL + '/warehouse/allitemlist')
             .pipe(
                 tap(data => {
@@ -106,8 +83,14 @@ export class WarehouseItemUpdateService implements Resolve<any>
     getItemDimension(id: string): Observable<any> {
         return this._httpClient.get<any>(this.apiURL + '/warehouse/itemdimension/' + id)
             .pipe(
-                // tap(data => {
-                // }),
+                tap(data => {
+                    // const updatedData = Object.assign({}, this.onFileSelected.value);
+                    // updatedData.Dimensions = data;
+                    // this.onFileSelected.next(updatedData);
+
+                    this.onFileSelected.value.Dimensions = data;
+                    this.onFileSelected.next(this.onFileSelected.value);
+                }),
                 catchError(this.handleError)
             );
     }

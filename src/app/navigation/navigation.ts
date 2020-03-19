@@ -21,7 +21,7 @@ export const navigation: FuseNavigation[] = [
                         translate: 'NAV.ITEMUPDATE',
                         type     : 'item',
                         icon     : 'build',
-                        url      : '/file-manager',
+                        url      : '/warehouse-item-update',
                         // badge    : {
                         //     title    : '25',
                         //     translate: 'NAV.SAMPLE.BADGE',

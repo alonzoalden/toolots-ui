@@ -10,6 +10,7 @@ import { FuseUtils } from '@fuse/utils';
 import { ItemList } from 'app/shared/class/item';
 import { WarehouseItemUpdateService } from '../warehouse-item-update.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { environment } from 'environments/environment';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
     pageType: string;
     productForm: FormGroup;
     selected: any;
+    fileURL = environment.fileURL;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -40,10 +42,11 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
         private _location: Location,
         private _matSnackBar: MatSnackBar,
-        private warehouseItemUpdateService: WarehouseItemUpdateService
+        private warehouseItemUpdateService: WarehouseItemUpdateService,
+        private router: Router,
     ) {
         // Set the default
-        this.product = new ItemList(null, null, null, null, null, null, null);
+        this.product = new ItemList(null, null, null, null, null, null, null, null);
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -61,8 +64,12 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
+                this.product = selected;
             });
         this.productForm = this.createProductForm();
+        if (!this.selected.ItemID) {
+            this.router.navigate(['warehouse-item-update']);
+        }
     }
 
     /**

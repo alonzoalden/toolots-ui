@@ -10,7 +10,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
 
-import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
+import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-update/dialogs/compose.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { WarehouseItemEditComponent } from './item-edit/item-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -58,12 +59,12 @@ const routes: Routes = [
         WarehouseItemUpdateListComponent,
         WarehouseItemUpdateDetailsSidebarComponent,
         WarehouseItemUpdateMainSidebarComponent,
-        WarehouseItemEditComponent
+        WarehouseItemEditComponent,
         // FileManagerComponent,
         // FileManagerFileListComponent,
         // FileManagerMainSidebarComponent,
         // FileManagerDetailsSidebarComponent,
-        // MailComposeDialogComponent
+        MailComposeDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -84,6 +85,7 @@ const routes: Routes = [
         MatSelectModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatPaginatorModule,
         MatTabsModule,
         MatChipsModule,
         FuseSharedModule,

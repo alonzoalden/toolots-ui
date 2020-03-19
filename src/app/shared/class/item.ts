@@ -7,7 +7,8 @@ export class ItemList {
         public ItemName: string,
         public TPIN: string,
         public VendorSKU: string,
-        public ImagePath: string
+        public ImagePath: string,
+        public Dimensions: ItemDimension,
     ) {}
 }
 

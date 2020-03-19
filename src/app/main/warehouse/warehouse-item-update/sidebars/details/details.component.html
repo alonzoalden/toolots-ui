@@ -1,9 +1,13 @@
 <!-- SIDEBAR HEADER -->
 <div class="header accent p-24" style="border-left: 0px" fxLayout="column" fxLayoutAlign="space-between">
-    <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+    <div *ngIf="selected.ItemID" class="toolbar" fxLayout="row" fxLayoutAlign="end center">
 
-        <button mat-icon-button [routerLink]="['edit', selected.ItemID]">
+        <button (click)="composeDialog()" *ngIf="!isEdit" mat-icon-button>
             <mat-icon matTooltip="Edit">build</mat-icon>
+        </button>
+
+        <button *ngIf="isEdit" mat-icon-button [routerLink]="['edit', selected.ItemID]">
+            <mat-icon matTooltip="Edit">save</mat-icon>
         </button>
 
         <button mat-icon-button aria-label="More" matTooltip="More">
@@ -23,34 +27,85 @@
 <!-- SIDEBAR CONTENT -->
 <div class="content p-24" fusePerfectScrollbar>
 
-    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+    <div *ngIf="selected?.Dimensions" class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
 
         <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
-            <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png">
-            <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}">
+            <ng-container *ngIf="selected.ItemID">
+                <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png">
+                <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}">
+            </ng-container>
         </div>
+        <hr>
+        <div class="title">Dimensions</div>
 
         <table>
-            <!-- <tr class="type">
-                <th>Name</th>
-                <td>{{selected.ItemName}}</td>
-            </tr> -->
+            <tr class="Length">
+                <th>Length</th>
+                <td>{{selected.Dimensions.Length}}</td>
+            </tr>
 
-            <tr class="size">
+            <tr class="Width">
+                <th>Width</th>
+                <td>{{selected.Dimensions.Width}}</td>
+            </tr>
+
+            <tr class="Height">
+                <th>Height</th>
+                <td>{{selected.Dimensions.Height}}</td>
+            </tr>
+
+            <tr class="Weight">
+                <th>Weight</th>
+                <td>{{selected.Dimensions.Weight}}</td>
+            </tr>
+
+            <tr class="PackageLength">
+                <th>Package Length</th>
+                <td>{{selected.Dimensions.PackageLength}}</td>
+            </tr>
+
+            <tr class="PackageWidth">
+                <th>Package Width</th>
+                <td>{{selected.Dimensions.PackageWidth}}</td>
+            </tr>
+
+            <tr class="PackageHeight">
+                <th>Package Height</th>
+                <td>{{selected.Dimensions.PackageHeight}}</td>
+            </tr>
+
+            <tr class="PackageWeight">
+                <th>Package Weight</th>
+                <td>{{selected.PackageWeight}}</td>
+            </tr>
+
+            <tr class="PackagingType">
+                <th>Packaging Type</th>
+                <td>{{selected.Dimensions.PackagingType}}</td>
+            </tr>
+
+            <tr class="UnitPerPackage">
+                <th>Unit Per Package</th>
+                <td>{{selected.Dimensions.UnitPerPackage}}</td>
+            </tr>
+
+            <tr class="MaximumParcelUnit">
+                <th>Maximum Parcel Unit</th>
+                <td>{{selected.Dimensions.MaximumParcelUnit}}</td>
+            </tr>
+
+        </table>
+        <hr>
+        <div class="title">General Info</div>
+        <table>
+            <tr class="owner">
                 <th>TPIN</th>
                 <td>{{selected.TPIN}}</td>
             </tr>
-
-            <tr class="location">
+            <tr class="owner">
                 <th>Vendor SKU</th>
                 <td>{{selected.VendorSKU}}</td>
             </tr>
-
-            <tr class="owner">
-                <th>FOBPrice</th>
-                <td>{{selected.FOBPrice}}</td>
-            </tr>
-
             <tr class="owner">
                 <th>Description</th>
                 <td>{{selected.Description}}</td>

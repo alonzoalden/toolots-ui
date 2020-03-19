@@ -1,91 +1,78 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar class="mat-accent m-0">
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title" style="overflow: hidden;">New Message</span>
+            <span class="title dialog-title" style="overflow: hidden;">Edit Item</span>
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
 
+    
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <h2>{{selected.ItemName}}</h2>
+        <div>
+            <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                
+                <h4>Item Dimensions</h4>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Length</mat-label>
+                    <input matInput placeholder="Length"
+                        name="Length"
+                        formControlName="Length"
+                        required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Width</mat-label>
+                    <input matInput placeholder="Width"
+                            name="Width"
+                            formControlName="Width">
+                </mat-form-field>
 
-        <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Height</mat-label>
+                    <input matInput placeholder="Height"
+                            name="Height"
+                            formControlName="Height"
+                            type="number">
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Weight</mat-label>
+                    <input matInput placeholder="Weight"
+                            name="Weight"
+                            formControlName="Weight">
+                </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>From</mat-label>
-                <input matInput name="from"
-                       formControlName="from"
-                       type="email">
-            </mat-form-field>
+                <h4>Package Dimensions</h4>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Length</mat-label>
+                    <input matInput placeholder="PackageLength"
+                        name="PackageLength"
+                        formControlName="PackageLength"
+                        required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Width</mat-label>
+                    <input matInput placeholder="PackageWidth"
+                            name="PackageWidth"
+                            formControlName="PackageWidth">
+                </mat-form-field>
 
-            <div class="show-hide-extra-fields" (click)="toggleExtraToFields()">
-                <span [fxShow]="!showExtraToFields">Show CC & BCC</span>
-                <span [fxShow]="showExtraToFields">Hide CC & BCC</span>
-            </div>
-
-            <mat-form-field appearance="outline">
-                <mat-label>To</mat-label>
-                <input matInput name="to"
-                       formControlName="to"
-                       type="email" required>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" [fxShow]="showExtraToFields">
-                <mat-label>Cc</mat-label>
-                <input matInput
-                       name="cc"
-                       formControlName="cc"
-                       type="email">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" [fxShow]="showExtraToFields">
-                <mat-label>Bcc</mat-label>
-                <input matInput
-                       name="bcc"
-                       formControlName="bcc"
-                       type="email">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Subject</mat-label>
-                <input matInput name="subject"
-                       formControlName="subject">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Message</mat-label>
-                <textarea matInput name="message"
-                          formControlName="message"
-                          rows="6">
-                </textarea>
-            </mat-form-field>
-
-            <div class="attachment-list">
-
-                <div class="attachment" fxLayout="row" fxLayoutAlign="space-between center">
-                    <div>
-                        <span class="filename">attachment-2.doc</span>
-                        <span class="size ml-4">(12 Kb)</span>
-                    </div>
-
-                    <button mat-icon-button aria-label="Delete attachment">
-                        <mat-icon class="s-16">close</mat-icon>
-                    </button>
-                </div>
-
-                <div class="attachment" fxLayout="row" fxLayoutAlign="space-between center">
-                    <div>
-                        <span class="filename">attachment-1.jpg</span>
-                        <span class="size ml-4">(350 Kb)</span>
-                    </div>
-
-                    <button mat-icon-button aria-label="Delete attachment">
-                        <mat-icon class="s-16">close</mat-icon>
-                    </button>
-                </div>
-            </div>
-        </form>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Height</mat-label>
+                    <input matInput placeholder="PackageHeight"
+                            name="Package Height"
+                            formControlName="PackageHeight"
+                            type="number">
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Weight</mat-label>
+                    <input matInput placeholder="PackageWeight"
+                            name="PackageWeight"
+                            formControlName="PackageWeight">
+                </mat-form-field>
+            </form>
+        </div>
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">

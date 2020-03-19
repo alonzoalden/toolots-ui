@@ -11,7 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { WarehouseItemUpdateService } from './warehouse-item-update.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { FuseThemeOptionsModule } from '@fuse/components';
 
 
 
@@ -26,6 +27,10 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
     selected: any;
     pathArr: string[];
     dialogRef: any;
+    isEdit: boolean;
+    searchTerm: string;
+    searchEnabled: boolean;
+    filteredCourses: any[];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -41,8 +46,7 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog,
         private router: Router
-    )
-    {
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -55,14 +59,21 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        // scroll to top of page
-        this.router.events.subscribe((evt) => {
-            if (!(evt instanceof NavigationEnd)) {
-                return;
-            }
-            window.scrollTo(0, 0);
-        });
 
+        if (this.router.url.includes('/warehouse-item-update/edit/')) {
+            this.isEdit = true;
+        }
+        this.router.events.subscribe(
+            (event: any) => {
+                if (event instanceof NavigationEnd) {
+                    if (event.url.includes('/warehouse-item-update/edit/')) {
+                        this.isEdit = true;
+                    } else {
+                        this.isEdit = false;
+                    }
+                }
+            }
+        );
 
         this._fileManagerService.onFileSelected
             .pipe(takeUntil(this._unsubscribeAll))
@@ -70,6 +81,7 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
                 this.selected = selected;
                 // this.pathArr = selected.location.split('>');
             });
+
     }
     /**
      * On destroy
@@ -93,21 +105,18 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 
-    composeDialog(): void
-    {
+    composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
             panelClass: 'mail-compose-dialog'
         });
         this.dialogRef.afterClosed()
             .subscribe(response => {
-                if ( !response )
-                {
+                if (!response) {
                     return;
                 }
                 const actionType: string = response[0];
                 const formData: FormGroup = response[1];
-                switch ( actionType )
-                {
+                switch (actionType) {
                     /**
                      * Send
                      */
@@ -125,5 +134,16 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
     }
     onActivate(e, scrollContainer) {
         scrollContainer.scrollTop = 0;
+    }
+    toggleSearch(): void {
+        this.searchEnabled = !this.searchEnabled;
+    }
+    cancelSearch(): void {
+        this.toggleSearch();
+        this.searchTerm = '';
+    }
+    filterBySearchTerm(term: string): void {
+        this._fileManagerService.searchTerm
+            .next(term);
     }
 }
