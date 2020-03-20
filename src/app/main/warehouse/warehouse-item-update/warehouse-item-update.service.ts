@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject, throwError, forkJoin, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { catchError, tap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { ItemDimension } from 'app/shared/class/item';
 
 @Injectable()
 export class WarehouseItemUpdateService implements Resolve<any>
@@ -95,8 +96,8 @@ export class WarehouseItemUpdateService implements Resolve<any>
             );
     }
 
-    editItemDimension(id: string): Observable<any> {
-        return this._httpClient.get<any>(this.apiURL + '/warehouse/itemdimension/' + id)
+    editItemDimension(itemdimension: ItemDimension): Observable<any> {
+        return this._httpClient.put<any>(this.apiURL + '/warehouse/itemdimension/' + itemdimension.ItemID, itemdimension)
             .pipe(
                 // tap(data => {
                 //     this.allitemlist.next(data);

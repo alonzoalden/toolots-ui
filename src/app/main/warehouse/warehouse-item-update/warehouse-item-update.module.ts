@@ -29,7 +29,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { WarehouseItemEditComponent } from './item-edit/item-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 const routes: Routes = [
@@ -88,6 +88,7 @@ const routes: Routes = [
         MatPaginatorModule,
         MatTabsModule,
         MatChipsModule,
+        MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule
     ],

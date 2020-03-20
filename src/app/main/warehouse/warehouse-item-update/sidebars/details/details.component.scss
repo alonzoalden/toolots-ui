@@ -4,21 +4,26 @@
     flex: 1 1 auto;
     height: 100%;
 
-    > .header {
+    .header {
         flex: 0 1 auto;
-        height: 160px;
-        min-height: 160px;
-        max-height: 160px;
+        height: 240px;
+        min-height: 240px;
+        max-height: 240px;
+        // flex: 1 0 auto;
+        .preview {
+            // height: 240px;
+            img {
+                max-width: 120px;
+            }
+        }
     }
 
-    > .content {
+    .content {
         flex: 1;
 
         .file-details {
 
-            .preview {
-                height: 240px;
-            }
+            
 
             .offline-switch {
                 padding-bottom: 16px;

@@ -1,0 +1,9 @@
+@import "src/@fuse/scss/fuse";
+#snackbar {
+    button {
+        color: #fff;
+    }
+    .message {
+        overflow: auto;
+    }
+}

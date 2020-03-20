@@ -5,6 +5,8 @@ import { WarehouseItemUpdateService } from '../warehouse-item-update.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ItemList, ItemDimension } from 'app/shared/class/item';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from 'app/shared/class/components/snackbar/snackbar.component';
 
 @Component({
     selector: 'mail-compose',
@@ -15,8 +17,9 @@ import { ItemList, ItemDimension } from 'app/shared/class/item';
 export class MailComposeDialogComponent implements OnInit, OnDestroy{
     showExtraToFields: boolean;
     composeForm: FormGroup;
-    selected: any;
+    selected: ItemList;
     private _unsubscribeAll: Subject<any>;
+    isSaving: boolean;
 
     /**
      * Constructor
@@ -27,8 +30,9 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
     constructor(
         private _formBuilder: FormBuilder,
         public matDialogRef: MatDialogRef<MailComposeDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: any,
         private warehouseItemUpdateService: WarehouseItemUpdateService,
+        private _snackBar: MatSnackBar,
+        @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
         // Set the defaults
         this._unsubscribeAll = new Subject();
@@ -46,6 +50,9 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
+                if (selected.Dimensions) {
+                    this.composeForm = this.createProductForm();
+                }
             });
     }
     ngOnDestroy(): void {
@@ -81,6 +88,10 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
             PackageHeight: [this.selected.Dimensions.PackageHeight],
             PackageWeight: [this.selected.Dimensions.PackageWeight],
             PackagingType: [this.selected.Dimensions.PackagingType],
+            PackageDimensionUOM: [this.selected.Dimensions.PackageDimensionUOM],
+            PackageWeightUOM: [this.selected.Dimensions.PackageWeightUOM],
+            ProductDimensionUOM: [this.selected.Dimensions.ProductDimensionUOM],
+            ProductWeightUOM: [this.selected.Dimensions.ProductWeightUOM],
             MaximumParcelUnit: [this.selected.Dimensions.MaximumParcelUnit],
         });
     }
@@ -90,5 +101,25 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
      */
     toggleExtraToFields(): void {
         this.showExtraToFields = !this.showExtraToFields;
+    }
+
+    save(): void {
+        this.isSaving = true;
+        this.warehouseItemUpdateService.editItemDimension(this.composeForm.value)
+            .subscribe(
+                dimensions => {
+                    this.selected.Dimensions = dimensions;
+                    this.warehouseItemUpdateService.onFileSelected.next(this.selected);
+                    this.matDialogRef.close(this.selected);
+                    this.isSaving = false;
+                },
+                error => {
+                    this._snackBar.openFromComponent(SnackbarComponent, {
+                        data: { type: 'error', message: error },
+                        duration: 0,
+                    });
+                    this.isSaving = false;
+                }
+            );
     }
 }

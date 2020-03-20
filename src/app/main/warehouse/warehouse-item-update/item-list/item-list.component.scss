@@ -3,18 +3,20 @@
 file-list {
     width: 100%;
    
-    .header {
+    .sub-header {
         position: relative;
-        flex: 1 0 auto;
-        height: 280px;
-        max-height: 280px;
+        //flex: 1 0 auto;
+        // height: 160px;
+        height: 240px;
+        min-height: 240px;
+        max-height: 240px;
         text-align: center;
         overflow: hidden;
+        width: 100%;
         mat-icon {
             font-size: 24px;
         }
         @include media-breakpoint('xs') {
-            height: 240px;
             padding: 16px;
         }
 

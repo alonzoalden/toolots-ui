@@ -8,8 +8,10 @@ import { WarehouseItemUpdateService } from '../../warehouse-item-update.service'
 import { Router, NavigationEnd } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
-import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
+import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-update/dialogs/compose.component';
 import { ItemList } from 'app/shared/class/item';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from 'app/shared/class/components/snackbar/snackbar.component';
 
 @Component({
     selector: 'file-manager-details-sidebar',
@@ -34,6 +36,7 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
         private _fileManagerService: WarehouseItemUpdateService,
         private router: Router,
         public _matDialog: MatDialog,
+        private _snackBar: MatSnackBar
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -68,7 +71,6 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
                 this.selected = selected;
             });
     }
-
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
             panelClass: 'mail-compose-dialog'
@@ -78,22 +80,9 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
                 if (!response) {
                     return;
                 }
-                const actionType: string = response[0];
-                const formData: FormGroup = response[1];
-                switch (actionType) {
-                    /**
-                     * Send
-                     */
-                    case 'send':
-                        console.log('new Mail', formData.getRawValue());
-                        break;
-                    /**
-                     * Delete
-                     */
-                    case 'delete':
-                        console.log('delete Mail');
-                        break;
-                }
+                this._snackBar.openFromComponent(SnackbarComponent, {
+                    data: { type: 'success', message: `${response.TPIN} has been successfully updated.` },
+                });
             });
     }
 

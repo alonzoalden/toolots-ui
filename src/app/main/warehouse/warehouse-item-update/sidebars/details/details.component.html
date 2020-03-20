@@ -6,19 +6,33 @@
             <mat-icon matTooltip="Edit">build</mat-icon>
         </button>
 
-        <button *ngIf="isEdit" mat-icon-button [routerLink]="['edit', selected.ItemID]">
+        <!-- <button *ngIf="isEdit" mat-icon-button [routerLink]="['edit', selected.ItemID]">
             <mat-icon matTooltip="Edit">save</mat-icon>
         </button>
 
         <button mat-icon-button aria-label="More" matTooltip="More">
             <mat-icon>more_vert</mat-icon>
-        </button>
+        </button> -->
     </div>
-
-    <div>
-        <div class="title mb-8">{{selected.name}}</div>
-        <div class="subtitle secondary-text">
-            <span>{{selected.ItemName}}</span>
+    
+    <div fxFlex fxLayout="row" fxLayoutAlign="start end">
+        <div class="preview file-icon" >
+            <ng-container *ngIf="selected.ItemID">
+                <!-- <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png"> -->
+                <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}" style="overflow: hidden;">
+                <!-- <img *ngIf="!selected.ImagePath" src="assets/images/toolotsbuilding.jpg">
+                <img *ngIf="selected.ImagePath" src="assets/images/avatar.jpg" title="{{selected.ImagePath}}"> -->
+            </ng-container>
+            <ng-container *ngIf="!selected.ItemID">
+                <span>No item selected</span>
+            </ng-container>
+        </div>
+        <div style="padding: 0 8px;">
+            <div class="title mb-8">{{selected.name}}</div>
+            <div class="subtitle secondary-text">
+                <span>{{selected.ItemName}}</span>
+            </div>
+            
         </div>
     </div>
 </div> 
@@ -27,51 +41,54 @@
 <!-- SIDEBAR CONTENT -->
 <div class="content p-24" fusePerfectScrollbar>
 
-    <div *ngIf="selected?.Dimensions" class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+    <div  class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
 
-        <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+        <!-- <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
             <ng-container *ngIf="selected.ItemID">
                 <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png">
                 <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}">
             </ng-container>
-        </div>
-        <hr>
+            <ng-container *ngIf="!selected.ItemID">
+                <span>No item selected</span>
+            </ng-container>
+        </div> 
+        <hr> -->
         <div class="title">Dimensions</div>
 
         <table>
             <tr class="Length">
                 <th>Length</th>
-                <td>{{selected.Dimensions.Length}}</td>
+                <td>{{selected.Dimensions?.Length}}</td>
             </tr>
 
             <tr class="Width">
                 <th>Width</th>
-                <td>{{selected.Dimensions.Width}}</td>
+                <td>{{selected.Dimensions?.Width}}</td>
             </tr>
 
             <tr class="Height">
                 <th>Height</th>
-                <td>{{selected.Dimensions.Height}}</td>
+                <td>{{selected.Dimensions?.Height}}</td>
             </tr>
 
             <tr class="Weight">
                 <th>Weight</th>
-                <td>{{selected.Dimensions.Weight}}</td>
+                <td>{{selected.Dimensions?.Weight}}</td>
             </tr>
 
             <tr class="PackageLength">
                 <th>Package Length</th>
-                <td>{{selected.Dimensions.PackageLength}}</td>
+                <td>{{selected.Dimensions?.PackageLength}}</td>
             </tr>
 
             <tr class="PackageWidth">
                 <th>Package Width</th>
-                <td>{{selected.Dimensions.PackageWidth}}</td>
+                <td>{{selected.Dimensions?.PackageWidth}}</td>
             </tr>
 
             <tr class="PackageHeight">
                 <th>Package Height</th>
-                <td>{{selected.Dimensions.PackageHeight}}</td>
+                <td>{{selected.Dimensions?.PackageHeight}}</td>
             </tr>
 
             <tr class="PackageWeight">
@@ -81,17 +98,17 @@
 
             <tr class="PackagingType">
                 <th>Packaging Type</th>
-                <td>{{selected.Dimensions.PackagingType}}</td>
+                <td>{{selected.Dimensions?.PackagingType}}</td>
             </tr>
 
             <tr class="UnitPerPackage">
                 <th>Unit Per Package</th>
-                <td>{{selected.Dimensions.UnitPerPackage}}</td>
+                <td>{{selected.Dimensions?.UnitPerPackage}}</td>
             </tr>
 
             <tr class="MaximumParcelUnit">
                 <th>Maximum Parcel Unit</th>
-                <td>{{selected.Dimensions.MaximumParcelUnit}}</td>
+                <td>{{selected.Dimensions?.MaximumParcelUnit}}</td>
             </tr>
 
         </table>

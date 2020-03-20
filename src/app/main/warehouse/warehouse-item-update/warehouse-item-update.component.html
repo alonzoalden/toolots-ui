@@ -8,8 +8,66 @@
 
     <!-- CENTER -->
     <div class="center" fxFlex>
-
         
+        <!-- <div class="header accent p-24 h-160" fxLayout="column" fxLayoutAlign="end bottom"> -->
+
+            <!-- TOOLBAR -->
+            <!-- <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+
+                <div class="right-side" fxLayout="row">
+                    <button mat-icon-button aria-label="Search" matTooltip="Search">
+                        <ng-container *ngIf=!isEdit>
+                            
+                            <button *ngIf="!searchEnabled" (click)="searchEnabled = !searchEnabled" mat-icon-button aria-label="Search" matTooltip="Search">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                            <div *ngIf="searchEnabled" class="search-wrapper mx-32 mx-md-0">
+                                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon>search</mat-icon>
+                                    <input matInput placeholder="Enter a keyword..."
+                                        [(ngModel)]="searchTerm"
+                                        (input)="filterBySearchTerm(searchTerm)">
+                                </div>
+                            </div>
+                             -->
+                            <!-- <mat-form-field *ngIf="searchEnabled" appearance="outline" floatLabel="always" >
+                                <mat-label>Search for a course</mat-label>
+                                <div fxFlex fxLayout="row" >
+                                    <input matInput placeholder="Enter a keyword..."
+                                        [(ngModel)]="searchTerm"
+                                        (input)="filterBySearchTerm(searchTerm)">
+                                    
+                                    <mat-icon style="cursor: pointer;"(click)="cancelSearch()">cancel</mat-icon>
+                                </div>
+                            </mat-form-field> -->
+                        <!-- </ng-container>
+
+                        <mat-icon *ngIf=isEdit routerLink="/warehouse-item-update">arrow_back</mat-icon>
+
+                    </button>
+                </div>
+            </div> -->
+            <!-- / TOOLBAR -->
+
+            <!-- BREADCRUMB -->
+            <!-- <div class="breadcrumb text-truncate h1 pl-72" fxLayout="row" fxLayoutAlign="start center"
+                 [@animate]="{value:'*',params:{x:'50px'}}">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <span>Item Update</span>
+                </div>
+            </div> -->
+            <!-- / BREADCRUMB -->
+
+
+        <!-- </div> -->
+        <!-- <div class="toolbar w-100-p" >
+            <mat-form-field appearance="fill" floatLabel="always" class="w-100-p">
+                <mat-label>Filter</mat-label>
+                <input matInput placeholder="Enter a keyword..."
+                >
+            </mat-form-field>
+        </div> -->
+
         <!-- CONTENT -->
         <div class="content" #scrollContainer>
             <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet>
@@ -19,9 +77,15 @@
     </div>
     <!-- / CENTER -->
 
-    <!-- SIDEBAR *ngIf="selected.ItemID"-->
+    <!-- SIDEBAR    *ngIf="selected.ItemID"-->
     <fuse-sidebar  class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right"
                   lockedOpen="gt-md">
         <file-manager-details-sidebar></file-manager-details-sidebar>
     </fuse-sidebar>
+
+    <!-- <div class="mobile-details">
+        <file-manager-details-sidebar></file-manager-details-sidebar>
+    </div> -->
+    <!-- / SIDEBAR -->
+
 </div>

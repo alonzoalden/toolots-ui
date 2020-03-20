@@ -27,9 +27,9 @@ export class ItemDimension {
 
         public ImagePath: string,
 
-        public Width: string,
-        public Height: string,
-        public Length: string,
+        public Width: number,
+        public Height: number,
+        public Length: number,
         public ProductDimensionUOM: string,
         public Weight: number,
         public ProductWeightUOM: string,
@@ -40,7 +40,7 @@ export class ItemDimension {
         public PackageDimensionUOM: string,
         public PackageWeight: number,
         public PackageWeightUOM: string,
-        public PackagingType: string,
+        public PackagingType: number,
         public UnitPerPackage: number,
         public MaximumParcelUnit: number
     ) {}

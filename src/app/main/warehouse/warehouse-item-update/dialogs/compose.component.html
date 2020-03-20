@@ -79,22 +79,16 @@
         <div>
             <button mat-raised-button
                     color="accent"
-                    (click)="matDialogRef.close(['send',composeForm])"
+                    (click)="save()"
                     class="save-button"
                     [disabled]="composeForm.invalid"
                     aria-label="SAVE">
-                SEND
-            </button>
-
-            <button mat-icon-button matTooltip="Attach a file">
-                <mat-icon>attach_file</mat-icon>
+                
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isSaving">SAVE</span>
+                    <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                </div>
             </button>
         </div>
-
-        <button mat-icon-button (click)="matDialogRef.close(['delete',composeForm])"
-                aria-label="Delete"
-                matTooltip="Delete">
-            <mat-icon>delete</mat-icon>
-        </button>
     </div>
 </div>

@@ -1,0 +1,9 @@
+<div id="snackbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="message">
+        {{ data.message }}
+    </div>
+
+    <button mat-button (click)="snackRef.dismiss()">
+        OK
+    </button>
+</div>
