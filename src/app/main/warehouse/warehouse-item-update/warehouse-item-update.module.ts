@@ -7,6 +7,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatRadioModule } from '@angular/material/radio';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
 
@@ -89,6 +90,7 @@ const routes: Routes = [
         MatTabsModule,
         MatChipsModule,
         MatSnackBarModule,
+        MatRadioModule,
         FuseSharedModule,
         FuseSidebarModule
     ],

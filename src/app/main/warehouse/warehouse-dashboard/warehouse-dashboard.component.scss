@@ -1,6 +1,11 @@
 @import "src/@fuse/scss/fuse";
 
 #academy-courses {
+    .toolbar {
+        .right-side {
+            cursor: pointer;
+        }
+    }
     .header {
         position: relative;
         flex: 1 0 auto;
@@ -138,10 +143,6 @@
                     border-radius: 4px;
                     overflow: hidden;
                     transition: box-shadow 200ms ease-in-out;
-                    // @include mat-elevation(1);
-                    &:hover {
-                        // @include mat-elevation(7);
-                    }
 
                     .header {
                         padding: 16px 24px;
@@ -195,6 +196,10 @@
                             font-size: 13px;
                             font-weight: 600;
                             margin-top: 4px;
+                        }
+                        button {
+                            width: 90px;
+                            height: 90px;
                         }
                     }
 

@@ -13,7 +13,27 @@
     .mat-dialog-container {
         padding: 0;
 
+        .dialog-content-wrapper {
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+    
+            .save-button {
+                width: 69px;
+                height: 36px;
+            }
+            .photo-header {
+                background-color: #fff;
+                background-size: cover !important;
+                background-position: center !important;
+                background-repeat: no-repeat !important;
+            }
+        }
+
         .compose-form {
+            .mat-form-field-appearance-outline .mat-form-field-suffix {
+                top: 0;
+            }
 
             .mat-form-field {
                 width: 100%;
@@ -43,17 +63,6 @@
                     }
                 }
             }
-        }
-    }
-
-    .dialog-content-wrapper {
-        max-height: 85vh;
-        display: flex;
-        flex-direction: column;
-
-        .save-button {
-            width: 69px;
-            height: 36px;
         }
     }
 }

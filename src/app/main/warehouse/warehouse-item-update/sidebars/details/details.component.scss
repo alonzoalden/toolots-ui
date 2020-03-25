@@ -9,9 +9,17 @@
         height: 240px;
         min-height: 240px;
         max-height: 240px;
-        // flex: 1 0 auto;
+        
+        .header-content {
+            height: 100%;
+            flex: 1;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            display: flex;
+            flex-direction: column;
+        }
         .preview {
-            // height: 240px;
             img {
                 max-width: 120px;
             }

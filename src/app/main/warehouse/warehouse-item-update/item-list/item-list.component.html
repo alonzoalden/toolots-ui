@@ -1,36 +1,31 @@
-<div id="product" style="height: 100%; max-height: 100%; overflow: hidden;">
-    <!-- TOP BACKGROUND -->
-    <!-- / TOP BACKGROUND -->
-
-    <!-- CENTER -->
-    <div style="padding: 0; flex-direction: column; height: 100%; display: flex;">
-        <div class="sub-header accent " fxLayout="column" fxLayoutAlign="center start">
-            
-            <div class="breadcrumb text-truncate h1  p24" style="padding: 0 70px;flex-shrink: 0"
-                 [@animate]="{value:'*',params:{x:'50px'}}">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <h1>Item Update</h1>
-                </div>
+<div class="list-container">
+        
+    <!-- HEADER  -->
+    <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+        <div class="breadcrumb text-truncate h1 p24" style="padding: 0 70px;flex-shrink: 0"
+                [@animate]="{value:'*',params:{x:'50px'}}">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <h1>Item Update</h1>
             </div>
-            <!-- <div style="height: 30px;"></div> -->
-            <div style="display: flex; padding: 0 70px; width: 100%;">
-                <div class="search-wrapper" style="overflow: auto; display: flex; flex: 6;">
-                    <div class="search" fxLayout="row" fxLayoutAlign="start center" style="flex: 6">
-                        <mat-icon class="secondary-text" style="color: #444 !important;">search</mat-icon>
-                        <input [disabled]="isLoading" (keyup)="applyFilter(searchTerm)" [(ngModel)]="searchTerm" [placeholder]="isLoading ? 'Please wait...' : 'Search Item'" fxFlex>
-                        <button mat-icon-button (click)="searchTerm = '';applyFilter(searchTerm)">
-                            <mat-icon style="color: #444 !important;">clear</mat-icon>
-                        </button>
-                    </div>
-                </div>
-                <!-- <div style="flex: 1">
-                    <button mat-fab style="background-color: #fff; color: #444;" (click)="applyFilter(searchTerm)">
-                        FIND
-                    </button>
-                </div> -->
-            </div>
-            
         </div>
+        <!-- SEARCH BAR  -->
+        <div class="action-container">
+            <div class="search-wrapper" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                <div class="search" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="secondary-text">search</mat-icon>
+                    <input [disabled]="isLoading" (keyup)="applyFilter(searchTerm)" [(ngModel)]="searchTerm"
+                        [placeholder]="isLoading ? 'Please wait...' : 'Search Item'">
+                    <button mat-icon-button (click)="searchTerm = ''; applyFilter(searchTerm)">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hero-text">
+            <mat-icon class="hero-icon">build</mat-icon>
+        </div>
+    </div>
+    <!-- /HEADER  -->
     
     <div *ngIf="isLoading" style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
         <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
@@ -110,10 +105,8 @@
         >
         </mat-row>
     </mat-table>
-
-
     <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"
-        [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"
+        [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}"
         style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
         Please search for an item.
     </div>
@@ -123,5 +116,4 @@
         No items found.
     </div>
     <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
-    </div>
 </div>

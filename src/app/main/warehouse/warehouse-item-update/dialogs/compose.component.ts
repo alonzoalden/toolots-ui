@@ -21,6 +21,20 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
     private _unsubscribeAll: Subject<any>;
     isSaving: boolean;
 
+    objectKeys = Object.keys;
+    dictPackingType = {
+        4: 'LTL',
+        5: 'Small Parcel',
+    };
+    units = [
+        'IN',
+        'CM'
+    ];
+    weightUnits = [
+        'LB',
+        'KG'
+    ];
+
     /**
      * Constructor
      *
@@ -42,7 +56,7 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
                 null, null, null, null, null, null, null, null)
             );
         this.composeForm = this.createProductForm();
-        this.showExtraToFields = false;
+
     }
 
     ngOnInit(): void {
@@ -65,11 +79,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Create compose form
-     *
-     * @returns {FormGroup}
-     */
     createProductForm(): FormGroup {
         return this._formBuilder.group({
             ItemID: [this.selected.ItemID],
@@ -111,7 +120,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
                     this.selected.Dimensions = dimensions;
                     this.warehouseItemUpdateService.onFileSelected.next(this.selected);
                     this.matDialogRef.close(this.selected);
-                    this.isSaving = false;
                 },
                 error => {
                     this._snackBar.openFromComponent(SnackbarComponent, {

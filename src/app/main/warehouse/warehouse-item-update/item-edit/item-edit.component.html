@@ -10,8 +10,8 @@
         <!-- HEADER -->
         <!-- <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center"> -->
 
-            <!-- APP TITLE -->
-            <!-- <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- APP TITLE -->
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/e-commerce/products'">
                     <mat-icon>arrow_back</mat-icon>
@@ -34,9 +34,9 @@
                     </div>
                 </div>
             </div> -->
-            <!-- / APP TITLE -->
+        <!-- / APP TITLE -->
 
-            <!-- <button mat-raised-button
+        <!-- <button mat-raised-button
                     class="save-product-button"
                     [disabled]="productForm.invalid"
                     *ngIf="pageType ==='new'" >
@@ -59,116 +59,49 @@
             <div class="content">
 
                 <form name="productForm" [formGroup]="productForm" class="product w-100-p" fxLayout="column" fxFlex>
+                    <div class="tab-content p-24" fusePerfectScrollbar>
 
-                    <!-- <mat-tab-group>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Item Name</mat-label>
+                            <input matInput placeholder="Item Name" name="ItemName" formControlName="ItemName" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Vendor SKU</mat-label>
+                            <input matInput placeholder="VendorSKU" name="VendorSKU" formControlName="VendorSKU"
+                                rows="5">
+                        </mat-form-field>
 
-                        <mat-tab label="Basic Info"> -->
-
-                            <div class="tab-content p-24" fusePerfectScrollbar>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Item Name</mat-label>
-                                    <input matInput placeholder="Item Name"
-                                           name="ItemName"
-                                           formControlName="ItemName"
-                                           required>
-                                </mat-form-field>
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Vendor SKU</mat-label>
-                                    <input matInput placeholder="VendorSKU"
-                                              name="VendorSKU"
-                                              formControlName="VendorSKU"
-                                              rows="5">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>FOB Price</mat-label>
-                                    <input matInput placeholder="FOB Price"
-                                              name="FOBPrice"
-                                              formControlName="FOBPrice"
-                                              rows="5"
-                                              type="number">
-                                </mat-form-field>
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Description</mat-label>
-                                    <textarea matInput placeholder="Item Description"
-                                              name="Description"
-                                              formControlName="Description"
-                                              rows="5">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>FOB Price</mat-label>
+                            <input matInput placeholder="FOB Price" name="FOBPrice" formControlName="FOBPrice" rows="5"
+                                type="number">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput placeholder="Item Description" name="Description"
+                                formControlName="Description" rows="5">
                                     </textarea>
-                                </mat-form-field>
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Image</mat-label>
-                                    <div fxFlex fxLayout="row">
-                                        <div class="file-uploader">
-                                            <input hidden type="file" #fileInput/>
-                                            <button mat-stroked-button
-                                                    color="warn"
-                                                    class="add-file-button"
-                                                    (click)="fileInput.click()"
-                                                    aria-label="Add file"
-                                                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
-                                                <mat-icon>add</mat-icon>
-                                            </button>
-                                        </div>
-                                        <input matInput placeholder="Image"
-                                                name="ImagePath"
-                                                formControlName="ImagePath" 
-                                                style="display: none;">
-                                        <div>
-                                            <img *ngIf="productForm.value.ImagePath" src="{{fileURL}} + ImagePath">
-                                        </div>
-                                    </div>
-                                </mat-form-field>
-                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Image</mat-label>
-                                    <input matInput placeholder="Image Path"
-                                              name="ImagePath"
-                                              formControlName="ImagePath"
-                                              rows="5">
-                                </mat-form-field> -->
-
-                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-
-                                    <mat-label>Categories</mat-label>
-
-                                     <mat-chip-list #categoryList name="categories" formControlName="categories">
-
-                                        <mat-chip *ngFor="let category of product.categories"
-                                                  [removable]="true" (removed)="product.removeCategory(category)">
-                                            {{category}}
-                                            <mat-icon matChipRemove>cancel</mat-icon>
-                                        </mat-chip>
-
-                                        <input [matChipInputFor]="categoryList"
-                                               [matChipInputAddOnBlur]="true"
-                                               (matChipInputTokenEnd)="product.addCategory($event)"/>
-
-                                    </mat-chip-list> 
-
-                                </mat-form-field> -->
-
-                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-
-                                    <mat-label>Tags</mat-label>
-
-                                    <mat-chip-list #tagList name="tags" formControlName="tags">
-
-                                        <mat-chip *ngFor="let tag of product.tags"
-                                                  [removable]="true" (removed)="product.removeTag(tag)">
-                                            {{tag}}
-                                            <mat-icon matChipRemove>cancel</mat-icon>
-                                        </mat-chip>
-
-                                        <input [matChipInputFor]="tagList"
-                                               [matChipInputAddOnBlur]="true"
-                                               (matChipInputTokenEnd)="product.addTag($event)"/>
-
-                                    </mat-chip-list>
-                                </mat-form-field> -->
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Image</mat-label>
+                            <div fxFlex fxLayout="row">
+                                <div class="file-uploader">
+                                    <input hidden type="file" #fileInput />
+                                    <button mat-stroked-button color="warn" class="add-file-button"
+                                        (click)="fileInput.click()" aria-label="Add file"
+                                        [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                                <input matInput placeholder="Image" name="ImagePath" formControlName="ImagePath"
+                                    style="display: none;">
+                                <div>
+                                    <img *ngIf="productForm.value.ImagePath" src="{{fileURL}} + ImagePath">
+                                </div>
                             </div>
-                        <!-- </mat-tab>
-                    </mat-tab-group> -->
+                        </mat-form-field>
+                    </div>
+
                 </form>
             </div>
             <!-- / CONTENT -->

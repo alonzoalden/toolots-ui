@@ -23,9 +23,6 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     searchTerm: string;
     searchEnabled: boolean;
 
-    // but: HTMLElement;
-    // @ViewChild('but', { read: ElementRef }) but: ElementRef;
-
     @ViewChild('matRipple') button: MatButton;
 
 
@@ -70,17 +67,6 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
                 this.filteredCourses = this.coursesFilteredByCategory = this.courses = courses;
             });
     }
-    activateButtonRipple(item) {
-        item.ripple.launch({ centered: true });
-        setTimeout(() => {
-            this.button._elementRef.nativeElement.click();
-        }, 0);
-    }
-
-    goto(url) {
-        // console.log(this.button);
-        this.router.navigate([url]);
-    }
     /**
      * On destroy
      */
@@ -102,9 +88,15 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
         this.searchTerm = '';
         this.filterCoursesByTerm();
     }
-    /**
-     * Filter courses by category
-     */
+    activateButtonRipple(item) {
+        item.ripple.launch({ centered: true });
+        setTimeout(() => {
+            this.button._elementRef.nativeElement.click();
+        }, 0);
+    }
+    goto(url) {
+        this.router.navigate([url]);
+    }
     filterCoursesByCategory(): void {
         // Filter
         if (this.currentCategory === 'all') {
@@ -124,9 +116,6 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
         this.filterCoursesByTerm();
     }
 
-    /**
-     * Filter courses by term
-     */
     filterCoursesByTerm(): void {
         const searchTerm = this.searchTerm.toLowerCase();
 

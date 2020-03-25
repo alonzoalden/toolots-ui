@@ -1,104 +1,94 @@
 <!-- SIDEBAR HEADER -->
-<div class="header accent p-24" style="border-left: 0px" fxLayout="column" fxLayoutAlign="space-between">
-    <div *ngIf="selected.ItemID" class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+<div class="header accent" 
+    fxLayout="column" fxLayoutAlign="space-between">
+    <div class="header-content" [ngStyle]="{'background': selected.ItemID && 'url(assets/images/tool1.jpg)'}">
+        <div class="toolbar p-16" fxLayout="row" fxLayoutAlign="end center">
+            <button *ngIf="selected.ItemID" (click)="composeDialog()" mat-icon-button style="background-color: #fff;">
+                <mat-icon style="color: black">build</mat-icon>
+            </button>
+        </div>
+        <div *ngIf="!selected.ItemID" fxFlex fxLayout="row" fxLayoutAlign="center center">
+            <span>No item selected</span>
+        </div>
 
-        <button (click)="composeDialog()" *ngIf="!isEdit" mat-icon-button>
-            <mat-icon matTooltip="Edit">build</mat-icon>
-        </button>
-
-        <!-- <button *ngIf="isEdit" mat-icon-button [routerLink]="['edit', selected.ItemID]">
-            <mat-icon matTooltip="Edit">save</mat-icon>
-        </button>
-
-        <button mat-icon-button aria-label="More" matTooltip="More">
-            <mat-icon>more_vert</mat-icon>
-        </button> -->
-    </div>
-    
-    <div fxFlex fxLayout="row" fxLayoutAlign="start end">
-        <div class="preview file-icon" >
-            <ng-container *ngIf="selected.ItemID">
-                <!-- <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png"> -->
-                <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}" style="overflow: hidden;">
-                <!-- <img *ngIf="!selected.ImagePath" src="assets/images/toolotsbuilding.jpg">
-                <img *ngIf="selected.ImagePath" src="assets/images/avatar.jpg" title="{{selected.ImagePath}}"> -->
-            </ng-container>
+        <div *ngIf="selected.ItemID" class="mat-elevation-z-1 preview file-icon w-100-p"
+            style="height: 100%; flex: 1; display: flex; align-items: flex-end; justify-content: center; padding: 0 16px;">
+            <div *ngIf="!selected.ImagePath" 
+                style="width: 100%; border-radius: 8px 8px 0 0; padding: 12px; background-color: #f5f5f5;">
+                <div style="width: 100%;" class="subtitle secondary-text">
+                    <span style="color: black;">{{selected.ItemName}}</span>
+                </div>
+            </div>
             <ng-container *ngIf="!selected.ItemID">
                 <span>No item selected</span>
             </ng-container>
         </div>
-        <div style="padding: 0 8px;">
-            <div class="title mb-8">{{selected.name}}</div>
+        <!-- <div *ngIf="selected.ItemID" style="border-radius: 8px; padding: 8px; flex: 0; background-color: rgba(255, 255, 255, 0.60);">
             <div class="subtitle secondary-text">
-                <span>{{selected.ItemName}}</span>
+                <span style="color: black;">{{selected.ItemName}}</span>
             </div>
-            
-        </div>
+        </div> -->
     </div>
 </div> 
 <!-- / SIDEBAR HEADER -->
 
+
 <!-- SIDEBAR CONTENT -->
-<div class="content p-24" fusePerfectScrollbar>
-
-    <div  class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
-
-        <!-- <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
-            <ng-container *ngIf="selected.ItemID">
-                <img *ngIf="!selected.ImagePath" src="assets/images/no-image-icon.png">
-                <img *ngIf="selected.ImagePath" src="{{selected.ImagePath}}" title="{{selected.ImagePath}}">
-            </ng-container>
-            <ng-container *ngIf="!selected.ItemID">
-                <span>No item selected</span>
-            </ng-container>
-        </div> 
-        <hr> -->
+<div class="content p-24" fusePerfectScrollbar style="padding-top: 12px;">
+    <div *ngIf="selected.ItemID"
+        style="flex: 0; padding-bottom: 8px;">
+        <div style="padding-bottom: 8px;" class="subtitle secondary-text" *ngIf="selected.ImagePath">
+            <span style="color: black;">{{selected.ItemName}}</span>
+            <hr>
+        </div>
+    </div>
+    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
         <div class="title">Dimensions</div>
 
         <table>
             <tr class="Length">
                 <th>Length</th>
-                <td>{{selected.Dimensions?.Length}}</td>
+                <td>{{selected.Dimensions?.Length}} {{selected.Dimensions?.ProductDimensionUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="Width">
                 <th>Width</th>
-                <td>{{selected.Dimensions?.Width}}</td>
+                <td>{{selected.Dimensions?.Width}} {{selected.Dimensions?.ProductDimensionUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="Height">
                 <th>Height</th>
-                <td>{{selected.Dimensions?.Height}}</td>
+                <td>{{selected.Dimensions?.Height}} {{selected.Dimensions?.ProductDimensionUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="Weight">
                 <th>Weight</th>
-                <td>{{selected.Dimensions?.Weight}}</td>
+                <td>{{selected.Dimensions?.Weight}} {{selected.Dimensions?.ProductWeightUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="PackageLength">
                 <th>Package Length</th>
-                <td>{{selected.Dimensions?.PackageLength}}</td>
+                <td>{{selected.Dimensions?.PackageLength}} {{selected.Dimensions?.PackageDimensionUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="PackageWidth">
                 <th>Package Width</th>
-                <td>{{selected.Dimensions?.PackageWidth}}</td>
+                <td>{{selected.Dimensions?.PackageWidth}} {{selected.Dimensions?.PackageDimensionUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="PackageHeight">
                 <th>Package Height</th>
-                <td>{{selected.Dimensions?.PackageHeight}}</td>
+                <td>{{selected.Dimensions?.PackageHeight}} {{selected.Dimensions?.PackageDimensionUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="PackageWeight">
                 <th>Package Weight</th>
-                <td>{{selected.PackageWeight}}</td>
+                <td>{{selected.Dimensions?.PackageWeight}} {{selected.Dimensions?.PackageWeightUOM.toLowerCase()}}</td>
             </tr>
 
             <tr class="PackagingType">
                 <th>Packaging Type</th>
-                <td>{{selected.Dimensions?.PackagingType}}</td>
+                <td>{{dictPackingType[selected.Dimensions?.PackagingType]}}</td>
             </tr>
 
             <tr class="UnitPerPackage">

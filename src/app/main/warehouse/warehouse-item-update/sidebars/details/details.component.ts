@@ -23,7 +23,12 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
     selected: any;
     isEdit: boolean;
     dialogRef: any;
-
+    units: any;
+    weightUnits: any;
+    dictPackingType = {
+        4: 'LTL',
+        5: 'Small Parcel',
+    };
     // Private
     private _unsubscribeAll: Subject<any>;
 
