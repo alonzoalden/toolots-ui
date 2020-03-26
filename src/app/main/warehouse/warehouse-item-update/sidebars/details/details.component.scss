@@ -28,7 +28,10 @@
 
     .content {
         flex: 1;
-
+        ::ng-deep.mat-tab-label {
+            min-width: 0 !important;
+            flex: 1;
+        }
         .file-details {
 
             

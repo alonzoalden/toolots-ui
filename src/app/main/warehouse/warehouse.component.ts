@@ -10,6 +10,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
+import { WarehouseItemUpdateService } from './warehouse-item-update/warehouse-item-update.service';
 
 @Component({
     selector: 'app-warehouse',
@@ -35,7 +36,8 @@ export class WarehouseComponent implements OnInit, OnDestroy {
     constructor(
         private _warehouseService: WarehouseService,
         private _fuseSidebarService: FuseSidebarService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        private warehouseItemUpdateService: WarehouseItemUpdateService,
     )
     {
         // Set the private defaults
@@ -50,6 +52,8 @@ export class WarehouseComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        // this.warehouseItemUpdateService.getAllItemList1();
+
         this._warehouseService.onFileSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {

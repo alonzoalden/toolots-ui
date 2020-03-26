@@ -5,7 +5,7 @@ export const locale = {
             'APPLICATIONS': 'Applications',
             'GADGETS': 'Gadgets',
             'WAREHOUSE': 'Warehouse',
-            'ITEMUPDATE': 'Item Update',
+            'ITEMUPDATE': 'Item Management',
             'SAMPLE'        : {
                 'TITLE': 'Sample',
                 'BADGE': '25'

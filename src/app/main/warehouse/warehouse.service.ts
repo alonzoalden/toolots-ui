@@ -70,8 +70,7 @@ export class WarehouseService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getCategories(): Promise<any>
-    {
+    getCategories(): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get('api/academy-categories')
                 .subscribe((response: any) => {
@@ -86,8 +85,7 @@ export class WarehouseService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getCourses(): Promise<any>
-    {
+    getCourses(): Promise<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get('api/academy-courses')
                 .subscribe((response: any) => {

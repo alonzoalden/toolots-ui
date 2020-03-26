@@ -13,7 +13,7 @@
 
         &.details-sidebar {
             @include media-breakpoint('gt-md') {
-                z-index: 0;
+                //z-index: 0;
             }
         }
     }

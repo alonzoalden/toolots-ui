@@ -2,10 +2,40 @@
 <div class="header accent" 
     fxLayout="column" fxLayoutAlign="space-between">
     <div class="header-content" [ngStyle]="{'background': selected.ItemID && 'url(assets/images/tool1.jpg)'}">
-        <div class="toolbar p-16" fxLayout="row" fxLayoutAlign="end center">
-            <button *ngIf="selected.ItemID" (click)="composeDialog()" mat-icon-button style="background-color: #fff;">
-                <mat-icon style="color: black">build</mat-icon>
+        <div class="toolbar p-16" fxLayout="row" fxLayoutAlign="space-between">
+            <button *ngIf="selected.ItemID" mat-icon-button
+                [matMenuTriggerFor]="moreMenu" aria-label="more"
+                style="background-color: #fff;">
+                <mat-icon style="color: black;">more_vert</mat-icon>
             </button>
+
+            <mat-menu #moreMenu="matMenu">
+                <button mat-menu-item matTooltip="Edit Dimensions" (click)="composeDialog()">
+                    <mat-icon>build</mat-icon> Edit Dimensions
+                </button>
+                <hr>
+                <button mat-menu-item matTooltip="View Inventory Detail" (click)="composeDialogInventoryDetails()">
+                    <mat-icon>storage</mat-icon> View Inventory Detail
+                </button>
+                <button mat-menu-item matTooltip="View Carton Information" (click)="composeDialogCartons()">
+                    <mat-icon>info</mat-icon> View Carton Information
+                </button>
+                <button mat-menu-item matTooltip="View Potential Location" (click)="composeDialogPotentialLocations()">
+                    <mat-icon>location_on</mat-icon> View Potential Location
+                </button>
+                <hr>
+                <button mat-menu-item>
+                    <mat-icon>print</mat-icon> Print Label
+                </button>
+            </mat-menu>
+            <!-- fxShow fxHide.gt-md -->
+            <button *ngIf="selected.ItemID" 
+                aria-label="close" mat-icon-button (click)="closeSidebar()"
+                style="background-color: #fff;">
+                <mat-icon style="color: black;">close</mat-icon>
+            </button>
+
+            
         </div>
         <div *ngIf="!selected.ItemID" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span>No item selected</span>
@@ -34,91 +64,143 @@
 
 
 <!-- SIDEBAR CONTENT -->
-<div class="content p-24" fusePerfectScrollbar style="padding-top: 12px;">
-    <div *ngIf="selected.ItemID"
-        style="flex: 0; padding-bottom: 8px;">
-        <div style="padding-bottom: 8px;" class="subtitle secondary-text" *ngIf="selected.ImagePath">
-            <span style="color: black;">{{selected.ItemName}}</span>
-            <hr>
+<div class="content" fxLayout="column" fusePerfectScrollbar>
+    <div *ngIf="selected.ItemID" style="flex-shrink: 0;">
+        <div class="p-24 subtitle secondary-text" *ngIf="selected.ImagePath">
+            <span style="color: black; font-weight: 600;">{{selected.ItemName}}</span>
         </div>
     </div>
-    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
-        <div class="title">Dimensions</div>
+    <mat-tab-group  style="flex-grow: 1; overflow: auto;">
+        <mat-tab label="Dimensions" [disabled]="!selected.ItemID">
+            <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+                <!-- <div class="title">Dimensions</div> -->
+                <table>
+                    <tr class="Length">
+                        <th>Length</th>
+                        <td>{{selected.Data?.Length}} {{selected.Data?.ProductDimensionUOM.toLowerCase()}}</td>
+                    </tr>
 
-        <table>
-            <tr class="Length">
-                <th>Length</th>
-                <td>{{selected.Dimensions?.Length}} {{selected.Dimensions?.ProductDimensionUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="Width">
+                        <th>Width</th>
+                        <td>{{selected.Data?.Width}} {{selected.Data?.ProductDimensionUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="Width">
-                <th>Width</th>
-                <td>{{selected.Dimensions?.Width}} {{selected.Dimensions?.ProductDimensionUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="Height">
+                        <th>Height</th>
+                        <td>{{selected.Data?.Height}} {{selected.Data?.ProductDimensionUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="Height">
-                <th>Height</th>
-                <td>{{selected.Dimensions?.Height}} {{selected.Dimensions?.ProductDimensionUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="Weight">
+                        <th>Weight</th>
+                        <td>{{selected.Data?.Weight}} {{selected.Data?.ProductWeightUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="Weight">
-                <th>Weight</th>
-                <td>{{selected.Dimensions?.Weight}} {{selected.Dimensions?.ProductWeightUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="PackageLength">
+                        <th>Package Length</th>
+                        <td>{{selected.Data?.PackageLength}} {{selected.Data?.PackageDimensionUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="PackageLength">
-                <th>Package Length</th>
-                <td>{{selected.Dimensions?.PackageLength}} {{selected.Dimensions?.PackageDimensionUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="PackageWidth">
+                        <th>Package Width</th>
+                        <td>{{selected.Data?.PackageWidth}} {{selected.Data?.PackageDimensionUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="PackageWidth">
-                <th>Package Width</th>
-                <td>{{selected.Dimensions?.PackageWidth}} {{selected.Dimensions?.PackageDimensionUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="PackageHeight">
+                        <th>Package Height</th>
+                        <td>{{selected.Data?.PackageHeight}} {{selected.Data?.PackageDimensionUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="PackageHeight">
-                <th>Package Height</th>
-                <td>{{selected.Dimensions?.PackageHeight}} {{selected.Dimensions?.PackageDimensionUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="PackageWeight">
+                        <th>Package Weight</th>
+                        <td>{{selected.Data?.PackageWeight}} {{selected.Data?.PackageWeightUOM.toLowerCase()}}</td>
+                    </tr>
 
-            <tr class="PackageWeight">
-                <th>Package Weight</th>
-                <td>{{selected.Dimensions?.PackageWeight}} {{selected.Dimensions?.PackageWeightUOM.toLowerCase()}}</td>
-            </tr>
+                    <tr class="PackagingType">
+                        <th>Packaging Type</th>
+                        <td>{{dictPackingType[selected.Data?.PackagingType]}}</td>
+                    </tr>
 
-            <tr class="PackagingType">
-                <th>Packaging Type</th>
-                <td>{{dictPackingType[selected.Dimensions?.PackagingType]}}</td>
-            </tr>
+                    <tr class="UnitPerPackage">
+                        <th>Unit Per Package</th>
+                        <td>{{selected.Data?.UnitPerPackage}}</td>
+                    </tr>
 
-            <tr class="UnitPerPackage">
-                <th>Unit Per Package</th>
-                <td>{{selected.Dimensions?.UnitPerPackage}}</td>
-            </tr>
+                    <tr class="MaximumParcelUnit">
+                        <th>Maximum Parcel Unit</th>
+                        <td>{{selected.Data?.MaximumParcelUnit}}</td>
+                    </tr>
 
-            <tr class="MaximumParcelUnit">
-                <th>Maximum Parcel Unit</th>
-                <td>{{selected.Dimensions?.MaximumParcelUnit}}</td>
-            </tr>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab label="General Info" [disabled]="!selected.ItemID">
+            <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+                <table>
+                    <tr class="owner">
+                        <th>TPIN</th>
+                        <td>{{selected.TPIN}}</td>
+                    </tr>
+                    <tr class="owner">
+                        <th>Vendor SKU</th>
+                        <td>{{selected.VendorSKU}}</td>
+                    </tr>
+                    <tr class="owner">
+                        <th>Description</th>
+                        <td>{{selected.Description}}</td>
+                    </tr>
+                </table>
+            </div>
+        </mat-tab>
+        <!-- <mat-tab label="Carton Info">
+            <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+                <mat-table *ngIf="selected.Data"
+                    #table [dataSource]="dataSource1" [@animateStagger]="{value:'50'}" matSort>
+                    <ng-container matColumnDef="PONumber">
+                        <mat-header-cell *matHeaderCellDef >PO Number</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.PONumber}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="ContainerNumber">
+                        <mat-header-cell *matHeaderCellDef >Container Number</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.ContainerNumber}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="InboundShipmentNumber">
+                        <mat-header-cell *matHeaderCellDef >Inbound Shipment Number</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.InboundShipmentNumber}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="CartonNumber">
+                        <mat-header-cell *matHeaderCellDef >Carton Number</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.CartonNumber}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Quantity">
+                        <mat-header-cell *matHeaderCellDef >Quantity</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.Quantity}}</span>
+                        </mat-cell>
+                    </ng-container>
 
-        </table>
-        <hr>
-        <div class="title">General Info</div>
-        <table>
-            <tr class="owner">
-                <th>TPIN</th>
-                <td>{{selected.TPIN}}</td>
-            </tr>
-            <tr class="owner">
-                <th>Vendor SKU</th>
-                <td>{{selected.VendorSKU}}</td>
-            </tr>
-            <tr class="owner">
-                <th>Description</th>
-                <td>{{selected.Description}}</td>
-            </tr>
-        </table>
-    </div>
+                    <mat-header-row  *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns1;"
+                            [@animate]="{value:'*',params:{y:'100%'}}"
+                    >
+                    </mat-row>
+                </mat-table>
+                
+            </div>
+        </mat-tab>
+        <mat-tab label="Location">
+            <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+                
+            </div>
+        </mat-tab> -->
+    </mat-tab-group>
 
 </div>
 <!-- / SIDEBAR CONTENT -->

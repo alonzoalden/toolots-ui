@@ -9,9 +9,14 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-update/dialogs/compose.component';
-import { ItemList } from 'app/shared/class/item';
+import { ItemList, ItemCartonInformation } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/class/components/snackbar/snackbar.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { CartonInformationDialogComponent } from '../../dialogs/carton-information/carton-information.component';
+import { InventoryDetailDialogComponent } from '../../dialogs/inventory-detail/inventory-detail.component';
+import { PotentialLocationDialogComponent } from '../../dialogs/potential-location/potential-location.component';
 
 @Component({
     selector: 'file-manager-details-sidebar',
@@ -29,6 +34,8 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
         4: 'LTL',
         5: 'Small Parcel',
     };
+    displayedColumns1 = ['PONumber', 'ContainerNumber', 'InboundShipmentNumber', 'CartonNumber', 'Quantity'];
+    dataSource1: any;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -41,7 +48,8 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
         private _fileManagerService: WarehouseItemUpdateService,
         private router: Router,
         public _matDialog: MatDialog,
-        private _snackBar: MatSnackBar
+        private _snackBar: MatSnackBar,
+        private _fuseSidebarService: FuseSidebarService,
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -74,6 +82,9 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
+                if (this.selected.Data) {
+                    this.dataSource1 = new MatTableDataSource<ItemCartonInformation>(this.selected.Data.ItemCartonInformations);
+                }
             });
     }
     composeDialog(): void {
@@ -91,6 +102,27 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
             });
     }
 
+    composeDialogCartons(): void {
+        this.dialogRef = this._matDialog.open(CartonInformationDialogComponent, {
+            panelClass: 'list-compose-dialog'
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(response => { });
+    }
+    composeDialogInventoryDetails(): void {
+        this.dialogRef = this._matDialog.open(InventoryDetailDialogComponent, {
+            panelClass: 'list-compose-dialog'
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(response => { });
+    }
+    composeDialogPotentialLocations(): void {
+        this.dialogRef = this._matDialog.open(PotentialLocationDialogComponent, {
+            panelClass: 'list-compose-dialog'
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(response => { });
+    }
     /**
      * On destroy
      */
@@ -98,5 +130,9 @@ export class WarehouseItemUpdateDetailsSidebarComponent implements OnInit, OnDes
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    closeSidebar(): void {
+        this._fuseSidebarService.getSidebar('file-manager-details-sidebar').toggleOpen();
     }
 }

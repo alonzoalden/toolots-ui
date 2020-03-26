@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WarehouseItemUpdateService } from '../warehouse-item-update.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ItemList, ItemDimension } from 'app/shared/class/item';
+import { ItemList, Item } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/class/components/snackbar/snackbar.component';
 
@@ -51,9 +51,9 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         // Set the defaults
         this._unsubscribeAll = new Subject();
         this.selected = new ItemList(null, null, null, null, null, null, null
-            , new ItemDimension(null, null, null, null, null,
+            , new Item(null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null)
+                null, null, null, null, null, null, null, null, [], [], [])
             );
         this.composeForm = this.createProductForm();
 
@@ -64,7 +64,7 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
-                if (selected.Dimensions) {
+                if (selected.Data) {
                     this.composeForm = this.createProductForm();
                 }
             });
@@ -88,20 +88,20 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
             TPIN: [this.selected.TPIN],
             VendorSKU: [this.selected.VendorSKU],
             ImagePath: [this.selected.ImagePath],
-            Length: [this.selected.Dimensions.Length],
-            Width: [this.selected.Dimensions.Width],
-            Height: [this.selected.Dimensions.Height],
-            Weight: [this.selected.Dimensions.Weight],
-            PackageLength: [this.selected.Dimensions.PackageLength],
-            PackageWidth: [this.selected.Dimensions.PackageWidth],
-            PackageHeight: [this.selected.Dimensions.PackageHeight],
-            PackageWeight: [this.selected.Dimensions.PackageWeight],
-            PackagingType: [this.selected.Dimensions.PackagingType],
-            PackageDimensionUOM: [this.selected.Dimensions.PackageDimensionUOM],
-            PackageWeightUOM: [this.selected.Dimensions.PackageWeightUOM],
-            ProductDimensionUOM: [this.selected.Dimensions.ProductDimensionUOM],
-            ProductWeightUOM: [this.selected.Dimensions.ProductWeightUOM],
-            MaximumParcelUnit: [this.selected.Dimensions.MaximumParcelUnit],
+            Length: [this.selected.Data.Length],
+            Width: [this.selected.Data.Width],
+            Height: [this.selected.Data.Height],
+            Weight: [this.selected.Data.Weight],
+            PackageLength: [this.selected.Data.PackageLength],
+            PackageWidth: [this.selected.Data.PackageWidth],
+            PackageHeight: [this.selected.Data.PackageHeight],
+            PackageWeight: [this.selected.Data.PackageWeight],
+            PackagingType: [this.selected.Data.PackagingType],
+            PackageDimensionUOM: [this.selected.Data.PackageDimensionUOM],
+            PackageWeightUOM: [this.selected.Data.PackageWeightUOM],
+            ProductDimensionUOM: [this.selected.Data.ProductDimensionUOM],
+            ProductWeightUOM: [this.selected.Data.ProductWeightUOM],
+            MaximumParcelUnit: [this.selected.Data.MaximumParcelUnit],
         });
     }
 
@@ -116,8 +116,8 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         this.isSaving = true;
         this.warehouseItemUpdateService.editItemDimension(this.composeForm.value)
             .subscribe(
-                dimensions => {
-                    this.selected.Dimensions = dimensions;
+                data => {
+                    this.selected.Data = data;
                     this.warehouseItemUpdateService.onFileSelected.next(this.selected);
                     this.matDialogRef.close(this.selected);
                 },

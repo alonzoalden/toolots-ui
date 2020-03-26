@@ -31,7 +31,10 @@ import { WarehouseItemEditComponent } from './item-edit/item-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { CartonInformationDialogComponent } from './dialogs/carton-information/carton-information.component';
+import { PotentialLocationDialogComponent } from './dialogs/potential-location/potential-location.component';
+import { InventoryDetailDialogComponent } from './dialogs/inventory-detail/inventory-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
     {
@@ -65,7 +68,10 @@ const routes: Routes = [
         // FileManagerFileListComponent,
         // FileManagerMainSidebarComponent,
         // FileManagerDetailsSidebarComponent,
-        MailComposeDialogComponent
+        MailComposeDialogComponent,
+        CartonInformationDialogComponent,
+        InventoryDetailDialogComponent,
+        PotentialLocationDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -92,14 +98,18 @@ const routes: Routes = [
         MatSnackBarModule,
         MatRadioModule,
         FuseSharedModule,
-        FuseSidebarModule
+        FuseSidebarModule,
+        BrowserAnimationsModule,
     ],
     providers: [
         WarehouseItemUpdateService,
         MatSnackBar
     ],
     entryComponents: [
-        MailComposeDialogComponent
+        MailComposeDialogComponent,
+        CartonInformationDialogComponent,
+        InventoryDetailDialogComponent,
+        PotentialLocationDialogComponent
     ]
 })
 export class WarehouseItemUpdateModule {

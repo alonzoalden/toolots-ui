@@ -1,0 +1,68 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">View Potential Location</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div fxLayout="row" class="header" style="min-height: 180px;">
+        <div fxFlex="33.3" class="photo-header" style="background: url(assets/images/tool1.jpg)">
+        </div>
+        <div fxFlex="66.6" fxLayoutAlign="start center" style="background-color: #fff;" class="p-24" >
+            <h2>{{selected.ItemName}}</h2>
+        </div>
+    </div>
+    <div mat-dialog-content style="padding-top: 0 !important;" class="p-24 m-0" fusePerfectScrollbar>
+        <div>
+            <mat-table *ngIf="selected.Data"
+                #table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="LocationName">
+                    <mat-header-cell *matHeaderCellDef >Location Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.LocationName}}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="BinNumber">
+                    <mat-header-cell *matHeaderCellDef >Bin Number</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.BinNumber}}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="LocationDate">
+                    <mat-header-cell *matHeaderCellDef >Location Date</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.LocationDate}}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="SearchMethod">
+                    <mat-header-cell *matHeaderCellDef >Search Method</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.SearchMethod}}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row  *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                >
+                </mat-row>
+            </mat-table>
+        </div>
+    </div>
+    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    color="accent"
+                    (click)="close()"
+                    class="save-button"
+                    aria-label="CLOSE">
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isSaving">OK</span>
+                    <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

@@ -17,7 +17,7 @@ export const navigation: FuseNavigation[] = [
                 children : [
                     {
                         id       : 'itemupdate',
-                        title    : 'Item Update',
+                        title    : 'Item Management',
                         translate: 'NAV.ITEMUPDATE',
                         type     : 'item',
                         icon     : 'build',

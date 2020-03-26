@@ -30,7 +30,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/DYMO.Label.Framework.3.0.js"
+            ]
           },
           "configurations": {
             "production": {

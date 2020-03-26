@@ -7,6 +7,7 @@ import { WarehouseService } from '../warehouse.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatRipple } from '@angular/material/core';
+import { WarehouseItemUpdateService } from '../warehouse-item-update/warehouse-item-update.service';
 
 @Component({
     selector: 'app-warehouse-dashboard',
@@ -36,6 +37,7 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     constructor(
         private _academyCoursesService: WarehouseService,
         private router: Router,
+        private warehouseItemUpdateService: WarehouseItemUpdateService
     ) {
         // Set the defaults
         this.currentCategory = 'all';

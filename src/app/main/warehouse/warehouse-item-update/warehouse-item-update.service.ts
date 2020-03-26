@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject, throwError, forkJoin, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { catchError, tap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { ItemDimension } from 'app/shared/class/item';
+import { Item } from 'app/shared/class/item';
 
 @Injectable()
 export class WarehouseItemUpdateService implements Resolve<any>
@@ -33,7 +33,7 @@ export class WarehouseItemUpdateService implements Resolve<any>
         // Set the defaults
         this.onFilesChanged = new BehaviorSubject({});
         this.onFileSelected = new BehaviorSubject({});
-        this.allitemlist = new BehaviorSubject({});
+        this.allitemlist = new BehaviorSubject([]);
         this.isEdit = new BehaviorSubject({});
         this.searchTerm = new BehaviorSubject('');
     }
@@ -47,7 +47,7 @@ export class WarehouseItemUpdateService implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return combineLatest([
-            this.getFiles()
+            // this.getFiles()
         ]);
     }
 
@@ -57,14 +57,25 @@ export class WarehouseItemUpdateService implements Resolve<any>
      * @returns {Promise<any>}
      */
 
-    getFiles(): Observable<any> {
-        return this._httpClient.get('api/file-manager')
-            .pipe(
-                tap(data => {
-                        this.onFilesChanged.next(data);
-                        // this.onFileSelected.next(data[0]);
-                }),
-                catchError(this.handleError)
+    // getFiles(): Observable<any> {
+    //     return this._httpClient.get('api/file-manager')
+    //         .pipe(
+    //             tap(data => {
+    //                     this.onFilesChanged.next(data);
+    //                     // this.onFileSelected.next(data[0]);
+    //             }),
+    //             catchError(this.handleError)
+    //         );
+    // }
+    getAllItemList1(): any {
+        this._httpClient.get<any>(this.apiURL + '/item/allitemlist')
+            .subscribe(
+                data => {
+                    this.allitemlist.next(data);
+                },
+                error => {
+                    console.log(error);
+                },
             );
     }
 
@@ -72,7 +83,7 @@ export class WarehouseItemUpdateService implements Resolve<any>
         if (this.allitemlist.value.length) {
             return this.allitemlist;
         }
-        return this._httpClient.get<any>(this.apiURL + '/warehouse/allitemlist')
+        return this._httpClient.get<any>(this.apiURL + '/item/allitemlist')
             .pipe(
                 tap(data => {
                     this.allitemlist.next(data);
@@ -82,22 +93,22 @@ export class WarehouseItemUpdateService implements Resolve<any>
     }
 
     getItemDimension(id: string): Observable<any> {
-        return this._httpClient.get<any>(this.apiURL + '/warehouse/itemdimension/' + id)
+        return this._httpClient.get<any>(this.apiURL + '/item/' + id)
             .pipe(
                 tap(data => {
                     // const updatedData = Object.assign({}, this.onFileSelected.value);
                     // updatedData.Dimensions = data;
                     // this.onFileSelected.next(updatedData);
 
-                    this.onFileSelected.value.Dimensions = data;
+                    this.onFileSelected.value.Data = data;
                     this.onFileSelected.next(this.onFileSelected.value);
                 }),
                 catchError(this.handleError)
             );
     }
 
-    editItemDimension(itemdimension: ItemDimension): Observable<any> {
-        return this._httpClient.put<any>(this.apiURL + '/warehouse/itemdimension/' + itemdimension.ItemID, itemdimension)
+    editItemDimension(itemdimension: Item): Observable<any> {
+        return this._httpClient.put<any>(this.apiURL + '/item/' + itemdimension.ItemID, itemdimension)
             .pipe(
                 // tap(data => {
                 //     this.allitemlist.next(data);

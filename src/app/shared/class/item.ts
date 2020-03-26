@@ -8,15 +8,15 @@ export class ItemList {
         public TPIN: string,
         public VendorSKU: string,
         public ImagePath: string,
-        public Dimensions: ItemDimension,
+        public Data: Item,
     ) {}
 }
 
 // HttpGet
 // HttpPut
-// https://staging-webapi.toolots.com.cn/gadget/warehouse/itemdimension/{id}
+// https://staging-webapi.toolots.com.cn/gadget/item/{id}
 
-export class ItemDimension {
+export class Item {
     constructor(
         public ItemID: string,
         public TPIN: string,
@@ -42,6 +42,35 @@ export class ItemDimension {
         public PackageWeightUOM: string,
         public PackagingType: number,
         public UnitPerPackage: number,
-        public MaximumParcelUnit: number
+        public MaximumParcelUnit: number,
+
+        public ItemInventoryDetails: Array<ItemInventoryDetail>,
+        public ItemCartonInformations: Array<ItemCartonInformation>,
+        public ItemPotentialLocations: Array<ItemPotentialLocation>,
+    ) {}
+}
+export class ItemInventoryDetail {
+    constructor(
+        public LocationName: string,
+        public BinNumber: string,
+        public QtyOnHand: number,
+        public QtyAvailable: number
+    ) {}
+}
+export class ItemCartonInformation {
+    constructor(
+        public PONumber: string,
+        public ContainerNumber: string,
+        public InboundShipmentNumber: string,
+        public CartonNumber: string,
+        public Quantity: number
+    ) {}
+}
+export class ItemPotentialLocation {
+    constructor(
+        public LocationName: string,
+        public BinNumber: string,
+        public LocationDate: string,
+        public SearchMethod: string
     ) {}
 }
