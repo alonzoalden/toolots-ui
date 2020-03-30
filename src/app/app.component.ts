@@ -188,6 +188,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
             }
         );
+
+        this.appService.getCurrentMember().subscribe();
     }
 
     /**

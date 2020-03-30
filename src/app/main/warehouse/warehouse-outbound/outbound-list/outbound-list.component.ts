@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { WarehouseItemUpdateService } from '../warehouse-item-update.service';
+import { WarehouseOutboundService } from '../warehouse-outbound.service';
 import { ItemList } from 'app/shared/class/item';
 import { MatTableDataSource } from '@angular/material/table';
 import { environment } from 'environments/environment';
@@ -13,19 +13,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-update/dialogs/compose.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
-import { CartonInformationDialogComponent } from '../dialogs/carton-information/carton-information.component';
-import { InventoryDetailDialogComponent } from '../dialogs/inventory-detail/inventory-detail.component';
-import { PotentialLocationDialogComponent } from '../dialogs/potential-location/potential-location.component';
-import { PrintLabelDialogComponent } from '../dialogs/print-label/print-label.component';
+import { Fulfillment } from 'app/shared/class/fulfillment';
+
 
 @Component({
     selector: 'file-list',
-    templateUrl: './item-list.component.html',
-    styleUrls: ['./item-list.component.scss'],
+    templateUrl: './outbound-list.component.html',
+    styleUrls: ['./outbound-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class WarehouseItemUpdateListComponent implements OnInit, OnDestroy {
+export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     fileURL = environment.fileURL;
     files: any;
     dataSource: any;
@@ -45,7 +43,7 @@ export class WarehouseItemUpdateListComponent implements OnInit, OnDestroy {
 
     constructor(
         private _fuseSidebarService: FuseSidebarService,
-        private warehouseItemUpdateService: WarehouseItemUpdateService,
+        private warehouseItemUpdateService: WarehouseOutboundService,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar
     ) {
@@ -81,7 +79,7 @@ export class WarehouseItemUpdateListComponent implements OnInit, OnDestroy {
             });
         this.isLoading = true;
 
-        this.warehouseItemUpdateService.getAllItemList()
+        this.warehouseItemUpdateService.getFulfillmentList()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(items => {
                 if (items.length) {
@@ -111,9 +109,9 @@ export class WarehouseItemUpdateListComponent implements OnInit, OnDestroy {
      *
      * @param selected
      */
-    onSelect(selected: ItemList): void {
+    onSelect(selected: Fulfillment): void {
         this.warehouseItemUpdateService.onFileSelected.next(selected);
-        this.warehouseItemUpdateService.getItemDimension(selected.ItemID).subscribe();
+        this.warehouseItemUpdateService.getFulfillment(selected.FulfillmentID).subscribe();
         // .subscribe(item => this.selected.Dimensions.push(item));
     }
 
@@ -172,33 +170,5 @@ export class WarehouseItemUpdateListComponent implements OnInit, OnDestroy {
                     data: { type: 'success', message: `${response.TPIN} has been successfully updated.` },
                 });
             });
-    }
-    composeDialogCartons(): void {
-        this.dialogRef = this._matDialog.open(CartonInformationDialogComponent, {
-            panelClass: 'list-compose-dialog'
-        });
-        this.dialogRef.afterClosed()
-            .subscribe(response => { });
-    }
-    composeDialogInventoryDetails(): void {
-        this.dialogRef = this._matDialog.open(InventoryDetailDialogComponent, {
-            panelClass: 'list-compose-dialog'
-        });
-        this.dialogRef.afterClosed()
-            .subscribe(response => { });
-    }
-    composeDialogPotentialLocations(): void {
-        this.dialogRef = this._matDialog.open(PotentialLocationDialogComponent, {
-            panelClass: 'list-compose-dialog'
-        });
-        this.dialogRef.afterClosed()
-            .subscribe(response => { });
-    }
-    composeDialogPrintLabel(): void {
-        this.dialogRef = this._matDialog.open(PrintLabelDialogComponent, {
-            panelClass: 'mail-compose-dialog'
-        });
-        this.dialogRef.afterClosed()
-            .subscribe(response => { });
     }
 }

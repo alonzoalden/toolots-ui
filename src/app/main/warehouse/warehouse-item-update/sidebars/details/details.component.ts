@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-update/dialogs/compose.component';
 import { ItemList, ItemCartonInformation } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from 'app/shared/class/components/snackbar/snackbar.component';
+import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { CartonInformationDialogComponent } from '../../dialogs/carton-information/carton-information.component';

@@ -33,8 +33,9 @@ import { Error404Module } from './main/errors/404/error-404.module';
 import { Error500Module } from './main/errors/500/error-500.module';
 import { AppService } from './app.service';
 import { WarehouseItemUpdateModule } from './main/warehouse/warehouse-item-update/warehouse-item-update.module';
-import { SnackbarComponent } from './shared/class/components/snackbar/snackbar.component';
+import { SnackbarComponent } from './shared/components/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { WarehouseOutboundModule } from './main/warehouse/warehouse-outbound/warehouse-outbound.module';
 
 const appRoutes: Routes = [
     {
@@ -87,6 +88,7 @@ const appRoutes: Routes = [
         SampleModule,
         // FileManagerModule,
         WarehouseItemUpdateModule,
+        WarehouseOutboundModule,
         WarehouseModule,
         Error404Module,
         Error500Module,

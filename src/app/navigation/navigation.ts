@@ -28,7 +28,22 @@ export const navigation: FuseNavigation[] = [
                         //     bg       : '#F44336',
                         //     fg       : '#FFFFFF'
                         // }
+                    },
+                    {
+                        id       : 'outbound',
+                        title    : 'Outbound',
+                        translate: 'NAV.OUTBOUND',
+                        type     : 'item',
+                        icon     : 'mail',
+                        url      : '/warehouse-outbound',
+                        // badge    : {
+                        //     title    : '25',
+                        //     translate: 'NAV.SAMPLE.BADGE',
+                        //     bg       : '#F44336',
+                        //     fg       : '#FFFFFF'
+                        // }
                     }
+
                 ]
                 // badge    : {
                 //     title    : '25',

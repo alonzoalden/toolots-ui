@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ItemList, Item } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from 'app/shared/class/components/snackbar/snackbar.component';
+import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
