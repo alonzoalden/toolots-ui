@@ -71,6 +71,24 @@
         </div>
     </div>
     <mat-tab-group  style="flex-grow: 1; overflow: auto;">
+        <mat-tab label="General Info" [disabled]="!selected.ItemID">
+            <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
+                <table>
+                    <tr class="owner">
+                        <th>TPIN</th>
+                        <td>{{selected.TPIN}}</td>
+                    </tr>
+                    <tr class="owner">
+                        <th>Vendor SKU</th>
+                        <td>{{selected.VendorSKU}}</td>
+                    </tr>
+                    <tr class="owner">
+                        <th>Description</th>
+                        <td>{{selected.Description}}</td>
+                    </tr>
+                </table>
+            </div>
+        </mat-tab>
         <mat-tab label="Dimensions" [disabled]="!selected.ItemID">
             <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
                 <!-- <div class="title">Dimensions</div> -->
@@ -133,24 +151,7 @@
                 </table>
             </div>
         </mat-tab>
-        <mat-tab label="General Info" [disabled]="!selected.ItemID">
-            <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
-                <table>
-                    <tr class="owner">
-                        <th>TPIN</th>
-                        <td>{{selected.TPIN}}</td>
-                    </tr>
-                    <tr class="owner">
-                        <th>Vendor SKU</th>
-                        <td>{{selected.VendorSKU}}</td>
-                    </tr>
-                    <tr class="owner">
-                        <th>Description</th>
-                        <td>{{selected.Description}}</td>
-                    </tr>
-                </table>
-            </div>
-        </mat-tab>
+        
         <!-- <mat-tab label="Carton Info">
             <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
                 <mat-table *ngIf="selected.Data"

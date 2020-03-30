@@ -59,7 +59,6 @@ export class WarehouseItemUpdateComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-
         if (this.router.url.includes('/warehouse-item-update/edit/')) {
             this.isEdit = true;
         }

@@ -9,8 +9,8 @@
     .header {
         position: relative;
         flex: 1 0 auto;
-        height: 280px;
-        max-height: 280px;
+        height: 240px;
+        max-height: 240px;
         text-align: center;
         overflow: hidden;
         mat-icon {
@@ -67,6 +67,9 @@
         .button-link {
             color: #2D323E;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             mat-icon {
                 display: flex; 
                 align-items: center; 
@@ -114,7 +117,7 @@
                 }
             }
         }
-
+        
         .courses {
             width: 100%;
             max-width: 1040px;

@@ -3,7 +3,6 @@ export class ItemList {
     constructor(
         public ItemID: string,
         public Description: string,
-        public FOBPrice: number,
         public ItemName: string,
         public TPIN: string,
         public VendorSKU: string,

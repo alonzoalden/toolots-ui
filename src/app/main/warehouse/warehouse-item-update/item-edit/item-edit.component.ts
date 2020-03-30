@@ -46,7 +46,7 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
         private router: Router,
     ) {
         // Set the default
-        this.product = new ItemList(null, null, null, null, null, null, null, null);
+        this.product = new ItemList(null, null, null, null, null, null, null);
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -94,7 +94,6 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
         return this._formBuilder.group({
             ItemID: [this.product.ItemID],
             ItemName: [this.product.ItemName],
-            FOBPrice: [this.product.FOBPrice],
             Description: [this.product.Description],
             TPIN: [this.product.TPIN],
             VendorSKU: [this.product.VendorSKU],

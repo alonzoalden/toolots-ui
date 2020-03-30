@@ -1,13 +1,9 @@
 @import "src/@fuse/scss/fuse";
 
-.list-compose-dialog {
+.mail-compose-dialog {
 
     @include media-breakpoint('xs') {
         width: 100%;
-        max-width: 95vh !important;
-        .mat-dialog-content {
-            padding: 0 !important;
-        }
     }
 
     @include media-breakpoint('gt-xs') {
@@ -73,15 +69,3 @@
 .ps__rail-x {
     height: 0;
 }
-.mat-column-LocationName {
-    flex: 0 0 33% !important;
-    min-width: 33% !important;
-}
-// .mat-column-BinNumber {
-//     flex: 0 0 20% !important;
-//     min-width: 20% !important;
-// }
-// .mat-column-SearchMethod {
-//     flex: 0 0 20% !important;
-//     min-width: 20% !important;
-// }

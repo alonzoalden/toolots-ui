@@ -2,8 +2,8 @@ export class AcademyFakeDb {
     public static courses = [
         {
             'id': '15459251a6d6b397565',
-            'title': 'Item Update',
-            'slug': 'item-update',
+            'title': 'Item Management',
+            'slug': 'item-management',
             'category': 'web',
             'length': 30,
             'updated': 'Jun 28, 2017',
@@ -11,57 +11,12 @@ export class AcademyFakeDb {
         },
         {
             'id': '15459251a6d6b397565',
-            'title': 'Insert Item',
-            'slug': 'item-update',
+            'title': 'Outbound',
+            'slug': 'outbound',
             'category': 'web',
             'length': 30,
             'updated': 'library_add',
             'icon': 'library_add'
-        },
-        {
-            'id': '15459251a6d6b397565',
-            'title': 'Refurbish',
-            'slug': 'item-update',
-            'category': 'web',
-            'length': 30,
-            'updated': 'loop',
-            'icon': 'loop'
-        },
-        {
-            'id': '15459251a6d6b397565',
-            'title': 'Analytics',
-            'slug': 'item-update',
-            'category': 'web',
-            'length': 30,
-            'updated': 'Jun 28, 2017',
-            'icon': 'show_chart'
-        },
-        {
-            'id': '15459251a6d6b397565',
-            'title': 'Item Update',
-            'slug': 'item-update',
-            'category': 'web',
-            'length': 30,
-            'updated': 'Jun 28, 2017',
-            'icon': 'build'
-        },
-        {
-            'id': '15459251a6d6b397565',
-            'title': 'Item Update',
-            'slug': 'item-update',
-            'category': 'web',
-            'length': 30,
-            'updated': 'Jun 28, 2017',
-            'icon': 'show_chart'
-        },
-        {
-            'id': '15459251a6d6b397565',
-            'title': 'Item Update',
-            'slug': 'item-update',
-            'category': 'web',
-            'length': 30,
-            'updated': 'Jun 28, 2017',
-            'icon': 'shop'
         },
         //     {
         //         'id': '154588a0864d2881124',

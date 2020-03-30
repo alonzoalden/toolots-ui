@@ -50,7 +50,7 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
     ) {
         // Set the defaults
         this._unsubscribeAll = new Subject();
-        this.selected = new ItemList(null, null, null, null, null, null, null
+        this.selected = new ItemList(null, null, null, null, null, null
             , new Item(null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null, [], [], [])
@@ -83,7 +83,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         return this._formBuilder.group({
             ItemID: [this.selected.ItemID],
             ItemName: [this.selected.ItemName],
-            FOBPrice: [this.selected.FOBPrice],
             Description: [this.selected.Description],
             TPIN: [this.selected.TPIN],
             VendorSKU: [this.selected.VendorSKU],

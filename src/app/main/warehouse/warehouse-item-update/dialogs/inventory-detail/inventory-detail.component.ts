@@ -49,7 +49,7 @@ export class InventoryDetailDialogComponent implements OnInit, OnDestroy{
     ) {
         // Set the defaults
         this._unsubscribeAll = new Subject();
-        this.selected = new ItemList(null, null, null, null, null, null, null
+        this.selected = new ItemList(null, null, null, null, null, null
             , new Item(null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null, [], [], [])

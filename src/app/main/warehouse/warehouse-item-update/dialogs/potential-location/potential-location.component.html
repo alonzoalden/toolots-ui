@@ -33,7 +33,7 @@
                 <ng-container matColumnDef="LocationDate">
                     <mat-header-cell *matHeaderCellDef >Location Date</mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                        <span>{{row.LocationDate}}</span>
+                        <span>{{row.LocationDate | date}}</span>
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="SearchMethod">
