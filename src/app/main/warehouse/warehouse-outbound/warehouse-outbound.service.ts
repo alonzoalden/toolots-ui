@@ -21,7 +21,6 @@ export class WarehouseOutboundService {
         private _httpClient: HttpClient,
     ) {
         // Set the defaults
-        this.onFilesChanged = new BehaviorSubject({});
         this.onFileSelected = new BehaviorSubject({});
         this.outboundList = new BehaviorSubject([]);
         this.isEdit = new BehaviorSubject({});
@@ -29,7 +28,7 @@ export class WarehouseOutboundService {
     }
 
     getFulfillmentList(): Observable<any> {
-        return this._httpClient.get<any>(this.apiURL + '/item/allitemlist')
+        return this._httpClient.get<any>(this.apiURL + '/fulfillment/outbound')
             .pipe(
                 tap(data => {
                     this.outboundList.next(data);

@@ -49,10 +49,6 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar
     ) {
-        // Set the private defaults
-        // this.dataSource = new MatTableDataSource<ItemList>([]);
-        // this.dataSource.sort = this.sort;
-        // this.dataSource.paginator = this.paginator;
         this._unsubscribeAll = new Subject();
         this.searchTerm = '';
         this.searchEnabled = false;
@@ -67,12 +63,12 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
 
-        this.warehouseItemManagerService.onFileSelected.next({});
-        this.warehouseItemManagerService.onFilesChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(files => {
-                this.files = files;
-            });
+        // this.warehouseItemManagerService.onFileSelected.next({});
+        // this.warehouseItemManagerService.onFilesChanged
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(files => {
+        //         this.files = files;
+        //     });
 
         this.warehouseItemManagerService.onFileSelected
             .pipe(takeUntil(this._unsubscribeAll))
@@ -81,47 +77,30 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
             });
         this.isLoading = true;
 
-        this.warehouseItemManagerService.getAllItemList()
+        this.warehouseItemManagerService.allItemList
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(items => {
                 if (items.length) {
                     this.dataSource = new MatTableDataSource<ItemList>(items);
                     this.dataSource.sort = this.sort;
                     this.dataSource.paginator = this.paginator;
+                    this.isLoading = false;
                 }
-                this.isLoading = false;
             });
     }
 
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On select
-     *
-     * @param selected
-     */
     onSelect(selected: ItemList): void {
         this.warehouseItemManagerService.onFileSelected.next(selected);
         this.warehouseItemManagerService.getItemDimension(selected.ItemID).subscribe();
         // .subscribe(item => this.selected.Dimensions.push(item));
     }
 
-    /**
-     * Toggle the sidebar
-     *
-     * @param name
-     */
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
@@ -135,9 +114,6 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
         this.filterBySearchTerm();
     }
 
-    /**
-     * Filter courses by term
-     */
     filterBySearchTerm(): void {
         const searchTerm = this.searchTerm.toLowerCase();
 

@@ -46,7 +46,7 @@ export class AppService {
         return this._httpClient.get<any>(this.apiURL + '/member/current')
             .pipe(
                 tap(data => {
-                    this.userInfo = data;
+                    this.userInfo.next(data);
                 }),
                 catchError(this.handleError)
             );

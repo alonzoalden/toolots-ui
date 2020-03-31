@@ -14,6 +14,7 @@ import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-ma
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { Fulfillment } from 'app/shared/class/fulfillment';
+import { WarehouseItemManagerService } from '../../warehouse-item-manager/warehouse-item-manager.service';
 
 @Component({
     selector: 'outbound-list',
@@ -42,7 +43,8 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
 
     constructor(
         private _fuseSidebarService: FuseSidebarService,
-        private warehouseItemUpdateService: WarehouseOutboundService,
+        private warehouseOutboundService: WarehouseOutboundService,
+        private warehouseItemManagerService: WarehouseItemManagerService,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar
     ) {
@@ -53,21 +55,15 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this.warehouseItemUpdateService.onFileSelected.next({});
-        this.warehouseItemUpdateService.onFilesChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(files => {
-                this.files = files;
-            });
-
-        this.warehouseItemUpdateService.onFileSelected
+        this.warehouseOutboundService.onFileSelected.next({});
+        this.warehouseOutboundService.onFileSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
             });
         this.isLoading = true;
 
-        this.warehouseItemUpdateService.getFulfillmentList()
+        this.warehouseOutboundService.getFulfillmentList()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(items => {
                 if (items.length) {
@@ -86,8 +82,8 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(selected: Fulfillment): void {
-        this.warehouseItemUpdateService.onFileSelected.next(selected);
-        this.warehouseItemUpdateService.getFulfillment(selected.FulfillmentID).subscribe();
+        this.warehouseOutboundService.onFileSelected.next(selected);
+        this.warehouseOutboundService.getFulfillment(selected.FulfillmentID).subscribe();
     }
 
     /**
@@ -130,7 +126,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
-        this.warehouseItemUpdateService.onFileSelected.next({});
+        this.warehouseOutboundService.onFileSelected.next({});
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {

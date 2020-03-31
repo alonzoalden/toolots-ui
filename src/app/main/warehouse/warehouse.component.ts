@@ -24,13 +24,14 @@ export class WarehouseComponent implements OnInit, OnDestroy {
     constructor(
         public _matDialog: MatDialog,
         private warehouseService: WarehouseService,
+        private warehouseItemManagerService: WarehouseItemManagerService,
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
-
+        this.warehouseItemManagerService.loadAllItemList();
     }
 
     ngOnDestroy(): void {

@@ -28,10 +28,7 @@ export class WarehouseOutboundComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any>;
 
     constructor(
-        private _fileManagerService: WarehouseOutboundService,
-        private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog,
-        private router: Router
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();

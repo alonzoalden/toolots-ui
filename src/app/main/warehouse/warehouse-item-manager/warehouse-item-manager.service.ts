@@ -1,41 +1,44 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, Subject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { catchError, tap, map } from 'rxjs/operators';
+import { catchError, tap, takeUntil } from 'rxjs/operators';
 import { Item } from 'app/shared/class/item';
 
 @Injectable()
-export class WarehouseItemManagerService {
+export class WarehouseItemManagerService implements OnDestroy {
     onFilesChanged: BehaviorSubject<any>;
     onFileSelected: BehaviorSubject<any>;
-    allitemlist: BehaviorSubject<any>;
+    allItemList: BehaviorSubject<any>;
     isEdit: BehaviorSubject<any>;
     filteredCourses: any[];
     currentCategory: string;
     searchTerm: BehaviorSubject<any>;
 
     private apiURL = environment.webapiURL;
-
+    private _unsubscribeAll: Subject<any>;
     constructor(
         private _httpClient: HttpClient,
-        private router: Router,
-        private route: ActivatedRoute
     ) {
-        // Set the defaults
         this.onFilesChanged = new BehaviorSubject({});
         this.onFileSelected = new BehaviorSubject({});
-        this.allitemlist = new BehaviorSubject([]);
+        this.allItemList = new BehaviorSubject([]);
         this.isEdit = new BehaviorSubject({});
         this.searchTerm = new BehaviorSubject('');
+        this._unsubscribeAll = new Subject();
     }
 
-    getAllItemList1(): any {
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    loadAllItemList(): any {
         this._httpClient.get<any>(this.apiURL + '/item/allitemlist')
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 data => {
-                    this.allitemlist.next(data);
+                    this.allItemList.next(data);
                 },
                 error => {
                     console.log(error);
@@ -44,13 +47,13 @@ export class WarehouseItemManagerService {
     }
 
     getAllItemList(): Observable<any> {
-        if (this.allitemlist.value.length) {
-            return this.allitemlist;
+        if (this.allItemList.value.length) {
+            return this.allItemList;
         }
         return this._httpClient.get<any>(this.apiURL + '/item/allitemlist')
             .pipe(
                 tap(data => {
-                    this.allitemlist.next(data);
+                    this.allItemList.next(data);
                 }),
                 catchError(this.handleError)
             );
