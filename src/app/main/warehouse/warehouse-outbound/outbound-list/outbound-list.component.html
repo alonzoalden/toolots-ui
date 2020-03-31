@@ -26,7 +26,7 @@
             <button color="primary" mat-fab (click)="applyFilter(searchTerm)">Search</button>
         </div>
         <div class="hero-text">
-            <mat-icon class="hero-icon">build</mat-icon>
+            <mat-icon class="hero-icon">next_week</mat-icon>
         </div>
     </div>
     <!-- /HEADER  -->
@@ -36,9 +36,7 @@
     </div>
     
 
-    <mat-table *ngIf="!isLoading
-                    && dataSource?.filteredData.length !== dataSource?.data.length
-                    && dataSource?.filteredData.length !== 0"
+    <mat-table *ngIf="!isLoading"
                     style="flex-grow: 1; overflow: auto;"
                     #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" matSort>
 
@@ -119,7 +117,7 @@
             <mat-header-cell *matHeaderCellDef fxFlex="48px"></mat-header-cell>
             <mat-cell *matCellDef="let row" fxFlex="48px">
                 <button mat-icon-button class="sidebar-toggle"
-                        (click)="toggleSidebar('file-manager-details-sidebar')">
+                        (click)="toggleSidebar('outbound-details-sidebar')">
                     <mat-icon class="secondary-text">info</mat-icon>
                 </button>
             </mat-cell>
@@ -133,11 +131,11 @@
         >
         </mat-row>
     </mat-table>
-    <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"
+    <!-- <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"
         [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}"
         style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
         Please search for an item.
-    </div>
+    </div> -->
     <div *ngIf="!isLoading && dataSource?.filteredData.length === 0"
         [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"
         style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">

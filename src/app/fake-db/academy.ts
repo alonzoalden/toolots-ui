@@ -16,7 +16,7 @@ export class AcademyFakeDb {
             'category': 'web',
             'length': 30,
             'updated': 'library_add',
-            'icon': 'library_add'
+            'icon': 'next_week'
         },
         //     {
         //         'id': '154588a0864d2881124',

@@ -30,6 +30,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 // import { PotentialLocationDialogComponent } from './dialogs/potential-location/potential-location.component';
 // import { InventoryDetailDialogComponent } from './dialogs/inventory-detail/inventory-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WarehouseOutboundDetailsSidebarComponent } from './sidebars/outbound-details/outbound-details.component';
 // import { PrintLabelDialogComponent } from './dialogs/print-label/print-label.component';
 
 const routes: Routes = [
@@ -50,6 +51,7 @@ const routes: Routes = [
     declarations: [
         WarehouseOutboundComponent,
         WarehouseOutboundListComponent,
+        WarehouseOutboundDetailsSidebarComponent
     ],
     imports: [
         RouterModule.forChild(routes),

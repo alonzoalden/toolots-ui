@@ -34,7 +34,7 @@ export const navigation: FuseNavigation[] = [
                         title    : 'Outbound',
                         translate: 'NAV.OUTBOUND',
                         type     : 'item',
-                        icon     : 'mail',
+                        icon     : 'next_week',
                         url      : '/warehouse-outbound',
                         // badge    : {
                         //     title    : '25',
