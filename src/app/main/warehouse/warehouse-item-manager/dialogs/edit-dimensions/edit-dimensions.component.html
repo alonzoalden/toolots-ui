@@ -1,0 +1,202 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">Edit Item</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div fxLayout="row" class="header" style="min-height: 180px;">
+        <div fxFlex="33.3" class="photo-header" style="background: url(assets/images/tool1.jpg)">
+        </div>
+        <div fxFlex="66.6" fxLayoutAlign="start center" class="name p-24">
+            <h2>{{selected.ItemName}}</h2>
+        </div>
+    </div>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div>
+            <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                <h4>Item Dimension Units</h4>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Length Units</mat-label>
+                        <mat-select placeholder="Length Units"
+                            name="ProductDimensionUOM"
+                            formControlName="ProductDimensionUOM"
+                            required>
+                            <mat-option *ngFor="let item of units" value="{{item}}">{{ item }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="width: 40px;"></div>
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Weight Units</mat-label>
+                        <mat-select placeholder="Weight Units"
+                            name="ProductWeightUOM"
+                            formControlName="ProductWeightUOM"
+                            required>
+                            <mat-option *ngFor="let item of weightUnits" value="{{item}}">{{ item }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <h4>Item Dimensions</h4>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>
+                        Length
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.ProductDimensionUOM === 'IN' ? 'inches' : 'centimeters'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="Length"
+                        name="Length"
+                        formControlName="Length"
+                        type="number"
+                        min="0"
+                        required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Width
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.ProductDimensionUOM === 'IN' ? 'inches' : 'centimeters'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="Width"
+                            name="Width"
+                            formControlName="Width"
+                            type="number"
+                            min="0"
+                            required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Height
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.ProductDimensionUOM === 'IN' ? 'inches' : 'centimeters'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="Height"
+                            name="Height"
+                            formControlName="Height"
+                            type="number"
+                            min="0"
+                            required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Weight
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.ProductWeightUOM === 'LB' ? 'lbs' : 'kgs'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="Weight"
+                            name="Weight"
+                            formControlName="Weight"
+                            type="number"
+                            min="0"
+                            required>
+                </mat-form-field>
+                <h4>Package Dimension Units</h4>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Length Units</mat-label>
+                        <mat-select placeholder="Length Units"
+                            name="PackageDimensionUOM"
+                            formControlName="PackageDimensionUOM"
+                            required>
+                            <mat-option *ngFor="let item of units" value="{{item}}">{{ item }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="width: 40px;"></div>
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Weight Units</mat-label>
+                        <mat-select placeholder="Weight Units"
+                            name="PackageWeightUOM"
+                            formControlName="PackageWeightUOM"
+                            required>
+                            <mat-option *ngFor="let item of weightUnits" value="{{item}}">{{ item }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <h4>Package Dimensions</h4>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Length
+                        <span *ngIf="composeForm.value.PackageDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.PackageDimensionUOM === 'IN' ? 'inches' : 'centimeters'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="PackageLength"
+                        name="PackageLength"
+                        formControlName="PackageLength"
+                        type="number"
+                        min="0"
+                        required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Width
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.PackageDimensionUOM === 'IN' ? 'inches' : 'centimeters'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="PackageWidth"
+                            name="PackageWidth"
+                            formControlName="PackageWidth"
+                            type="number"
+                            min="0"
+                            required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Height
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.ProductDimensionUOM === 'IN' ? 'inches' : 'centimeters'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="PackageHeight"
+                            name="Package Height"
+                            formControlName="PackageHeight"
+                            type="number"
+                            min="0"
+                            required
+                            >
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Weight
+                        <span *ngIf="composeForm.value.ProductDimensionUOM" style="font-weight: 100; color: #666;">
+                            ({{composeForm.value.PackageWeightUOM === 'LB' ? 'lbs' : 'kgs'}})
+                        </span>
+                    </mat-label>
+                    <input matInput placeholder="PackageWeight"
+                            name="PackageWeight"
+                            formControlName="PackageWeight"
+                            tyepe="number"
+                            min="0"
+                            required
+                            >
+                </mat-form-field>
+                <h4>Package Type</h4>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Package Type</mat-label>
+                    <mat-select placeholder="Packaging Type"
+                        name="PackagingType"
+                        formControlName="PackagingType"
+                        required>
+                        <mat-option *ngFor="let item of objectKeys(dictPackingType)" value="{{item}}">{{ dictPackingType[item] }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    color="accent"
+                    (click)="save()"
+                    class="save-button"
+                    [disabled]="composeForm.invalid"
+                    aria-label="SAVE">
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isSaving">SAVE</span>
+                    <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

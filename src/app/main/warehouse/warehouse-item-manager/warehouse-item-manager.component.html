@@ -1,0 +1,21 @@
+<div class="page-layout simple right-sidebar inner-scroll">
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- CONTENT -->
+        <div class="content" #scrollContainer fusePerfectScrollbar>
+            <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet>
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+    <!-- SIDEBAR -->
+    <fuse-sidebar  class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right">
+        <item-manager-details-sidebar></item-manager-details-sidebar>
+    </fuse-sidebar>
+    <!-- / SIDEBAR -->
+
+</div>

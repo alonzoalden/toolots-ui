@@ -1,20 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-
-// import { FileManagerService } from 'app/main/file-manager/file-manager.service';
-import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
-import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
+import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-manager/dialogs/edit-dimensions/edit-dimensions.component';
 import { WarehouseOutboundService } from './warehouse-outbound.service';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { FuseThemeOptionsModule } from '@fuse/components';
-
-
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'warehouse-outbound',
@@ -45,98 +37,14 @@ export class WarehouseOutboundComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void {
-        if (this.router.url.includes('/warehouse-item-update/edit/')) {
-            this.isEdit = true;
-        }
-        this.router.events.subscribe(
-            (event: any) => {
-                if (event instanceof NavigationEnd) {
-                    if (event.url.includes('/warehouse-item-update/edit/')) {
-                        this.isEdit = true;
-                    } else {
-                        this.isEdit = false;
-                    }
-                }
-            }
-        );
-
-        this._fileManagerService.onFileSelected
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selected => {
-                this.selected = selected;
-                // this.pathArr = selected.location.split('>');
-            });
-
-    }
-    /**
-     * On destroy
-     */
+    ngOnInit(): void { }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Toggle the sidebar
-     *
-     * @param name
-     */
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
-
-    composeDialog(): void {
-        this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
-            panelClass: 'mail-compose-dialog'
-        });
-        this.dialogRef.afterClosed()
-            .subscribe(response => {
-                if (!response) {
-                    return;
-                }
-                const actionType: string = response[0];
-                const formData: FormGroup = response[1];
-                switch (actionType) {
-                    /**
-                     * Send
-                     */
-                    case 'send':
-                        console.log('new Mail', formData.getRawValue());
-                        break;
-                    /**
-                     * Delete
-                     */
-                    case 'delete':
-                        console.log('delete Mail');
-                        break;
-                }
-            });
-    }
     onActivate(e, scrollContainer) {
         scrollContainer.scrollTop = 0;
-    }
-    toggleSearch(): void {
-        this.searchEnabled = !this.searchEnabled;
-    }
-    cancelSearch(): void {
-        this.toggleSearch();
-        this.searchTerm = '';
-    }
-    filterBySearchTerm(term: string): void {
-        this._fileManagerService.searchTerm
-            .next(term);
     }
 }

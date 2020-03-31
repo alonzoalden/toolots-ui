@@ -1,21 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { FuseSidebarModule } from '@fuse/components';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
-
-
-import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseSidebarModule } from '@fuse/components';
-
-import { WarehouseService } from 'app/main/warehouse/warehouse.service';
-import { FileManagerComponent } from 'app/main/file-manager/file-manager.component';
-import { FileManagerDetailsSidebarComponent } from 'app/main/file-manager/sidebars/details/details.component';
-import { FileManagerFileListComponent } from 'app/main/file-manager/file-list/file-list.component';
-import { FileManagerMainSidebarComponent } from 'app/main/file-manager/sidebars/main/main.component';
-import { MailComposeDialogComponent } from 'app/main/file-manager/dialogs/compose.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,27 +13,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AuthGuard } from 'app/auth/auth.guard';
 import { WarehouseComponent } from './warehouse.component';
 import { WarehouseDashboardComponent } from './warehouse-dashboard/warehouse-dashboard.component';
-import { AuthGuard } from 'app/auth/auth.guard';
-import { WarehouseItemUpdateService } from './warehouse-item-update/warehouse-item-update.service';
-
-const routes: Routes = [
-    {
-        path: 'warehouse',
-        component: WarehouseComponent,
-        canActivate: [ AuthGuard ],
-        children: [
-          {
-            path: '',
-            component: WarehouseDashboardComponent,
-          },
-        ],
-        resolve: {
-            files: WarehouseService
-        },
-    },
-];
+import { WarehouseItemManagerModule } from './warehouse-item-manager/warehouse-item-manager.module';
+import { WarehouseItemManagerService } from './warehouse-item-manager/warehouse-item-manager.service';
+import { WarehouseOutboundModule } from './warehouse-outbound/warehouse-outbound.module';
+import { WarehouseRouting } from './warehouse.routing';
+import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 
 @NgModule({
     declarations: [
@@ -51,8 +28,7 @@ const routes: Routes = [
         WarehouseDashboardComponent,
     ],
     imports: [
-        RouterModule.forChild(routes),
-
+        WarehouseRouting,
         MatButtonModule,
         MatIconModule,
         MatRippleModule,
@@ -69,16 +45,14 @@ const routes: Routes = [
         MatSelectModule,
         MatToolbarModule,
         FuseSharedModule,
-        FuseSidebarModule
+        FuseSidebarModule,
+        WarehouseItemManagerModule,
+        WarehouseOutboundModule,
     ],
     providers: [
         WarehouseService,
-        WarehouseItemUpdateService,
+        WarehouseItemManagerService,
         AuthGuard
-    ],
-    entryComponents: [
-        MailComposeDialogComponent
     ]
 })
-export class WarehouseModule {
-}
+export class WarehouseModule {}

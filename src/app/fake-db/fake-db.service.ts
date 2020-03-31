@@ -9,9 +9,7 @@ export class FakeDbService implements InMemoryDbService
         return {
             // File Manager
             'file-manager': FileManagerFakeDb.files,
-            'academy-categories': AcademyFakeDb.categories,
             'academy-courses'   : AcademyFakeDb.courses,
-            'academy-course'    : AcademyFakeDb.course,
         };
     }
 }

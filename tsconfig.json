@@ -22,7 +22,8 @@
       "@fuse": [
           "@fuse/"
       ]
-  }
+    },
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": false,

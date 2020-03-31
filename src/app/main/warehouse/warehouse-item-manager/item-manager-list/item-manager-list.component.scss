@@ -1,0 +1,154 @@
+@import "src/@fuse/scss/fuse";
+
+item-manager-list {
+    .list-container {
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+    .sub-header {
+        position: relative;
+        height: 240px;
+        min-height: 240px;
+        max-height: 240px;
+        text-align: center;
+        overflow: hidden;
+        width: 100%;
+        mat-icon {
+            font-size: 24px;
+        }
+        @include media-breakpoint('xs') {
+            padding: 16px;
+        }
+        .breadcrumb {
+            z-index: 1;
+            padding: 0 70px;
+            flex-shrink: 0;
+        }
+        .hero-text {
+            z-index: 0 !important;
+            .hero-icon {
+                position: absolute;
+                top: -64px;
+                left: 0px;
+                opacity: 0.04;
+                font-size: 512px !important;
+                width: 512px !important;
+                height: 512px !important;
+                
+            }
+
+            h1 {
+                font-size: 40px;
+                font-weight: 300;
+                letter-spacing: 0.01em;
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 16px;
+
+                @include media-breakpoint('xs') {
+                    font-size: 24px;
+                }
+            }
+
+            h3 {
+                max-width: 480px;
+                text-align: center;
+                font-weight: 300;
+                letter-spacing: 0.03em;
+                margin: 0;
+
+                @include media-breakpoint('xs') {
+                    font-size: 14px;
+                }
+            }
+        }
+        .toolbar {
+            z-index: 2;
+        }
+        .action-container {
+            display: flex;
+            padding: 0 70px;
+            width: 100%;
+
+            .search-wrapper {
+                z-index: 12 !important;
+                border-radius: 28px;
+                overflow: auto;
+                display: flex;
+                flex: 6;
+                @include mat-elevation(1);
+
+                .sidebar-toggle {
+                    margin: 0 0 0 6px;
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 0;
+                    border-right: 1px solid;
+                }
+
+                .search {
+                    width: 100% !important;
+                    height: 56px;
+                    line-height: 56px;
+                    padding: 0 18px;
+                    mat-icon {
+                        color: #444 !important;
+                    }
+                    input {
+                        flex: 1;
+                        height: 56px;
+                        min-height: 56px;
+                        max-height: 56px;
+                        padding: 0 16px;
+                        border: none;
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .mat-table {
+        background: transparent;
+        box-shadow: none;
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+            min-height: 64px;
+        }
+    }
+    .mat-table__wrapper .mat-table {
+        min-width: auto !important;
+        width: 100% !important;
+    }
+    
+    .mat-header-row {
+        width: 100%;
+    }
+    
+    .mat-row {
+        width: 100%;
+    }
+    .mat-cell {
+        padding-right: 7px; 
+    }
+}
+.mat-column-ItemName {
+    flex: 0 0 25% !important;
+    min-width: 45% !important;
+}
+.mat-column-Actions {
+    flex: 0 0 14% !important;
+    justify-content: center !important;
+    min-width: 14% !important;
+    // .mat-icon-button {
+    //     width: 30px !important;
+    //     height: 30px !important;
+    //     height: 30px !important;
+    // }
+}

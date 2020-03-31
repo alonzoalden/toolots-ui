@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { fuseAnimations } from '@fuse/animations';
 import { WarehouseService } from '../warehouse.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatRipple } from '@angular/material/core';
-import { WarehouseItemUpdateService } from '../warehouse-item-update/warehouse-item-update.service';
+import { WarehouseItemManagerService } from '../warehouse-item-manager/warehouse-item-manager.service';
+import * as linkData from './warehouse-dashboard.links.json';
 
 @Component({
-    selector: 'app-warehouse-dashboard',
+    selector: 'warehouse-dashboard',
     templateUrl: './warehouse-dashboard.component.html',
     styleUrls: ['./warehouse-dashboard.component.scss'],
     animations: fuseAnimations
@@ -23,21 +23,15 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     currentCategory: string;
     searchTerm: string;
     searchEnabled: boolean;
-
     @ViewChild('matRipple') button: MatButton;
-
+    warehouseButtonList =  linkData.links;
 
     // Private
     private _unsubscribeAll: Subject<any>;
-    /**
-     * Constructor
-     *
-     * @param {AcademyCoursesService} _academyCoursesService
-     */
     constructor(
-        private _academyCoursesService: WarehouseService,
+        private warehouseService: WarehouseService,
         private router: Router,
-        private warehouseItemUpdateService: WarehouseItemUpdateService
+        private warehouseItemManagerService: WarehouseItemManagerService
     ) {
         // Set the defaults
         this.currentCategory = 'all';
@@ -47,31 +41,17 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
         // Subscribe to categories
-        this._academyCoursesService.onCategoriesChanged
+        this.warehouseService.onCategoriesChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(categories => {
                 this.categories = categories;
             });
 
-        // Subscribe to courses
-        this._academyCoursesService.onCoursesChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(courses => {
-                this.filteredCourses = this.coursesFilteredByCategory = this.courses = courses;
-            });
+        // Subscribe/retreive Dashboard components
+        this.filteredCourses = this.courses = this.warehouseButtonList;
     }
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -99,28 +79,8 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     goto(url) {
         this.router.navigate([url]);
     }
-    filterCoursesByCategory(): void {
-        // Filter
-        if (this.currentCategory === 'all') {
-            this.coursesFilteredByCategory = this.courses;
-            this.filteredCourses = this.courses;
-        }
-        else {
-            this.coursesFilteredByCategory = this.courses.filter((course) => {
-                return course.category === this.currentCategory;
-            });
-
-            this.filteredCourses = [...this.coursesFilteredByCategory];
-
-        }
-
-        // Re-filter by search term
-        this.filterCoursesByTerm();
-    }
-
     filterCoursesByTerm(): void {
         const searchTerm = this.searchTerm.toLowerCase();
-
         // Search
         if (searchTerm === '') {
             this.filteredCourses = this.coursesFilteredByCategory;

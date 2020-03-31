@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-#academy-courses {
+#warehouse-dashboard {
     .toolbar {
         .right-side {
             cursor: pointer;
@@ -89,6 +89,8 @@
             .title {
                 margin-top: 10px;
                 text-align: center;
+                overflow: hidden;
+                width: 170px;
             }
         }
         .category-selector {

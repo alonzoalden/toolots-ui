@@ -19,8 +19,6 @@ import { fuseConfig } from 'app/fuse-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
-import { FileManagerModule } from './main/file-manager/file-manager.module';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FakeDbService } from './fake-db/fake-db.service';
 import { LandingPageModule } from './main/landing/landing.module';
@@ -32,10 +30,8 @@ import { WarehouseModule } from './main/warehouse/warehouse.module';
 import { Error404Module } from './main/errors/404/error-404.module';
 import { Error500Module } from './main/errors/500/error-500.module';
 import { AppService } from './app.service';
-import { WarehouseItemUpdateModule } from './main/warehouse/warehouse-item-update/warehouse-item-update.module';
 import { SnackbarComponent } from './shared/components/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { WarehouseOutboundModule } from './main/warehouse/warehouse-outbound/warehouse-outbound.module';
 
 const appRoutes: Routes = [
     {
@@ -85,13 +81,9 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         LandingPageModule,
-        SampleModule,
-        // FileManagerModule,
-        WarehouseItemUpdateModule,
-        WarehouseOutboundModule,
         WarehouseModule,
         Error404Module,
-        Error500Module,
+        Error500Module
     ],
     providers: [
         AppService,

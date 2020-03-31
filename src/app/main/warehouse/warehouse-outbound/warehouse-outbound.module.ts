@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AuthGuard } from 'app/auth/auth.guard';
 import { WarehouseOutboundComponent } from './warehouse-outbound.component';
 import { WarehouseOutboundService } from './warehouse-outbound.service';
 import { WarehouseOutboundListComponent } from './outbound-list/outbound-list.component';
@@ -26,26 +25,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-// import { CartonInformationDialogComponent } from './dialogs/carton-information/carton-information.component';
-// import { PotentialLocationDialogComponent } from './dialogs/potential-location/potential-location.component';
-// import { InventoryDetailDialogComponent } from './dialogs/inventory-detail/inventory-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { WarehouseOutboundDetailsSidebarComponent } from './sidebars/outbound-details/outbound-details.component';
-// import { PrintLabelDialogComponent } from './dialogs/print-label/print-label.component';
+import { WarehouseOutboundDetailsSidebarComponent } from './outbound-sidebars/outbound-details/outbound-details.component';
 
-const routes: Routes = [
-    {
-        path: 'warehouse-outbound',
-        component: WarehouseOutboundComponent,
-        canActivate: [ AuthGuard ],
-        children: [
-            {
-              path: '',
-              component: WarehouseOutboundListComponent,
-            }
-        ]
-    }
-];
+const routes: Routes = [];
 
 @NgModule({
     declarations: [

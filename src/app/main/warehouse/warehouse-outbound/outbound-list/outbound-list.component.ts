@@ -10,14 +10,13 @@ import { environment } from 'environments/environment';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-update/dialogs/compose.component';
+import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-manager/dialogs/edit-dimensions/edit-dimensions.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { Fulfillment } from 'app/shared/class/fulfillment';
 
-
 @Component({
-    selector: 'file-list',
+    selector: 'outbound-list',
     templateUrl: './outbound-list.component.html',
     styleUrls: ['./outbound-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
@@ -47,22 +46,11 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar
     ) {
-        // Set the private defaults
-        // this.dataSource = new MatTableDataSource<ItemList>([]);
-        // this.dataSource.sort = this.sort;
-        // this.dataSource.paginator = this.paginator;
         this._unsubscribeAll = new Subject();
         this.searchTerm = '';
         this.searchEnabled = false;
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
 
         this.warehouseItemUpdateService.onFileSelected.next({});
@@ -91,28 +79,15 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             });
     }
 
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On select
-     *
-     * @param selected
-     */
     onSelect(selected: Fulfillment): void {
         this.warehouseItemUpdateService.onFileSelected.next(selected);
         this.warehouseItemUpdateService.getFulfillment(selected.FulfillmentID).subscribe();
-        // .subscribe(item => this.selected.Dimensions.push(item));
     }
 
     /**
@@ -159,7 +134,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
-            panelClass: 'mail-compose-dialog'
+            panelClass: 'edit-dimensions-dialog'
         });
         this.dialogRef.afterClosed()
             .subscribe(response => {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { Member } from './shared/class/member';
 
@@ -11,14 +11,16 @@ import { Member } from './shared/class/member';
 })
 export class AppService {
     wasLoggedIn: boolean;
-    userInfo: any;
+    userInfo: BehaviorSubject<any>;
     member: Member;
     private apiURL = environment.webapiURL;
 
     constructor(
         private oauthService: OAuthService,
         private _httpClient: HttpClient
-    ) { }
+    ) {
+        this.userInfo = new BehaviorSubject({});
+    }
     get isLoggedin() {
         return (this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken());
     }
@@ -44,7 +46,7 @@ export class AppService {
         return this._httpClient.get<any>(this.apiURL + '/member/current')
             .pipe(
                 tap(data => {
-                    this.member = data;
+                    this.userInfo = data;
                 }),
                 catchError(this.handleError)
             );

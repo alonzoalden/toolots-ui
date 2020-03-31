@@ -1,0 +1,14 @@
+{
+    "links": [
+        {
+            "title": "Item Management",
+            "slug": "warehouse/warehouse-item-update",
+            "icon": "build"
+        },
+        {
+            "title": "Outbound",
+            "slug": "warehouse/outbound",
+            "icon": "next_week"
+        }
+    ]
+}

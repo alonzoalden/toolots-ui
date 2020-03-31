@@ -28,9 +28,12 @@
             <button mat-button [matMenuTriggerFor]="userMenu"
                     class="user-button">
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <img class="avatar mr-0 mr-sm-16" src="assets/images/avatar.jpg">
-                    <span class="username mr-12" fxHide fxShow.gt-sm>Alonzo Alden</span>
-                    <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+                    <ng-container *ngIf="userInfo.MemberID">
+                        <!-- <img class="avatar mr-0 mr-sm-16" src=userInfo.ProfileImagePath> -->
+                        <img class="avatar mr-0 mr-sm-16" src="assets/images/avatar.jpg">
+                        <span class="username mr-12" fxHide fxShow.gt-sm>{{ userInfo.FirstName }} {{ userInfo.LastName }}</span>
+                        <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+                    </ng-container>
                 </div>
             </button>
 
@@ -59,7 +62,7 @@
 
             <div class="toolbar-separator"></div>
 
-            <button mat-button fxHide fxShow.gt-xs
+            <!-- <button mat-button fxHide fxShow.gt-xs
                     class="language-button"
                     [matMenuTriggerFor]="languageMenu">
                 <div fxLayout="row" fxLayoutAlign="center center">
@@ -93,7 +96,7 @@
             <button mat-icon-button class="navbar-toggle-button"
                     *ngIf="!hiddenNavbar && rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
                 <mat-icon class="secondary-text">menu</mat-icon>
-            </button>
+            </button> -->
 
         </div>
 

@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-file-list {
+outbound-list {
     .list-container {
         height: 100%;
         max-height: 100%;
@@ -24,7 +24,9 @@ file-list {
             padding: 16px;
         }
         .breadcrumb {
+            flex-shrink: 0;
             z-index: 1;
+            padding: 0 70px;
         }
         .hero-text {
             z-index: 0 !important;
@@ -109,11 +111,17 @@ file-list {
             }
         }
     }
-
+    .loader {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .mat-table {
+        flex-grow: 1;
+        overflow: auto;
         background: transparent;
         box-shadow: none;
-
         .mat-row {
             position: relative;
             cursor: pointer;

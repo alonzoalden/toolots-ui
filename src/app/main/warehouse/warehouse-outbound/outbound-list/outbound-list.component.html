@@ -1,9 +1,8 @@
-<div class="list-container">
+<div class="main-list-layout list-container">
         
     <!-- HEADER  -->
     <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
-        <div class="breadcrumb text-truncate h1 p24" style="padding: 0 70px;flex-shrink: 0"
-                [@animate]="{value:'*',params:{x:'50px'}}">
+        <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'50px'}}">
             <div fxLayout="row" fxLayoutAlign="start center">
                 <h1 fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button routerLink="'/warehouse'"><mat-icon>business</mat-icon> </button>
@@ -31,15 +30,13 @@
     </div>
     <!-- /HEADER  -->
     
-    <div *ngIf="isLoading" style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+    <div *ngIf="isLoading" class="loader">
         <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
     </div>
     
 
-    <mat-table *ngIf="!isLoading"
-                    style="flex-grow: 1; overflow: auto;"
-                    #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" matSort>
-
+    <mat-table *ngIf="!isLoading" #table [dataSource]="dataSource"
+                [@animateStagger]="{value:'50'}" matSort>
         <!-- Type Column -->
         <ng-container matColumnDef="ImagePath">
             <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
@@ -91,21 +88,6 @@
                     <button mat-menu-item (click)="composeDialog()">
                         <mat-icon>build</mat-icon> Edit Dimensions
                     </button>
-                    <!-- <hr>
-                    <button mat-menu-item (click)="composeDialogInventoryDetails()">
-                        <mat-icon>notes</mat-icon> View Inventory Detail
-                    </button>
-                    <button mat-menu-item (click)="composeDialogCartons()">
-                        <mat-icon>library_books</mat-icon> View Carton Information
-                    </button>
-                    <button mat-menu-item (click)="composeDialogPotentialLocations()">
-                        <mat-icon>location_on</mat-icon> View Potential Location
-                    </button>
-                    <hr>
-                    <button mat-menu-item (click)="composeDialogPrintLabel()">
-                        <mat-icon>print</mat-icon> Print Label
-                    </button> -->
-                    
                 </mat-menu>
             </mat-cell>
         </ng-container>

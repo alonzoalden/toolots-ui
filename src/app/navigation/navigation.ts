@@ -14,6 +14,7 @@ export const navigation: FuseNavigation[] = [
                 type     : 'collapsable',
                 icon     : 'business',
                 url      : '/warehouse',
+                exactMatch: true,
                 children : [
                     {
                         id       : 'itemupdate',
@@ -21,13 +22,8 @@ export const navigation: FuseNavigation[] = [
                         translate: 'NAV.ITEMUPDATE',
                         type     : 'item',
                         icon     : 'build',
-                        url      : '/warehouse-item-update',
-                        // badge    : {
-                        //     title    : '25',
-                        //     translate: 'NAV.SAMPLE.BADGE',
-                        //     bg       : '#F44336',
-                        //     fg       : '#FFFFFF'
-                        // }
+                        url      : '/warehouse/warehouse-item-update',
+                        exactMatch: true
                     },
                     {
                         id       : 'outbound',
@@ -35,22 +31,11 @@ export const navigation: FuseNavigation[] = [
                         translate: 'NAV.OUTBOUND',
                         type     : 'item',
                         icon     : 'next_week',
-                        url      : '/warehouse-outbound',
-                        // badge    : {
-                        //     title    : '25',
-                        //     translate: 'NAV.SAMPLE.BADGE',
-                        //     bg       : '#F44336',
-                        //     fg       : '#FFFFFF'
-                        // }
+                        url      : '/warehouse/outbound',
+                        exactMatch: true
                     }
 
                 ]
-                // badge    : {
-                //     title    : '25',
-                //     translate: 'NAV.SAMPLE.BADGE',
-                //     bg       : '#F44336',
-                //     fg       : '#FFFFFF'
-                // }
             }
         ]
     }
