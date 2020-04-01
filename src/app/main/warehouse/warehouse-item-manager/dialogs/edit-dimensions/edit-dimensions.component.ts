@@ -60,7 +60,7 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(): void {
-        this.warehouseItemManagerService.onFileSelected
+        this.warehouseItemManagerService.onItemSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
@@ -117,7 +117,7 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
             .subscribe(
                 data => {
                     this.selected.Data = data;
-                    this.warehouseItemManagerService.onFileSelected.next(this.selected);
+                    this.warehouseItemManagerService.onItemSelected.next(this.selected);
                     this.matDialogRef.close(this.selected);
                 },
                 error => {

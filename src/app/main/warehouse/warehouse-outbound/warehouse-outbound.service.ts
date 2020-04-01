@@ -7,8 +7,7 @@ import { Fulfillment } from 'app/shared/class/fulfillment';
 
 @Injectable()
 export class WarehouseOutboundService {
-    onFilesChanged: BehaviorSubject<any>;
-    onFileSelected: BehaviorSubject<any>;
+    onFulfillmentSelected: BehaviorSubject<any>;
     outboundList: BehaviorSubject<any>;
     isEdit: BehaviorSubject<any>;
     filteredCourses: any[];
@@ -21,7 +20,7 @@ export class WarehouseOutboundService {
         private _httpClient: HttpClient,
     ) {
         // Set the defaults
-        this.onFileSelected = new BehaviorSubject({});
+        this.onFulfillmentSelected = new BehaviorSubject({});
         this.outboundList = new BehaviorSubject([]);
         this.isEdit = new BehaviorSubject({});
         this.searchTerm = new BehaviorSubject('');
@@ -41,8 +40,8 @@ export class WarehouseOutboundService {
         return this._httpClient.get<any>(this.apiURL + '/fulfillment/' + id)
             .pipe(
                 tap(data => {
-                    this.onFileSelected.value.Data = data;
-                    this.onFileSelected.next(this.onFileSelected.value);
+                    this.onFulfillmentSelected.value.FulfillmentLines = data;
+                    this.onFulfillmentSelected.next(this.onFulfillmentSelected.value);
                 }),
                 catchError(this.handleError)
             );

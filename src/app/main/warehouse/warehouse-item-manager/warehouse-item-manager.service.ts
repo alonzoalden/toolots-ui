@@ -7,8 +7,7 @@ import { Item } from 'app/shared/class/item';
 
 @Injectable()
 export class WarehouseItemManagerService implements OnDestroy {
-    onFilesChanged: BehaviorSubject<any>;
-    onFileSelected: BehaviorSubject<any>;
+    onItemSelected: BehaviorSubject<any>;
     allItemList: BehaviorSubject<any>;
     isEdit: BehaviorSubject<any>;
     filteredCourses: any[];
@@ -20,8 +19,7 @@ export class WarehouseItemManagerService implements OnDestroy {
     constructor(
         private _httpClient: HttpClient,
     ) {
-        this.onFilesChanged = new BehaviorSubject({});
-        this.onFileSelected = new BehaviorSubject({});
+        this.onItemSelected = new BehaviorSubject({});
         this.allItemList = new BehaviorSubject([]);
         this.isEdit = new BehaviorSubject({});
         this.searchTerm = new BehaviorSubject('');
@@ -63,8 +61,8 @@ export class WarehouseItemManagerService implements OnDestroy {
         return this._httpClient.get<any>(this.apiURL + '/item/' + id)
             .pipe(
                 tap(data => {
-                    this.onFileSelected.value.Data = data;
-                    this.onFileSelected.next(this.onFileSelected.value);
+                    this.onItemSelected.value.Data = data;
+                    this.onItemSelected.next(this.onItemSelected.value);
                 }),
                 catchError(this.handleError)
             );

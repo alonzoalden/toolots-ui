@@ -60,7 +60,7 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.warehouseItemManagerService.onFileSelected
+        this.warehouseItemManagerService.onItemSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;

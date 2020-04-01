@@ -42,13 +42,6 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        // Subscribe to categories
-        this.warehouseService.onCategoriesChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(categories => {
-                this.categories = categories;
-            });
-
         // Subscribe/retreive Dashboard components
         this.filteredCourses = this.courses = this.warehouseButtonList;
     }

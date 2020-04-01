@@ -55,7 +55,7 @@ export class CartonInformationDialogComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(): void {
-        this.warehouseItemManagerService.onFileSelected
+        this.warehouseItemManagerService.onItemSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;

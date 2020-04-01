@@ -27,7 +27,10 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     fileURL = environment.fileURL;
     files: any;
     dataSource: any;
-    displayedColumns = ['Actions', 'ImagePath', 'ItemName', 'TPIN', 'VendorSKU', 'detail-button'];
+    // displayedColumns = ['Actions', 'FulfillmentNumber',
+    //     'TransactionDate', 'ShippingMethod', 'PickedUpBy', 'PickedUpOn', 'PickConfirmedBy', 'PickConfirmedOn', 'PickedBy',
+    //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingType'];
+    displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate', 'ShippingMethod'];
     selected: any;
     isLoading: boolean;
     filteredCourses: any[];
@@ -55,24 +58,19 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this.warehouseOutboundService.onFileSelected.next({});
-        this.warehouseOutboundService.onFileSelected
+        this.warehouseOutboundService.onFulfillmentSelected.next({});
+        this.warehouseOutboundService.onFulfillmentSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
             });
         this.isLoading = true;
+        this.refreshFulfillments();
 
-        this.warehouseOutboundService.getFulfillmentList()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(items => {
-                if (items.length) {
-                    this.dataSource = new MatTableDataSource<ItemList>(items);
-                    this.dataSource.sort = this.sort;
-                    this.dataSource.paginator = this.paginator;
-                }
-                this.isLoading = false;
-            });
+        // Refresh Fulfillments List every 5 seconds
+        setInterval(() => {
+            this.refreshFulfillments();
+        }, 5000);
     }
 
     ngOnDestroy(): void {
@@ -82,15 +80,48 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(selected: Fulfillment): void {
-        this.warehouseOutboundService.onFileSelected.next(selected);
+        this.warehouseOutboundService.onFulfillmentSelected.next(selected);
         this.warehouseOutboundService.getFulfillment(selected.FulfillmentID).subscribe();
     }
 
-    /**
-     * Toggle the sidebar
-     *
-     * @param name
-     */
+    refreshFulfillments() {
+        // this.isLoading = true;
+        this.warehouseOutboundService.getFulfillmentList()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(items => {
+                if (items.length) {
+
+                    // if dataSource already exists, just replace dataSource.data with items
+                    if (this.dataSource) {
+                        this.dataSource.data = items;
+
+                        // if something is already selected
+                        if (this.selected.FulfillmentID) {
+                            this.reselectAfterRefresh();
+                        }
+                    }
+
+                    // create dataSource when we first get items
+                    else {
+                        this.dataSource = new MatTableDataSource<Fulfillment>(items);
+                        this.dataSource.sort = this.sort;
+                        this.dataSource.paginator = this.paginator;
+                        this.isLoading = false;
+                    }
+                }
+            });
+    }
+
+    reselectAfterRefresh() {
+        const foundItem = this.dataSource.data.find((item: Fulfillment) => item.FulfillmentID === this.selected.FulfillmentID);
+        if (foundItem) {
+            this.warehouseOutboundService.onFulfillmentSelected.next(foundItem);
+        }
+        else {
+            console.log('your selected item has been removed from the list');
+        }
+    }
+
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
@@ -126,7 +157,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
-        this.warehouseOutboundService.onFileSelected.next({});
+        this.warehouseOutboundService.onFulfillmentSelected.next({});
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {

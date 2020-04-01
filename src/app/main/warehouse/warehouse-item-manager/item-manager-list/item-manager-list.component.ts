@@ -63,14 +63,14 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
 
-        // this.warehouseItemManagerService.onFileSelected.next({});
+        // this.warehouseItemManagerService.onItemSelected.next({});
         // this.warehouseItemManagerService.onFilesChanged
         //     .pipe(takeUntil(this._unsubscribeAll))
         //     .subscribe(files => {
         //         this.files = files;
         //     });
 
-        this.warehouseItemManagerService.onFileSelected
+        this.warehouseItemManagerService.onItemSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
@@ -96,7 +96,7 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(selected: ItemList): void {
-        this.warehouseItemManagerService.onFileSelected.next(selected);
+        this.warehouseItemManagerService.onItemSelected.next(selected);
         this.warehouseItemManagerService.getItemDimension(selected.ItemID).subscribe();
         // .subscribe(item => this.selected.Dimensions.push(item));
     }
@@ -133,7 +133,7 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
-        this.warehouseItemManagerService.onFileSelected.next({});
+        this.warehouseItemManagerService.onItemSelected.next({});
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {

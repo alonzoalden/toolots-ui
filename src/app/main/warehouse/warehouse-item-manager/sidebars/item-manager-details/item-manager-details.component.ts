@@ -78,7 +78,7 @@ export class WarehouseItemManagerDetailsSidebarComponent implements OnInit, OnDe
             }
         );
 
-        this._fileManagerService.onFileSelected
+        this._fileManagerService.onItemSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;

@@ -34,46 +34,91 @@
         <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
     </div>
     
-
     <mat-table *ngIf="!isLoading" #table [dataSource]="dataSource"
                 [@animateStagger]="{value:'50'}" matSort>
         <!-- Type Column -->
-        <ng-container matColumnDef="ImagePath">
-            <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
-            <mat-cell *matCellDef="let row" fxFlex="64px">
-                <img *ngIf="row.ImagePath" src="{{fileURL}}{{row.ImagePath}}">
-            </mat-cell>
+        <ng-container matColumnDef="FulfillmentNumber">
+            <mat-header-cell *matHeaderCellDef>Fulfillment #</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.FulfillmentNumber }}</mat-cell>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="ItemName">
-            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-            <mat-cell *matCellDef="let row" width="40%"> {{row.ItemName}}</mat-cell>
+        <ng-container matColumnDef="TransactionDate">
+            <mat-header-cell *matHeaderCellDef>TransactionDate</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.TransactionDate | date}}</mat-cell>
         </ng-container>
 
         <!-- Type Column -->
-        <ng-container matColumnDef="TPIN">
-            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>TPIN</mat-header-cell>
-            <mat-cell *matCellDef="let row" fxHide fxShow.gt-md width="20%"> {{row.TPIN}}</mat-cell>
+        <ng-container matColumnDef="ShippingMethod">
+            <mat-header-cell *matHeaderCellDef>Shipping Method</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.ShippingMethod}}</mat-cell>
         </ng-container>
 
         <!-- Owner Column -->
-        <ng-container matColumnDef="VendorSKU">
-            <mat-header-cell *matHeaderCellDef fxHide.xs>Vendor SKU</mat-header-cell>
-            <mat-cell *matCellDef="let row" fxHide.xs width="20%"> {{row.VendorSKU}}</mat-cell>
+        <ng-container matColumnDef="PickedUpBy">
+            <mat-header-cell *matHeaderCellDef>Picked Up By</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.PickedUpBy}}</mat-cell>
         </ng-container>
 
         <!-- Size Column -->
-        <ng-container matColumnDef="FOBPrice">
-            <mat-header-cell *matHeaderCellDef fxHide.xs>FOB Price</mat-header-cell>
-            <mat-cell *matCellDef="let row" fxHide.xs width="20%">{{row.FOBPrice}}</mat-cell>
+        <ng-container matColumnDef="PickedUpOn">
+            <mat-header-cell *matHeaderCellDef>Picked Up On</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PickedUpOn}}</mat-cell>
         </ng-container>
 
         <!-- Modified Column -->
-        <ng-container matColumnDef="Description">
-            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Description</mat-header-cell>
-            <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>{{row.Description}}</mat-cell>
+        <ng-container matColumnDef="PickConfirmedBy">
+            <mat-header-cell *matHeaderCellDef>Pick Confirmed By</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PickConfirmedBy}}</mat-cell>
         </ng-container>
+
+        <ng-container matColumnDef="PickConfirmedOn">
+            <mat-header-cell *matHeaderCellDef>Pick Confirmed On</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PickConfirmedOn}}</mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="PickedBy">
+            <mat-header-cell *matHeaderCellDef>Pick By</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PickedBy}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="PackedBy">
+            <mat-header-cell *matHeaderCellDef>PackedBy</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PackedBy}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="PackedOn">
+            <mat-header-cell *matHeaderCellDef>PackedOn</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PackedOn}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ShippedBy">
+            <mat-header-cell *matHeaderCellDef>Shipped By</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.ShippedBy}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ShippedOn">
+            <mat-header-cell *matHeaderCellDef>Shipped On</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.ShippedOn}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="PickedOn">
+            <mat-header-cell *matHeaderCellDef>Picked On</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.PickedOn}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="HasMissingItem">
+            <mat-header-cell *matHeaderCellDef>Has Missing Item</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.HasMissingItem}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ShippingType">
+            <mat-header-cell *matHeaderCellDef>Shipping Type</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.ShippingType}}</mat-cell>
+        </ng-container>
+
+        
 
         <!-- Modified Column -->
         <ng-container matColumnDef="Actions">
@@ -109,7 +154,7 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"
                 (click)="onSelect(row)"
                 [ngClass]="{'selected' : row == selected}"
-                [@animate]="{value:'*',params:{y:'100%'}}"
+                [@animate]="!selected && {value:'*',params:{y:'100%'}}"
         >
         </mat-row>
     </mat-table>

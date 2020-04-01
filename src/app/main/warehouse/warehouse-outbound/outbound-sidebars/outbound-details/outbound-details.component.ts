@@ -32,7 +32,7 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
     }
 
     ngOnInit(): void {
-        this._fileManagerService.onFileSelected
+        this._fileManagerService.onFulfillmentSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
