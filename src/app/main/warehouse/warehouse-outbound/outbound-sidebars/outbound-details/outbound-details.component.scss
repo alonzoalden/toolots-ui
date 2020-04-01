@@ -3,18 +3,18 @@
     flex-direction: column;
     flex: 1 1 auto;
     height: 100%;
-
+    z-index: 1;
     .header {
         flex: 0 1 auto;
         height: 240px;
         min-height: 240px;
         max-height: 240px;
-        button {
-            background-color: #fff;
-            mat-icon {
-                color: black;
-            }
-        }
+        // button {
+        //     background-color: #fff;
+        //     mat-icon {
+        //         color: black;
+        //     }
+        // }
         .header-content {
             height: 100%;
             flex: 1;
@@ -26,6 +26,9 @@
             .main-action {
                 width: 170px;
                 height: 72px;
+            }
+            .subtitle > span {
+                font-size: 20px;
             }
         }
         .preview {

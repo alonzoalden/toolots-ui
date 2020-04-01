@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
@@ -22,9 +22,10 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
         4: 'LTL',
         5: 'Small Parcel',
     };
+    @ViewChild('scrollContainer') scrollContainerEl: ElementRef;
     private _unsubscribeAll: Subject<any>;
     constructor(
-        private _fileManagerService: WarehouseOutboundService,
+        private warehouseOutboundService: WarehouseOutboundService,
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
     ) {
@@ -32,10 +33,13 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
     }
 
     ngOnInit(): void {
-        this._fileManagerService.onFulfillmentSelected
+        this.warehouseOutboundService.onFulfillmentSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
                 this.selected = selected;
+                if (this.scrollContainerEl) {
+                    this.scrollContainerEl.nativeElement.scrollTop = 0;
+                }
             });
     }
 
@@ -43,7 +47,8 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
-    closeSidebar(): void {
-        this._fuseSidebarService.getSidebar('outbound-details-sidebar').toggleOpen();
+    clearSelected(): void {
+        this.warehouseOutboundService.onFulfillmentSelected.next({});
+        // this._fuseSidebarService.getSidebar('outbound-details-sidebar').toggleOpen();
     }
 }

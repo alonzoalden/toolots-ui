@@ -65,23 +65,16 @@ export class PotentialLocationDialogComponent implements OnInit, OnDestroy {
                     this.dataSource = new MatTableDataSource<ItemList>(selected.Data.ItemPotentialLocations);
                     this.dataSource.sort = this.sort;
                     this.dataSource.paginator = this.paginator;
-                    // this.composeForm = this.createProductForm();
                 }
             });
     }
     ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
-
-    /**
-     * Toggle extra to fields
-     */
     toggleExtraToFields(): void {
         this.showExtraToFields = !this.showExtraToFields;
     }
-
     close(): void {
         this.matDialogRef.close();
     }

@@ -14,10 +14,10 @@
             <div class="search-wrapper">
                 <div class="search" fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon class="secondary-text">search</mat-icon>
-                    <input [disabled]="isLoading" (keyup)="applyFilter(searchTerm)" [(ngModel)]="searchTerm"
+                    <input [disabled]="isLoading" [(ngModel)]="searchTerm"
                         [placeholder]="isLoading ? 'Please wait...' : 'Search Item'">
-                    <button mat-icon-button (click)="searchTerm = '';">
-                        <mat-icon>clear</mat-icon>
+                    <button mat-icon-button *ngIf="searchTerm" (click)="searchTerm = ''; applyFilter(searchTerm)">
+                        <mat-icon matTooltip="Clear">clear</mat-icon>
                     </button>
                 </div>
             </div>

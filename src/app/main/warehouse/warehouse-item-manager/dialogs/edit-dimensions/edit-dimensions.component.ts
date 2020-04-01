@@ -1,5 +1,5 @@
 import { Component, Inject, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WarehouseItemManagerService } from '../../warehouse-item-manager.service';
 import { takeUntil } from 'rxjs/operators';
@@ -35,12 +35,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         'KG'
     ];
 
-    /**
-     * Constructor
-     *
-     * @param {MatDialogRef<MailComposeDialogComponent>} matDialogRef
-     * @param _data
-     */
     constructor(
         private _formBuilder: FormBuilder,
         public matDialogRef: MatDialogRef<MailComposeDialogComponent>,
@@ -48,7 +42,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         private _snackBar: MatSnackBar,
         @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
-        // Set the defaults
         this._unsubscribeAll = new Subject();
         this.selected = new ItemList(null, null, null, null, null, null
             , new Item(null, null, null, null, null,
@@ -75,10 +68,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
     createProductForm(): FormGroup {
         return this._formBuilder.group({
             ItemID: [this.selected.ItemID],
@@ -104,9 +93,6 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
         });
     }
 
-    /**
-     * Toggle extra to fields
-     */
     toggleExtraToFields(): void {
         this.showExtraToFields = !this.showExtraToFields;
     }

@@ -29,7 +29,6 @@
 
         <div *ngIf="userInfo" class="h3 username">{{userInfo.FirstName}} {{userInfo.LastName}}</div>
         <div class="h5 email hint-text mt-8">Warehouse</div>
-        <!-- <div class="h5 email hint-text mt-8">WeChat ID: alonzoalden</div> -->
         <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
             <img *ngIf="userInfo.ProfileImagePath" class="avatar" src=userInfo.ProfileImagePath>
             <mat-icon *ngIf="!userInfo.ProfileImagePath" class="avatar">account_circle</mat-icon>

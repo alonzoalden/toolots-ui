@@ -63,13 +63,7 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
 
-        // this.warehouseItemManagerService.onItemSelected.next({});
-        // this.warehouseItemManagerService.onFilesChanged
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(files => {
-        //         this.files = files;
-        //     });
-
+        this.warehouseItemManagerService.onItemSelected.next({});
         this.warehouseItemManagerService.onItemSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {

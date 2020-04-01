@@ -30,7 +30,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     // displayedColumns = ['Actions', 'FulfillmentNumber',
     //     'TransactionDate', 'ShippingMethod', 'PickedUpBy', 'PickedUpOn', 'PickConfirmedBy', 'PickConfirmedOn', 'PickedBy',
     //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingType'];
-    displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate', 'ShippingMethod'];
+    displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate'];
     selected: any;
     isLoading: boolean;
     filteredCourses: any[];
@@ -40,7 +40,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     dialogRef: any;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
-
+    interval: any;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -68,15 +68,16 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         this.refreshFulfillments();
 
         // Refresh Fulfillments List every 5 seconds
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.refreshFulfillments();
-        }, 5000);
+        }, 20000);
     }
 
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+        clearInterval(this.interval);
     }
 
     onSelect(selected: Fulfillment): void {
