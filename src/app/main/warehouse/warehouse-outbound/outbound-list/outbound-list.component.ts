@@ -85,8 +85,11 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(selected: Fulfillment): void {
+        this.searchTerm = selected.FulfillmentNumber;
         this.warehouseOutboundService.onFulfillmentSelected.next(selected);
-        this.warehouseOutboundService.getFulfillment(selected.FulfillmentID).subscribe();
+        this.warehouseOutboundService.getFulfillment(selected.FulfillmentID)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe();
     }
 
     refreshFulfillments() {
