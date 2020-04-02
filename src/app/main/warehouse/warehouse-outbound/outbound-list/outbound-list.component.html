@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div style="width: 12px;"></div>
-            <button color="primary" mat-fab (click)="applySearch(searchTerm)">Search</button>
+            <button [disabled]="selected.FulfillmentNumber?.toLowerCase() === searchTerm.toLowerCase()" color="primary" mat-fab (click)="applySearch(searchTerm)">Search</button>
         </div>
         <div class="hero-text">
             <mat-icon class="hero-icon">next_week</mat-icon>
