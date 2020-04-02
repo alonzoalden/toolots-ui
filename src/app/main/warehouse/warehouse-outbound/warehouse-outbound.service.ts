@@ -54,6 +54,10 @@ export class WarehouseOutboundService {
             );
     }
 
+    clearSelected() {
+        this.onFulfillmentSelected.next({});
+    }
+
     handleError = (err: HttpErrorResponse) => {
         let errorMessage: string;
         if (err.error instanceof Error) {

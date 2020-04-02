@@ -8,6 +8,12 @@ item-manager-list {
         display: flex;
         flex-direction: column;
         padding: 0;
+        .center-box-message {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
     .sub-header {
         position: relative;
@@ -111,7 +117,16 @@ item-manager-list {
             }
         }
     }
-
+    
+    .item-list {
+        flex-grow: 1; overflow: auto;
+    }
+    .loader {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .mat-table {
         background: transparent;
         box-shadow: none;
@@ -138,11 +153,11 @@ item-manager-list {
         padding-right: 7px; 
     }
 }
-.mat-column-ItemName {
+.item-list .mat-column-ItemName {
     flex: 0 0 25% !important;
     min-width: 45% !important;
 }
-.mat-column-Actions {
+.item-list .mat-column-Actions {
     flex: 0 0 14% !important;
     justify-content: center !important;
     min-width: 14% !important;

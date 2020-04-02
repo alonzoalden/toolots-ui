@@ -1,7 +1,8 @@
 <!-- SIDEBAR HEADER -->
 <div class="header accent" fxLayout="column" fxLayoutAlign="space-between">
     <div class="header-content p-16">
-        <div *ngIf="selected.FulfillmentID" class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+        <div *ngIf="selected && selected.FulfillmentID" class="toolbar" fxLayout="row" fxLayoutAlign="space-between center"
+            [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
             <div class="subtitle secondary-text">
                 <span>{{selected.FulfillmentNumber}}</span>
             </div>
@@ -26,7 +27,8 @@
         <div *ngIf="!selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span>No item selected</span>
         </div>
-        <div *ngIf="selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center">
+        <div *ngIf="selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center"
+            [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
             <button class="main-action" mat-raised-button color=primary>PACK</button>
         </div>
     </div>
@@ -41,62 +43,53 @@
         </div>
     </div> -->
     <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
-        <table>
+        <table [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+            <tr class="owner">
+                <th>Shipping Type</th>
+                <td>{{ dictPackingType[selected.ShippingType] }}</td>
+            </tr>
+            <tr class="owner">
+                <th>Shipping Method</th>
+                <td>{{ selected.ShippingMethod }}</td>
+            </tr>
             <tr class="owner">
                 <th>Picked Up By</th>
-                <td>{{selected.PickedUpBy}}</td>
+                <td>{{ selected.PickedUpBy }}</td>
             </tr>
             <tr class="owner">
                 <th>Picked Up On</th>
-                <td>{{selected.PickedUpOn | date}}</td>
+                <td>{{ selected.PickedUpOn | date }}</td>
             </tr>
             
             <tr class="owner">
                 <th>Pick Confirmed By</th>
-                <td>{{selected.PickConfirmedBy}}</td>
+                <td>{{ selected.PickConfirmedBy }}</td>
             </tr>
             <tr class="owner">
                 <th>Pick Confirmed On</th>
-                <td>{{selected.PickConfirmedOn | date}}</td>
+                <td>{{ selected.PickConfirmedOn | date }}</td>
             </tr>
             <tr class="owner">
                 <th>Picked By</th>
-                <td>{{selected.PickedBy }}</td>
+                <td>{{ selected.PickedBy }}</td>
             </tr>
             <tr class="owner">
                 <th>Picked On</th>
-                <td>{{selected.PickedOn | date }}</td>
+                <td>{{ selected.PickedOn | date }}</td>
             </tr>
         
             <tr class="owner">
                 <th>Packed By</th>
-                <td>{{selected.PackedBy}}</td>
+                <td>{{ selected.PackedBy }}</td>
             </tr>
             <tr class="owner">
                 <th>Packed On</th>
-                <td>{{selected.PackedOn | date}}</td>
-            </tr>
-            <tr class="owner">
-                <th>Shipped By</th>
-                <td>{{selected.ShippedBy }}</td>
-            </tr>
-            <tr class="owner">
-                <th>Shipped On</th>
-                <td>{{selected.ShippedOn | date }}</td>
-            </tr>
-            <tr class="owner">
-                <th>Shipping Type</th>
-                <td>{{selected.ShippingType | date }}</td>
-            </tr>
-            <tr class="owner">
-                <th>Shipping Method</th>
-                <td>{{selected.ShippingType | date }}</td>
+                <td>{{ selected.PackedOn | date }}</td>
             </tr>
             
-        
             <tr class="owner" *ngIf="selected.HasMissingItem">
                 <th>Has Missing Item</th>
-                <td>{{selected.HasMissingItem }}</td>
+                <td>{{ selected.HasMissingItem }}</td>
             </tr>
         </table>
     </div>

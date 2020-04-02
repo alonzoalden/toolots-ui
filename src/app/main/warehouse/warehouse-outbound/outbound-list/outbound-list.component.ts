@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild, Inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { Fulfillment } from 'app/shared/class/fulfillment';
 import { WarehouseItemManagerService } from '../../warehouse-item-manager/warehouse-item-manager.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
     selector: 'outbound-list',
@@ -32,6 +33,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingType'];
     displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate'];
     selected: any;
+    pIndex: number;
     isLoading: boolean;
     filteredCourses: any[];
     currentCategory: string;
@@ -41,15 +43,17 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     interval: any;
+    currentSnackBar: any;
     // Private
     private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _fuseSidebarService: FuseSidebarService,
-        private warehouseOutboundService: WarehouseOutboundService,
+        public warehouseOutboundService: WarehouseOutboundService,
         private warehouseItemManagerService: WarehouseItemManagerService,
         public _matDialog: MatDialog,
-        private _snackBar: MatSnackBar
+        private _snackBar: MatSnackBar,
+        @Inject(DOCUMENT) document
     ) {
         this._unsubscribeAll = new Subject();
         this.searchTerm = '';
@@ -153,12 +157,38 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         }
     }
 
-    applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
+    applySearch(searchValue: string) {
+        if (this.currentSnackBar) {
+            this.currentSnackBar.dismiss();
         }
-        this.warehouseOutboundService.onFulfillmentSelected.next({});
+
+        // find fulfillment from new list
+        const foundFulfillment = this.dataSource.data.find((fulfillment: Fulfillment) => {
+            return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
+        });
+
+        if (!foundFulfillment) {
+            this.currentSnackBar = this._snackBar.openFromComponent(SnackbarComponent, {
+                data: { type: 'error', message: `Fulfillment not found.` },
+            });
+            return this.warehouseOutboundService.clearSelected();
+        }
+        // find fulfillmentIndex from new list
+        const foundFulfillmentIndex = this.dataSource.data.findIndex((fulfillment: Fulfillment) => {
+            return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
+        });
+        // set paginator from fulfillmentIndex by pageSize
+        this.dataSource.paginator.pageIndex = Math.floor(foundFulfillmentIndex / this.paginator.pageSize);
+        this.dataSource.data = this.dataSource.data;
+
+        // set foundFulfillment to be selected
+        this.warehouseOutboundService.onFulfillmentSelected.next(foundFulfillment);
+
+        // timeout to make sure page loads then scroll item into view
+        setTimeout(() => {
+            document.getElementById(foundFulfillment.FulfillmentID).scrollIntoView({behavior: 'smooth', block: 'center'});
+        }, 10);
+
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
