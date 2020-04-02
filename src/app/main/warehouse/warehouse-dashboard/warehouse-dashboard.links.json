@@ -9,6 +9,11 @@
             "title": "Outbound",
             "slug": "warehouse/outbound",
             "icon": "next_week"
+        },
+        {
+            "title": "Inbound",
+            "slug": "warehouse/inbound",
+            "icon": "move_to_inbox"
         }
     ]
 }

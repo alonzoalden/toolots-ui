@@ -7,6 +7,7 @@ export const locale = {
             'WAREHOUSE': 'Warehouse',
             'ITEMUPDATE': 'Item Management',
             'OUTBOUND': 'Outbound',
+            'INBOUND': 'Inbound',
             'SAMPLE'        : {
                 'TITLE': 'Sample',
                 'BADGE': '25'

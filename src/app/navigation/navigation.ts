@@ -33,6 +33,15 @@ export const navigation: FuseNavigation[] = [
                         icon     : 'next_week',
                         url      : '/warehouse/outbound',
                         exactMatch: true
+                    },
+                    {
+                        id       : 'inbound',
+                        title    : 'Inbound',
+                        translate: 'NAV.INBOUND',
+                        type     : 'item',
+                        icon     : 'move_to_inbox',
+                        url      : '/warehouse/inbound',
+                        exactMatch: true
                     }
 
                 ]

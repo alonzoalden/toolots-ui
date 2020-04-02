@@ -21,6 +21,7 @@ import { WarehouseItemManagerService } from './warehouse-item-manager/warehouse-
 import { WarehouseOutboundModule } from './warehouse-outbound/warehouse-outbound.module';
 import { WarehouseRouting } from './warehouse.routing';
 import { WarehouseService } from 'app/main/warehouse/warehouse.service';
+import { WarehouseInboundModule } from './warehouse-inbound/warehouse-inbound.module';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import { WarehouseService } from 'app/main/warehouse/warehouse.service';
         FuseSidebarModule,
         WarehouseItemManagerModule,
         WarehouseOutboundModule,
+        WarehouseInboundModule,
     ],
     providers: [
         WarehouseService,

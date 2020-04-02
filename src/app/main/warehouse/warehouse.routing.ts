@@ -6,6 +6,7 @@ import { WarehouseItemManagerComponent } from './warehouse-item-manager/warehous
 import { WarehouseItemManagerListComponent } from './warehouse-item-manager/item-manager-list/item-manager-list.component';
 import { WarehouseOutboundComponent } from './warehouse-outbound/warehouse-outbound.component';
 import { WarehouseOutboundListComponent } from './warehouse-outbound/outbound-list/outbound-list.component';
+import { WarehouseInboundComponent } from './warehouse-inbound/warehouse-inbound.component';
 
 const WAREHOUSE_ROUTES: Routes = [
     {
@@ -38,6 +39,11 @@ const WAREHOUSE_ROUTES: Routes = [
                         component: WarehouseOutboundListComponent,
                     }
                 ]
+            },
+            {
+                path: 'inbound',
+                component: WarehouseInboundComponent,
+                canActivate: [AuthGuard],
             }
         ],
     },
