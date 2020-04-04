@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
-import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AppService } from 'app/app.service';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-landing-page',
@@ -15,19 +14,9 @@ import { AppService } from 'app/app.service';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class LandingPageComponent implements OnInit {
-    loginForm: FormGroup;
-
-    /**
-     * Constructor
-     *
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FormBuilder} _formBuilder
-     */
+export class LandingPageComponent {
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _formBuilder: FormBuilder,
-        private _router: Router,
         public _fuseSplashScreenService: FuseSplashScreenService,
         private oauthService: OAuthService,
         public appService: AppService
@@ -49,20 +38,6 @@ export class LandingPageComponent implements OnInit {
                 }
             }
         };
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On initprivate oauthService: OAuthService,
-     */
-    ngOnInit(): void {
-        this.loginForm = this._formBuilder.group({
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required]
-        });
     }
 
     login() {

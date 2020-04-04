@@ -17,9 +17,9 @@ import * as linkData from './warehouse-dashboard.links.json';
 })
 export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     categories: any[];
-    courses: any[];
-    coursesFilteredByCategory: any[];
-    filteredCourses: any[];
+    links: any[];
+    linksFilteredByCategory: any[];
+    filteredLinks: any[];
     currentCategory: string;
     searchTerm: string;
     searchEnabled: boolean;
@@ -43,7 +43,7 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         // Subscribe/retreive Dashboard components
-        this.filteredCourses = this.courses = this.warehouseButtonList;
+        this.filteredLinks = this.links = this.warehouseButtonList;
     }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
@@ -61,7 +61,7 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     cancelSearch(): void {
         this.toggleSearch();
         this.searchTerm = '';
-        this.filterCoursesByTerm();
+        this.filterLinksByTerm();
     }
     activateButtonRipple(item) {
         item.ripple.launch({ centered: true });
@@ -72,15 +72,15 @@ export class WarehouseDashboardComponent implements OnInit, OnDestroy {
     goto(url) {
         this.router.navigate([url]);
     }
-    filterCoursesByTerm(): void {
+    filterLinksByTerm(): void {
         const searchTerm = this.searchTerm.toLowerCase();
         // Search
         if (searchTerm === '') {
-            this.filteredCourses = this.coursesFilteredByCategory;
+            this.filteredLinks = this.links;
         }
         else {
-            this.filteredCourses = this.coursesFilteredByCategory.filter((course) => {
-                return course.title.toLowerCase().includes(searchTerm);
+            this.filteredLinks = this.links.filter((link) => {
+                return link.title.toLowerCase().includes(searchTerm);
             });
         }
     }

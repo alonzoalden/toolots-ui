@@ -10,16 +10,17 @@ import { WarehouseInboundComponent } from './warehouse-inbound/warehouse-inbound
 
 const WAREHOUSE_ROUTES: Routes = [
     {
-        path: 'warehouse',
+        path: '',
         component: WarehouseComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 component: WarehouseDashboardComponent,
+                canActivate: [AuthGuard],
             },
             {
-                path: 'warehouse-item-update',
+                path: 'item-management',
                 component: WarehouseItemManagerComponent,
                 canActivate: [AuthGuard],
                 children: [

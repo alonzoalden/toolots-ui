@@ -7,12 +7,12 @@
                 <button *ngIf="!searchEnabled" (click)="searchEnabled = !searchEnabled" mat-icon-button aria-label="Search" matTooltip="Search">
                     <mat-icon>search</mat-icon>
                 </button>
-                <mat-form-field *ngIf="searchEnabled" appearance="outline" floatLabel="always" >
-                    <mat-label>Search for a course</mat-label>
+                <mat-form-field *ngIf="searchEnabled">
+                    <mat-label>Search for a link</mat-label>
                     <div fxFlex fxLayout="row" >
                         <input matInput placeholder="Enter a keyword..."
                             [(ngModel)]="searchTerm"
-                            (input)="filterCoursesByTerm()">
+                            (input)="filterLinksByTerm()">
                         <mat-icon (click)="cancelSearch()">cancel</mat-icon>
                     </div>
                 </mat-form-field>
@@ -32,7 +32,7 @@
     <div class="content p-24">
         <div fxLayout="column" fxLayoutAlign="center">
             <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
-                <div class="course" *ngFor="let course of filteredCourses; index as i" fxFlex="50" fxFlex.gt-xs="50"
+                <div class="course" *ngFor="let course of filteredLinks; index as i" fxFlex="50" fxFlex.gt-xs="50"
                      fxFlex.gt-sm="20" [ngClass]="course.category" [@animate]="{value:'*',params:{y:'100%'}}">
                     <div class="course-content" fxLayout="column" fxFlex="1 1 auto">
                         <div class="content" fxLayout="column" fxLayoutAlign="center center" fxFlex="1 1 auto">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="no-courses" *ngIf="filteredCourses.length === 0">
+                <div class="no-courses" *ngIf="filteredLinks.length === 0">
                     No gadgets found!
                 </div>
             </div>

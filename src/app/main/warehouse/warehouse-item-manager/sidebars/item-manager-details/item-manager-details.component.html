@@ -4,23 +4,22 @@
     <div class="header-content" [ngStyle]="{'background': selected.ItemID && 'url(assets/images/tool1.jpg)'}">
         <div class="toolbar p-16" fxLayout="row" fxLayoutAlign="space-between">
             <button *ngIf="selected.ItemID" mat-icon-button
-                [matMenuTriggerFor]="moreMenu" aria-label="more"
-                style="background-color: #fff;">
-                <mat-icon style="color: black;">more_vert</mat-icon>
+                [matMenuTriggerFor]="moreMenu" aria-label="more">
+                <mat-icon>more_vert</mat-icon>
             </button>
 
             <mat-menu #moreMenu="matMenu">
-                <button mat-menu-item matTooltip="Edit Dimensions" (click)="composeDialog()">
+                <button mat-menu-item (click)="composeDialog()">
                     <mat-icon>build</mat-icon> Edit Dimensions
                 </button>
                 <hr>
-                <button mat-menu-item matTooltip="View Inventory Detail" (click)="composeDialogInventoryDetails()">
+                <button mat-menu-item (click)="composeDialogInventoryDetails()">
                     <mat-icon>storage</mat-icon> View Inventory Detail
                 </button>
-                <button mat-menu-item matTooltip="View Carton Information" (click)="composeDialogCartons()">
+                <button mat-menu-item (click)="composeDialogCartons()">
                     <mat-icon>info</mat-icon> View Carton Information
                 </button>
-                <button mat-menu-item matTooltip="View Potential Location" (click)="composeDialogPotentialLocations()">
+                <button mat-menu-item (click)="composeDialogPotentialLocations()">
                     <mat-icon>location_on</mat-icon> View Potential Location
                 </button>
                 <hr>

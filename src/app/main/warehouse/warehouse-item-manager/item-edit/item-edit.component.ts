@@ -68,7 +68,7 @@ export class WarehouseItemEditComponent implements OnInit, OnDestroy {
             });
         this.productForm = this.createProductForm();
         if (!this.selected.ItemID) {
-            this.router.navigate(['warehouse-item-update']);
+            this.router.navigate(['item-management']);
         }
     }
 

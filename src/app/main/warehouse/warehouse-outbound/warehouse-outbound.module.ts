@@ -62,7 +62,6 @@ const routes: Routes = [];
         MatRadioModule,
         FuseSharedModule,
         FuseSidebarModule,
-        BrowserAnimationsModule,
     ],
     providers: [
         WarehouseOutboundService,

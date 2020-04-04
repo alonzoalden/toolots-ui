@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 
 import { filter, take } from 'rxjs/operators';
 import { AppService } from 'app/app.service';
@@ -52,12 +52,12 @@ export class FuseSplashScreenService {
                     filter((event => event instanceof NavigationEnd)),
                     take(1)
                 )
-                .subscribe(() => {
-                    // if (!this.appService.isLoggedin) {
+                .subscribe((event: RouterEvent) => {
+                    if (!event.url.includes('#id_token=') && !this.appService.isLoggedin) {
                         setTimeout(() => {
                             this.hide();
                         }, 400);
-                    // }
+                    }
                 });
         }
     }
@@ -101,6 +101,6 @@ export class FuseSplashScreenService {
 
         setTimeout(() => {
             this.player.play();
-        }, 0);
+        }, 400);
     }
 }

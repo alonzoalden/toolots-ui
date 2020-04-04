@@ -2,7 +2,7 @@
     "links": [
         {
             "title": "Item Management",
-            "slug": "warehouse/warehouse-item-update",
+            "slug": "warehouse/item-management",
             "icon": "build"
         },
         {

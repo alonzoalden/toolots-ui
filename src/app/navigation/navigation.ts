@@ -22,7 +22,7 @@ export const navigation: FuseNavigation[] = [
                         translate: 'NAV.ITEMUPDATE',
                         type     : 'item',
                         icon     : 'build',
-                        url      : '/warehouse/warehouse-item-update',
+                        url      : '/warehouse/item-management',
                         exactMatch: true
                     },
                     {

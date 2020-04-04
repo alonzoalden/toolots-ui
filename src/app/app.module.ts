@@ -35,9 +35,16 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 const appRoutes: Routes = [
     {
-        path: '**',
-        redirectTo: ''
-    }
+        path: 'warehouse',
+        loadChildren: () => import('./main/warehouse/warehouse.module').then(mod => mod.WarehouseModule),
+        // loadChildren: () => WarehouseModule,
+        canLoad: [ AuthGuard ],
+    },
+    // {
+    //     path: '**',
+    //     redirectTo: '',
+    //     pathMatch: 'full'
+    // },
 ];
 
 @NgModule({
@@ -81,7 +88,6 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         LandingPageModule,
-        WarehouseModule,
         Error404Module,
         Error500Module
     ],

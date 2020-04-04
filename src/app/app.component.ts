@@ -16,8 +16,9 @@ import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { authConfig } from './auth/auth.config';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AppService } from './app.service';
+import { Member } from './shared/class/member';
 @Component({
     selector   : 'app',
     templateUrl: './app.component.html',
@@ -26,22 +27,8 @@ import { AppService } from './app.service';
 export class AppComponent implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
-
-    // Private
     private _unsubscribeAll: Subject<any>;
 
-    /**
-     * Constructor
-     *
-     * @param {DOCUMENT} document
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FuseNavigationService} _fuseNavigationService
-     * @param {FuseSidebarService} _fuseSidebarService
-     * @param {FuseSplashScreenService} _fuseSplashScreenService
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-     * @param {Platform} _platform
-     * @param {TranslateService} _translateService
-     */
     constructor(
         @Inject(DOCUMENT) private document: any,
         private _fuseConfigService: FuseConfigService,
@@ -140,13 +127,6 @@ export class AppComponent implements OnInit, OnDestroy {
         fuseconfig.layout.footer.hidden = true;
         return fuseconfig;
     }
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
         // Configure Auth
         this.configureWithNewConfigApi();
@@ -171,45 +151,48 @@ export class AppComponent implements OnInit, OnDestroy {
             });
 
         // If Oauth token received, navigate to main app
-        this.oauthService.events.subscribe(e => {
-            if (e.type === 'token_received' && this.appService.isLoggedin) {
-                this.appService.setWasLoggedIn();
-                this.router.navigate(['/warehouse']);
-            }
-        });
-        // Use NavigationEnd to avoid url as alwys being '/'
-        this.router.events.subscribe(
-            (event: any) => {
-                if (event instanceof NavigationEnd) {
-                    // Navigate to main app if we're at home page and user is logged in.
-                    if (this.router.url === '/' && this.appService.isLoggedin) {
-                        this.router.navigate(['/warehouse']);
-                    }
+        this.oauthService.events
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(e => {
+                if (e.type === 'token_received' && this.appService.isLoggedin) {
+                    this.appService.setWasLoggedIn();
+                    this.getCurrentMemberAndRedirect();
                 }
-            }
-        );
+        });
 
-        this.appService.getCurrentMember().subscribe();
+        // if the user is logged in
+        if (this.appService.isLoggedin) {
+            // if we are at the landing page
+            if (this.router.url === '/') {
+                this.getCurrentMemberAndRedirect();
+            }
+            // else if we are anywhere else in the app
+            else {
+                this.appService.getCurrentMember()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    () => this._fuseSplashScreenService.hide()
+                );
+            }
+        }
     }
 
-    /**
-     * On destroy
-     */
+    getCurrentMemberAndRedirect() {
+        this.appService.getCurrentMember()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((member: Member) => {
+                if (member.MemberID) {
+                    this.router.navigate(['/warehouse']);
+                    this._fuseSplashScreenService.hide();
+                }
+            });
+    }
+
     ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Toggle sidebar open
-     *
-     * @param key
-     */
     toggleSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }

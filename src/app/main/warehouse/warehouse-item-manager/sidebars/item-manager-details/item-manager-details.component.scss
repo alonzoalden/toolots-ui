@@ -18,6 +18,12 @@
             background-repeat: no-repeat !important;
             display: flex;
             flex-direction: column;
+            button {
+                background-color: #fff;
+                mat-icon {
+                    color: black !important;
+                }
+            }
         }
         .preview {
             img {

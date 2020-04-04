@@ -63,13 +63,13 @@ export class WarehouseItemManagerDetailsSidebarComponent implements OnInit, OnDe
      * On init
      */
     ngOnInit(): void {
-        if (this.router.url.includes('/warehouse-item-update/edit/')) {
+        if (this.router.url.includes('/item-management/edit/')) {
             this.isEdit = true;
         }
         this.router.events.subscribe(
             (event: any) => {
                 if (event instanceof NavigationEnd) {
-                    if (event.url.includes('/warehouse-item-update/edit/')) {
+                    if (event.url.includes('/item-management/edit/')) {
                         this.isEdit = true;
                     } else {
                         this.isEdit = false;

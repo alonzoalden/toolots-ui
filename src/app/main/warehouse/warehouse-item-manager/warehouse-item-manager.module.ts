@@ -73,8 +73,7 @@ const routes: Routes = [];
         MatSnackBarModule,
         MatRadioModule,
         FuseSharedModule,
-        FuseSidebarModule,
-        BrowserAnimationsModule,
+        FuseSidebarModule
     ],
     providers: [
         WarehouseItemManagerService,

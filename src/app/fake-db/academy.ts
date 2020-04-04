@@ -3,7 +3,7 @@ export class AcademyFakeDb {
         {
             'id': '15459251a6d6b397565',
             'title': 'Item Management',
-            'slug': 'warehouse/warehouse-item-update',
+            'slug': 'warehouse/item-management',
             'category': 'web',
             'length': 30,
             'updated': 'Jun 28, 2017',
