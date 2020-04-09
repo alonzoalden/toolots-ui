@@ -30,6 +30,18 @@
                         <span>{{row.BinNumber}}</span>
                     </mat-cell>
                 </ng-container>
+                <ng-container matColumnDef="QtyOnHand">
+                    <mat-header-cell *matHeaderCellDef >Qty On Hand</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.QtyOnHand }}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="QtyAvailable">
+                    <mat-header-cell *matHeaderCellDef >Qty Available</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.QtyAvailable }}</span>
+                    </mat-cell>
+                </ng-container>
                 <ng-container matColumnDef="LocationDate">
                     <mat-header-cell *matHeaderCellDef >Location Date</mat-header-cell>
                     <mat-cell *matCellDef="let row">

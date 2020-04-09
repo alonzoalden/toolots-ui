@@ -21,7 +21,7 @@ export class PotentialLocationDialogComponent implements OnInit, OnDestroy {
     selected: ItemList;
     private _unsubscribeAll: Subject<any>;
     isSaving: boolean;
-    displayedColumns = ['LocationName', 'BinNumber', 'LocationDate', 'SearchMethod'];
+    displayedColumns = ['LocationName', 'BinNumber', 'QtyOnHand', 'QtyAvailable', 'LocationDate', 'SearchMethod'];
     dataSource: any;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;

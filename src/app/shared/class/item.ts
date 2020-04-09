@@ -69,6 +69,8 @@ export class ItemPotentialLocation {
     constructor(
         public LocationName: string,
         public BinNumber: string,
+        public QtyOnHand: number,
+        public QtyAvailable: number,
         public LocationDate: string,
         public SearchMethod: string
     ) {}

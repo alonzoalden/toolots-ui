@@ -122,36 +122,14 @@ export class PrintLabelDialogComponent implements OnInit, OnDestroy {
 
     // prints the label
     onPrint() {
-        const labelXml =
-            '<?xml version="1.0" encoding="utf-8"?>\
-                <DieCutLabel Version="8.0" Units="twips">\
-                    <PaperOrientation>Landscape</PaperOrientation>\
-                    <Id>Address</Id>\
-                    <PaperName>30252 Address</PaperName>\
-                    <DrawCommands/>\
-                    <ObjectInfo>\
-                        <TextObject>\
-                            <Name>Text</Name>\
-                            <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                            <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
-                            <LinkedObjectName></LinkedObjectName>\
-                            <Rotation>Rotation0</Rotation>\
-                            <IsMirrored>False</IsMirrored>\
-                            <IsVariable>True</IsVariable>\
-                            <HorizontalAlignment>Left</HorizontalAlignment>\
-                            <VerticalAlignment>Middle</VerticalAlignment>\
-                            <TextFitMode>ShrinkToFit</TextFitMode>\
-                            <UseFullFontHeight>True</UseFullFontHeight>\
-                            <Verticalized>False</Verticalized>\
-                            <StyledText/>\
-                        </TextObject>\
-                        <Bounds X="332" Y="150" Width="4455" Height="1260" />\
-                    </ObjectInfo>\
-                </DieCutLabel>';
-        const label = dymo.label.framework.openLabelXml(labelXml);
+        const label = dymo.label.framework.openLabelFile("C://code/ItemLabel-1.label");
+        // load image from url and store as Base64
+        //var image = dymo.label.framework.loadImageAsPngBase64("C://code/internal/src/assets/images/home-gear.png");
+        // overwrite image "Image" from XML label with loaded image
+        label.setObjectText("SKU", this.selected.VendorSKU);
+        label.setObjectText("Barcode", '0200022');
+        label.setObjectText("TPIN", this.selected.TPIN);
 
-        // set label text
-        label.setObjectText('Text', 'someVal');
         // select printer to print on
         // for simplicity sake just use the first LabelWriter printer
         const printers = dymo.label.framework.getPrinters();

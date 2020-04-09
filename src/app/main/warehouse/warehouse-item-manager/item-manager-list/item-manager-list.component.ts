@@ -166,7 +166,8 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
     }
     composeDialogPrintLabel(): void {
         this.dialogRef = this._matDialog.open(PrintLabelDialogComponent, {
-            panelClass: 'edit-dimensions-dialog'
+            panelClass: 'edit-dimensions-dialog',
+            disableClose: true
         });
         this.dialogRef.afterClosed()
             .subscribe(response => { });
