@@ -69,3 +69,15 @@
 .ps__rail-x {
     height: 0;
 }
+.connected {
+    background-color: gold !important;
+}
+.disconnected {
+    background-color: rgba(0,0,0,0.1) !important; 
+}
+.lightbulb {
+    border-radius: 100% !important;
+    width: 10px !important;
+    height: 10px !important;
+    margin-right: 10px !important;
+}
