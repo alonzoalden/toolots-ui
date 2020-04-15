@@ -32,7 +32,7 @@ export class AddFulfillmentDialogComponent implements OnInit, OnDestroy {
         public matDialogRef: MatDialogRef<AddFulfillmentDialogComponent>,
         private warehouseOutboundService: WarehouseOutboundService,
         private _snackBar: MatSnackBar,
-        @Inject(MAT_DIALOG_DATA) private data: any,
+        @Inject(MAT_DIALOG_DATA) private data: {ShippingMethod, FulfillmentNumber},
     ) {
         // Set the defaults
         this._unsubscribeAll = new Subject();
@@ -50,18 +50,18 @@ export class AddFulfillmentDialogComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         const pickUpData = {
             FulfillmentNumber: this.composeForm.value.FulfillmentNumber,
-            PickedUpBy: this.composeForm.value.PickedUpBy,
             ShippingMethod: this.composeForm.value.ShippingMethod,
         };
         this.warehouseOutboundService.pickUpButtonFulfillment(pickUpData)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.isLoading = false;
+                    data.FulfillmentNumber = this.composeForm.value.FulfillmentNumber;
                     return this.matDialogRef.close(data);
                 },
                 err => {
                     this.isLoading = false;
+                    console.log(err);
                     this._snackBar.openFromComponent(SnackbarComponent, {
                         data: { type: 'error', message: `${err}` }
                     });
@@ -71,8 +71,8 @@ export class AddFulfillmentDialogComponent implements OnInit, OnDestroy {
 
     createProductForm(): FormGroup {
         return this._formBuilder.group({
-            ShippingMethod: [this.data, Validators.required],
-            FulfillmentNumber: ['', Validators.required],
+            ShippingMethod: [this.data.ShippingMethod, Validators.required],
+            FulfillmentNumber: [this.data.FulfillmentNumber, Validators.required],
             PickedUpBy: '',
         });
     }

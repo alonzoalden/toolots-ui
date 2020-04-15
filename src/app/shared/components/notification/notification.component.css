@@ -1,0 +1,3 @@
+:host ::ng-deep .simple-notification-wrapper{
+    z-index: 9999;
+}

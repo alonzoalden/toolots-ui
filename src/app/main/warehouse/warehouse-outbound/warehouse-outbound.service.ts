@@ -53,7 +53,7 @@ export class WarehouseOutboundService {
                 catchError(this.handleError)
             );
     }
-    pickUpButtonFulfillment(body: {PickedUpBy, FulfillmentNumber, ShippingMethod}): Observable<any> {
+    pickUpButtonFulfillment(body: {FulfillmentNumber, ShippingMethod}): Observable<any> {
         return this._httpClient.put<any>(this.apiURL + '/fulfillment/pickup', body)
             .pipe(
                 catchError(this.handleError)
@@ -67,9 +67,9 @@ export class WarehouseOutboundService {
     handleError = (err: HttpErrorResponse) => {
         let errorMessage: string;
         if (err.error instanceof Error) {
-            errorMessage = `Network error: ${err.message}`;
+            errorMessage = `Network error: ${err.error}`;
         } else {
-            errorMessage = `Response error: ${err.message}`;
+            errorMessage = `Response error: ${err.error.Message}`;
         }
         return throwError(errorMessage);
     }

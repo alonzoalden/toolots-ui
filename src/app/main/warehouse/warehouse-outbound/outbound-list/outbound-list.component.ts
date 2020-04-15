@@ -32,11 +32,12 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     dataSource: any;
     // displayedColumns = ['Actions', 'FulfillmentNumber',
     //     'TransactionDate', 'ShippingMethod', 'PickedUpBy', 'PickedUpOn', 'PickConfirmedBy', 'PickConfirmedOn', 'PickedBy',
-    //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingType'];
+    //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingMethod'];
     displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate'];
     selected: any;
     pIndex: number;
     isLoading: boolean;
+    isRefreshing: boolean;
     filteredCourses: any[];
     currentCategory: string;
     searchTerm: string;
@@ -46,7 +47,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     interval: any;
     currentSnackBar: any;
-    shippingType: string;
+    shippingMethod: string;
 
     private _unsubscribeAll: Subject<any>;
     constructor(
@@ -95,7 +96,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     refreshFulfillments() {
-        // this.isLoading = true;
+        this.isRefreshing = true;
         this.warehouseOutboundService.getFulfillmentList()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(items => {
@@ -118,6 +119,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
                         this.dataSource.paginator = this.paginator;
                         this.isLoading = false;
                     }
+                    this.isRefreshing = false;
                 }
             });
     }
@@ -163,6 +165,9 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     applySearch(searchValue: string) {
+        if (!searchValue) {
+            return;
+        }
         if (this.currentSnackBar) {
             this.currentSnackBar.dismiss();
         }
@@ -176,23 +181,13 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             this.currentSnackBar = this._snackBar.openFromComponent(SnackbarComponent, {
                 data: { type: 'error', message: `Fulfillment not found.` }, duration: 2000
             });
-            if (!this.shippingType) {
+            if (!this.shippingMethod) {
                 this.shippingTypeDialog();
             }
             else {
                 this.addFulfillmentDialog();
             }
             return this.warehouseOutboundService.clearSelected();
-
-
-
-            // open up a popup window that sets a defaultOption variable to
-            // "Will Call", "LTL", "Parcel - UPS"
-            // After selecting Parcel and clicking OK,
-            // open a different window that lets you put it parcel informatoin,
-            // on OK make API call, on success, refresh item list
-            //    auto select newly created item return item on list.
-
         }
         // find fulfillmentIndex from new list
         const foundFulfillmentIndex = this.dataSource.data.findIndex((fulfillment: Fulfillment) => {
@@ -221,28 +216,39 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
                 if (!shippingtype) {
                     return;
                 }
-                this.shippingType = shippingtype;
-                this._snackBar.openFromComponent(SnackbarComponent, {
-                    data: { type: 'success', message: `Shipping Type has been set to: ${shippingtype}.` },
-                });
+                this.shippingMethod = shippingtype;
+                // this._snackBar.openFromComponent(SnackbarComponent, {
+                //     data: { type: 'success', message: `Shipping Type has been set to: ${shippingtype}.` },
+                // });
                 this.addFulfillmentDialog();
             });
     }
     addFulfillmentDialog(): void {
+        const _data = {
+            ShippingMethod: this.shippingMethod,
+            FulfillmentNumber: this.searchTerm,
+        };
         this.dialogRef = this._matDialog.open(AddFulfillmentDialogComponent, {
             panelClass: 'edit-dimensions-dialog',
             disableClose: true,
-            data: this.shippingType
+            data: _data
         });
         this.dialogRef.afterClosed()
             .subscribe(data => {
                 if (!data) {
                     return;
                 }
-
-                this._snackBar.openFromComponent(SnackbarComponent, {
-                    data: { type: 'success', message: `Fulfillment created.` },
-                });
+                this.warehouseOutboundService.getFulfillmentList()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(items => {
+                        if (items.length) {
+                            this.dataSource.data = items;
+                            this.applySearch(data.FulfillmentNumber);
+                        }
+                        this._snackBar.openFromComponent(SnackbarComponent, {
+                            data: { type: 'success', message: `Fulfillment created.` },
+                        });
+                    });
             });
     }
 }
