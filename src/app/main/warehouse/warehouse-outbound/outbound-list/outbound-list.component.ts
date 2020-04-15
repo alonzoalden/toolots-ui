@@ -16,6 +16,8 @@ import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.compo
 import { Fulfillment } from 'app/shared/class/fulfillment';
 import { WarehouseItemManagerService } from '../../warehouse-item-manager/warehouse-item-manager.service';
 import { DOCUMENT } from '@angular/common';
+import { SelectShippingTypeDialogComponent } from '../dialogs/select-shipping-type/select-shipping-type.component';
+import { AddFulfillmentDialogComponent } from '../dialogs/add-fulfillment/add-fulfillment.component';
 
 @Component({
     selector: 'outbound-list',
@@ -44,9 +46,9 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     interval: any;
     currentSnackBar: any;
-    // Private
-    private _unsubscribeAll: Subject<any>;
+    shippingType: string;
 
+    private _unsubscribeAll: Subject<any>;
     constructor(
         private _fuseSidebarService: FuseSidebarService,
         public warehouseOutboundService: WarehouseOutboundService,
@@ -85,11 +87,11 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(selected: Fulfillment): void {
-        this.searchTerm = selected.FulfillmentNumber;
+        this.searchTerm = '';
         this.warehouseOutboundService.onFulfillmentSelected.next(selected);
-        this.warehouseOutboundService.getFulfillment(selected.FulfillmentID)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe();
+        // this.warehouseOutboundService.getFulfillment(selected.FulfillmentID)
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe();
     }
 
     refreshFulfillments() {
@@ -172,9 +174,25 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
 
         if (!foundFulfillment) {
             this.currentSnackBar = this._snackBar.openFromComponent(SnackbarComponent, {
-                data: { type: 'error', message: `Fulfillment not found.` },
+                data: { type: 'error', message: `Fulfillment not found.` }, duration: 2000
             });
+            if (!this.shippingType) {
+                this.shippingTypeDialog();
+            }
+            else {
+                this.addFulfillmentDialog();
+            }
             return this.warehouseOutboundService.clearSelected();
+
+
+
+            // open up a popup window that sets a defaultOption variable to
+            // "Will Call", "LTL", "Parcel - UPS"
+            // After selecting Parcel and clicking OK,
+            // open a different window that lets you put it parcel informatoin,
+            // on OK make API call, on success, refresh item list
+            //    auto select newly created item return item on list.
+
         }
         // find fulfillmentIndex from new list
         const foundFulfillmentIndex = this.dataSource.data.findIndex((fulfillment: Fulfillment) => {
@@ -193,17 +211,37 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         }, 10);
 
     }
-    composeDialog(): void {
-        this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
-            panelClass: 'edit-dimensions-dialog'
+    shippingTypeDialog(): void {
+        this.dialogRef = this._matDialog.open(SelectShippingTypeDialogComponent, {
+            panelClass: 'edit-dimensions-dialog',
+            disableClose: true
         });
         this.dialogRef.afterClosed()
-            .subscribe(response => {
-                if (!response) {
+            .subscribe(shippingtype => {
+                if (!shippingtype) {
                     return;
                 }
+                this.shippingType = shippingtype;
                 this._snackBar.openFromComponent(SnackbarComponent, {
-                    data: { type: 'success', message: `${response.TPIN} has been successfully updated.` },
+                    data: { type: 'success', message: `Shipping Type has been set to: ${shippingtype}.` },
+                });
+                this.addFulfillmentDialog();
+            });
+    }
+    addFulfillmentDialog(): void {
+        this.dialogRef = this._matDialog.open(AddFulfillmentDialogComponent, {
+            panelClass: 'edit-dimensions-dialog',
+            disableClose: true,
+            data: this.shippingType
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(data => {
+                if (!data) {
+                    return;
+                }
+
+                this._snackBar.openFromComponent(SnackbarComponent, {
+                    data: { type: 'success', message: `Fulfillment created.` },
                 });
             });
     }

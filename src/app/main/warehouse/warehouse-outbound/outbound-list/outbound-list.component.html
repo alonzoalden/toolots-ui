@@ -53,15 +53,19 @@
             <mat-header-cell *matHeaderCellDef >Actions</mat-header-cell>
             <mat-cell *matCellDef="let row" >
                 
-                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+
+                <button mat-icon-button >
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
                     <mat-icon>more_vert</mat-icon>
                 </button>
 
                 <mat-menu #moreMenu="matMenu">
-                    <button mat-menu-item (click)="composeDialog()">
-                        <mat-icon>build</mat-icon> Edit Dimensions
+                    <button mat-menu-item>
+                        <mat-icon>build</mat-icon> 
                     </button>
-                </mat-menu>
+                </mat-menu> -->
             </mat-cell>
         </ng-container>
 

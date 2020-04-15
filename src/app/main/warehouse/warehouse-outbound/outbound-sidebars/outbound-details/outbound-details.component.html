@@ -29,7 +29,7 @@
         </div>
         <div *ngIf="selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center"
             [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <button class="main-action" mat-raised-button color=primary>PACK</button>
+            <button class="main-action" mat-raised-button color=primary><span class="btn-title">{{selected.Action}}</span></button>
         </div>
     </div>
 </div> 

@@ -1,0 +1,60 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">Create New</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div>
+            <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                <h4>Fulfillment Info</h4>
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <mat-label>Shipping Method</mat-label>
+                    <mat-select placeholder="Shipping Method"
+                        name="ShippingMethod"
+                        formControlName="ShippingMethod"
+                        required>
+                        <mat-option *ngFor="let shippingType of shippingTypes" value="{{shippingType}}">{{ shippingType }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Fulfillment Number</mat-label>
+                    <input matInput placeholder="Fulfillment Number"
+                            name="FulfillmentNumber"
+                            formControlName="FulfillmentNumber"
+                            required>
+                    <mat-error *ngIf="composeForm.get('FulfillmentNumber').hasError('required')">
+                        Fulfillment is <strong>required</strong>
+                    </mat-error>
+                    <!-- <mat-error *ngIf="composeForm.get('FulfillmentNumber').hasError('invalidFulfillment')">
+                        Please enter a valid Fulfillment
+                    </mat-error> -->
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Picked Up By</mat-label>
+                    <input matInput placeholder="Picked Up By"
+                            name="PickedUpBy"
+                            formControlName="PickedUpBy">
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    color="accent"
+                    class="save-button"
+                    [disabled]="composeForm.invalid"
+                    (click)=onSelect()>
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isLoading">Select</span>
+                    <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

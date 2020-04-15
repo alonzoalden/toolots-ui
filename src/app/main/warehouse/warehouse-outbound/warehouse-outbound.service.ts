@@ -53,6 +53,12 @@ export class WarehouseOutboundService {
                 catchError(this.handleError)
             );
     }
+    pickUpButtonFulfillment(body: {PickedUpBy, FulfillmentNumber, ShippingMethod}): Observable<any> {
+        return this._httpClient.put<any>(this.apiURL + '/fulfillment/pickup', body)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
 
     clearSelected() {
         this.onFulfillmentSelected.next({});

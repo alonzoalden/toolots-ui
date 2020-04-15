@@ -22,7 +22,7 @@ export class Fulfillment {
         public ShippedBy: string,
         public ShippedOn: string,
         public HasMissingItem: string,
-        public ShippingType: string,
+        public Action: string,
         public FulfillmentLines: FulfillmentLine[],
 
     ) {}

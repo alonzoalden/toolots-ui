@@ -76,7 +76,7 @@ export class PrintLabelDialogComponent implements OnInit, OnDestroy {
             if (this.selectedPrinter) {
                 this.isPrinterConnected();
             }
-        }, 3000)
+        }, 3000);
     }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
@@ -93,13 +93,13 @@ export class PrintLabelDialogComponent implements OnInit, OnDestroy {
         if (!this.isPrinterConnected) {
             return;
         }
-        const label = dymo.label.framework.openLabelFile("https://localhost:4200/assets/ItemLabel-1.label");
+        const label = dymo.label.framework.openLabelFile('https://localhost:4200/assets/ItemLabel-1.label');
         // const label = dymo.label.framework.openLabelFile("C://code/internal/src/assets/ItemLabel-1.label");
         // load image from url and store as Base64
         // var image = dymo.label.framework.loadImageAsPngBase64("C://code/internal/src/assets/images/home-gear.png");
-        label.setObjectText("SKU", this.selected.VendorSKU);
-        label.setObjectText("Barcode", this.selected.TPIN);
-        label.setObjectText("TPIN", this.selected.TPIN);
+        label.setObjectText('SKU', this.selected.VendorSKU);
+        label.setObjectText('Barcode', this.selected.TPIN);
+        label.setObjectText('TPIN', this.selected.TPIN);
         label.print(this.selectedPrinter);
     }
     isPrinterConnected(): boolean {

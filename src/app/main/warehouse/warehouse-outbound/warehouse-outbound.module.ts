@@ -25,8 +25,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WarehouseOutboundDetailsSidebarComponent } from './outbound-sidebars/outbound-details/outbound-details.component';
+import { SelectShippingTypeDialogComponent } from './dialogs/select-shipping-type/select-shipping-type.component';
+import { AddFulfillmentDialogComponent } from './dialogs/add-fulfillment/add-fulfillment.component';
 
 const routes: Routes = [];
 
@@ -34,7 +35,9 @@ const routes: Routes = [];
     declarations: [
         WarehouseOutboundComponent,
         WarehouseOutboundListComponent,
-        WarehouseOutboundDetailsSidebarComponent
+        WarehouseOutboundDetailsSidebarComponent,
+        SelectShippingTypeDialogComponent,
+        AddFulfillmentDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -68,6 +71,8 @@ const routes: Routes = [];
         MatSnackBar
     ],
     entryComponents: [
+        SelectShippingTypeDialogComponent,
+        AddFulfillmentDialogComponent
     ]
 })
 export class WarehouseOutboundModule {

@@ -1,0 +1,40 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">Please Choose</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div>
+            <form class="compose-form" fxLayout="column" fxFlex>
+                <h4>Shipping Type</h4>
+                <mat-radio-group
+                    fxLayout="column"
+                    name="ShippingType"
+                    [(ngModel)]="shippingType">
+                    <mat-radio-button class="p-4" *ngFor="let type of shippingTypes" [value]="type">
+                        {{type}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </form>
+        </div>
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    color="accent"
+                    class="save-button"
+                    [disabled]="!shippingType"
+                    (click)=onSelect()>
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isLoading">Select</span>
+                    <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
