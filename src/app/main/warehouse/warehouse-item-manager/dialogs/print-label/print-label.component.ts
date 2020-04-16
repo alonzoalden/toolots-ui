@@ -24,20 +24,6 @@ export class PrintLabelDialogComponent implements OnInit, OnDestroy {
     printers: any[];
     printerInterval: any;
     selectedPrinter: any;
-    objectKeys = Object.keys;
-    dictPackingType = {
-        4: 'LTL',
-        5: 'Small Parcel',
-    };
-    units = [
-        'IN',
-        'CM'
-    ];
-    weightUnits = [
-        'LB',
-        'KG'
-    ];
-
     constructor(
         private _formBuilder: FormBuilder,
         public matDialogRef: MatDialogRef<PrintLabelDialogComponent>,

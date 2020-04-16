@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild, Inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild, Inject, ElementRef, AfterViewInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
@@ -33,7 +33,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     // displayedColumns = ['Actions', 'FulfillmentNumber',
     //     'TransactionDate', 'ShippingMethod', 'PickedUpBy', 'PickedUpOn', 'PickConfirmedBy', 'PickConfirmedOn', 'PickedBy',
     //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingMethod'];
-    displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate'];
+    displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate', 'ShippingMethod'];
     selected: any;
     pIndex: number;
     isLoading: boolean;
@@ -43,8 +43,9 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     searchTerm: string;
     searchEnabled: boolean;
     dialogRef: any;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild('mainInput') mainInput: ElementRef;
     interval: any;
     currentSnackBar: any;
     shippingMethod: string;
@@ -64,7 +65,6 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.warehouseOutboundService.onFulfillmentSelected.next({});
         this.warehouseOutboundService.onFulfillmentSelected
             .pipe(takeUntil(this._unsubscribeAll))
@@ -79,6 +79,10 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             this.refreshFulfillments();
         }, 20000);
     }
+
+    // ngAfterViewInit() {
+    //     this.focusMainInput();
+    // }
 
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
@@ -116,10 +120,13 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
                     else {
                         this.dataSource = new MatTableDataSource<Fulfillment>(items);
                         this.dataSource.sort = this.sort;
-                        this.dataSource.paginator = this.paginator;
-                        this.isLoading = false;
+                        // this.dataSource.paginator = this.paginator;
                     }
+                    this.isLoading = false;
                     this.isRefreshing = false;
+                    setTimeout(() => {
+                        this.focusMainInput();
+                    }, 1);
                 }
             });
     }
@@ -194,7 +201,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
         });
         // set paginator from fulfillmentIndex by pageSize
-        this.dataSource.paginator.pageIndex = Math.floor(foundFulfillmentIndex / this.paginator.pageSize);
+        // this.dataSource.paginator.pageIndex = Math.floor(foundFulfillmentIndex / this.paginator.pageSize);
         this.dataSource.data = this.dataSource.data;
 
         // set foundFulfillment to be selected
@@ -235,6 +242,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         });
         this.dialogRef.afterClosed()
             .subscribe(data => {
+                this.searchTerm = '';
                 if (!data) {
                     return;
                 }
@@ -250,5 +258,8 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
                         });
                     });
             });
+    }
+    focusMainInput() {
+        this.mainInput.nativeElement.focus();
     }
 }

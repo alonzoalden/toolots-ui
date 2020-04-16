@@ -21,6 +21,11 @@
             .save-button {
                 width: 69px;
                 height: 36px;
+                .btn-title {
+                    color: #fff;
+                    font-size: 18px;
+                    text-transform: uppercase;
+                }
             }
             .photo-header {
                 background-color: #fff;

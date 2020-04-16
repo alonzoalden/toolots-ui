@@ -17,6 +17,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { CartonInformationDialogComponent } from '../../dialogs/carton-information/carton-information.component';
 import { InventoryDetailDialogComponent } from '../../dialogs/inventory-detail/inventory-detail.component';
 import { PotentialLocationDialogComponent } from '../../dialogs/potential-location/potential-location.component';
+import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 
 @Component({
     selector: 'item-manager-details-sidebar',
@@ -28,24 +29,13 @@ export class WarehouseItemManagerDetailsSidebarComponent implements OnInit, OnDe
     selected: any;
     isEdit: boolean;
     dialogRef: any;
-    units: any;
-    weightUnits: any;
-    dictPackingType = {
-        4: 'LTL',
-        5: 'Small Parcel',
-    };
     displayedColumns1 = ['PONumber', 'ContainerNumber', 'InboundShipmentNumber', 'CartonNumber', 'Quantity'];
     dataSource1: any;
-    // Private
     private _unsubscribeAll: Subject<any>;
 
-    /**
-     * Constructor
-     *
-     * @param {FileManagerService} _fileManagerService
-     */
     constructor(
         private _fileManagerService: WarehouseItemManagerService,
+        public warehouseService: WarehouseService,
         private router: Router,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar,

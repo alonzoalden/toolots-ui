@@ -9,12 +9,7 @@
         height: 240px;
         min-height: 240px;
         max-height: 240px;
-        // button {
-        //     background-color: #fff;
-        //     mat-icon {
-        //         color: black;
-        //     }
-        // }
+        
         .header-content {
             height: 100%;
             flex: 1;
@@ -29,6 +24,7 @@
                 .btn-title {
                     text-transform: uppercase;
                     font-size: 18px;
+                    color: #fff;
                 }
             }
             .subtitle > span {

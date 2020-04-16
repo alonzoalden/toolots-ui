@@ -25,19 +25,6 @@ export class CartonInformationDialogComponent implements OnInit, OnDestroy{
     dataSource: any;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
-    objectKeys = Object.keys;
-    dictPackingType = {
-        4: 'LTL',
-        5: 'Small Parcel',
-    };
-    units = [
-        'IN',
-        'CM'
-    ];
-    weightUnits = [
-        'LB',
-        'KG'
-    ];
 
     constructor(
         public matDialogRef: MatDialogRef<CartonInformationDialogComponent>,

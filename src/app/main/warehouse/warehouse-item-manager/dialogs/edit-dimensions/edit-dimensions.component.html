@@ -25,7 +25,7 @@
                             name="ProductDimensionUOM"
                             formControlName="ProductDimensionUOM"
                             required>
-                            <mat-option *ngFor="let item of units" value="{{item}}">{{ item }}</mat-option>
+                            <mat-option *ngFor="let item of warehouseService.units" value="{{item}}">{{ item }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div style="width: 40px;"></div>
@@ -35,7 +35,7 @@
                             name="ProductWeightUOM"
                             formControlName="ProductWeightUOM"
                             required>
-                            <mat-option *ngFor="let item of weightUnits" value="{{item}}">{{ item }}</mat-option>
+                            <mat-option *ngFor="let item of warehouseService.weightUnits" value="{{item}}">{{ item }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -101,7 +101,7 @@
                             name="PackageDimensionUOM"
                             formControlName="PackageDimensionUOM"
                             required>
-                            <mat-option *ngFor="let item of units" value="{{item}}">{{ item }}</mat-option>
+                            <mat-option *ngFor="let item of warehouseService.units" value="{{item}}">{{ item }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div style="width: 40px;"></div>
@@ -111,7 +111,7 @@
                             name="PackageWeightUOM"
                             formControlName="PackageWeightUOM"
                             required>
-                            <mat-option *ngFor="let item of weightUnits" value="{{item}}">{{ item }}</mat-option>
+                            <mat-option *ngFor="let item of warehouseService.weightUnits" value="{{item}}">{{ item }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -177,7 +177,7 @@
                         name="PackagingType"
                         formControlName="PackagingType"
                         required>
-                        <mat-option *ngFor="let item of objectKeys(dictPackingType)" value="{{item}}">{{ dictPackingType[item] }}</mat-option>
+                        <mat-option *ngFor="let item of objectKeys(warehouseService.dictPackingType)" value="{{item}}">{{ warehouseService.dictPackingType[item] }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </form>

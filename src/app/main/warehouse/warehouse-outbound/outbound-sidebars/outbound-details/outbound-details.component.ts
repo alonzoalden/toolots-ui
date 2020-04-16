@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { WarehouseOutboundService } from '../../warehouse-outbound.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 
 @Component({
     selector: 'outbound-details-sidebar',
@@ -16,16 +17,11 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
     selected: any;
     isEdit: boolean;
     dialogRef: any;
-    units: any;
-    weightUnits: any;
-    dictPackingType = {
-        4: 'LTL',
-        5: 'Small Parcel',
-    };
     @ViewChild('scrollContainer') scrollContainerEl: ElementRef;
     private _unsubscribeAll: Subject<any>;
     constructor(
         private warehouseOutboundService: WarehouseOutboundService,
+        public warehouseService: WarehouseService,
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
     ) {

@@ -14,8 +14,9 @@
             <div class="search-wrapper">
                 <div class="search" fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon class="secondary-text">search</mat-icon>
-                    <input [disabled]="isLoading" [(ngModel)]="searchTerm"
-                        [placeholder]="isLoading ? 'Please wait...' : 'Search Item'" (keyup.enter)=applySearch(searchTerm)>
+                    <input #mainInput [disabled]="isLoading" [(ngModel)]="searchTerm"
+                        [placeholder]="isLoading ? 'Please wait...' : 'Search Item'"
+                        (keyup.enter)=applySearch(searchTerm) (focusout)="focusMainInput()">
                     <button mat-icon-button *ngIf="searchTerm" (click)="searchTerm = ''; warehouseOutboundService.clearSelected()">
                         <mat-icon matTooltip="Clear">clear</mat-icon>
                     </button>
@@ -71,6 +72,14 @@
             </mat-cell>
         </ng-container>
 
+        
+        <!-- ShippingMethod Button Column -->
+            
+        <ng-container matColumnDef="ShippingMethod">
+            <mat-header-cell *matHeaderCellDef>Shipping Method</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.ShippingMethod | date }}</mat-cell>
+        </ng-container>
+
         <!-- Detail Button Column -->
         <ng-container matColumnDef="detail-button">
             
@@ -84,7 +93,7 @@
             </mat-cell>
         </ng-container>
         
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"
                 (click)="onSelect(row)"
                 id={{row.FulfillmentID}}
@@ -102,5 +111,5 @@
         [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">
         No items found.
     </div>
-    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+    <!-- <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator> -->
 </div>

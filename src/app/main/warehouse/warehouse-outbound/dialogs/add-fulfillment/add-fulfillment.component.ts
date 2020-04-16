@@ -61,7 +61,6 @@ export class AddFulfillmentDialogComponent implements OnInit, OnDestroy {
                 },
                 err => {
                     this.isLoading = false;
-                    console.log(err);
                     this._snackBar.openFromComponent(SnackbarComponent, {
                         data: { type: 'error', message: `${err}` }
                     });

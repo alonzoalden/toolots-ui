@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar class="mat-accent m-0" >
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title" style="overflow: hidden;">Create New</span>
+            <span class="title dialog-title" style="overflow: hidden;">Pick Up</span>
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -44,14 +44,15 @@
     </div>
     
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
-        <div>
+        <div style="width: 100%">
             <button mat-raised-button
-                    color="accent"
-                    class="save-button"
+                    
+                    class="save-button orange"
+                    style="width: 100%; "
                     [disabled]="composeForm.invalid"
                     (click)=onSelect()>
                 <div fxLayoutAlign="center">
-                    <span *ngIf="!isLoading">Select</span>
+                    <span *ngIf="!isLoading" class="btn-title">Pick Up</span>
                     <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
                 </div>
             </button>

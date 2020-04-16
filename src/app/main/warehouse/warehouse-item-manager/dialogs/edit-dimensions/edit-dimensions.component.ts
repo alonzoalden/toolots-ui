@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { ItemList, Item } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
+import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 
 @Component({
     selector: 'edit-dimensions-dialog',
@@ -22,23 +23,12 @@ export class MailComposeDialogComponent implements OnInit, OnDestroy{
     isSaving: boolean;
 
     objectKeys = Object.keys;
-    dictPackingType = {
-        4: 'LTL',
-        5: 'Small Parcel',
-    };
-    units = [
-        'IN',
-        'CM'
-    ];
-    weightUnits = [
-        'LB',
-        'KG'
-    ];
 
     constructor(
         private _formBuilder: FormBuilder,
         public matDialogRef: MatDialogRef<MailComposeDialogComponent>,
         private warehouseItemManagerService: WarehouseItemManagerService,
+        public warehouseService: WarehouseService,
         private _snackBar: MatSnackBar,
         @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
