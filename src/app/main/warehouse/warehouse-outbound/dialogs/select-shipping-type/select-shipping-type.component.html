@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar class="mat-accent m-0" >
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title" style="overflow: hidden;">Please Choose</span>
+            <span class="title dialog-title">Please Choose</span>
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -12,6 +12,8 @@
             <form class="compose-form" fxLayout="column" fxFlex>
                 <h4>Shipping Type</h4>
                 <mat-radio-group
+                    #shippingTypesRadio
+                    (keyup.enter)=onSelect()
                     fxLayout="column"
                     name="ShippingType"
                     [(ngModel)]="shippingType">

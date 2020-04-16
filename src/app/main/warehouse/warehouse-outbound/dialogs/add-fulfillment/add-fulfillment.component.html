@@ -29,24 +29,14 @@
                     <mat-error *ngIf="composeForm.get('FulfillmentNumber').hasError('required')">
                         Fulfillment is <strong>required</strong>
                     </mat-error>
-                    <!-- <mat-error *ngIf="composeForm.get('FulfillmentNumber').hasError('invalidFulfillment')">
-                        Please enter a valid Fulfillment
-                    </mat-error> -->
                 </mat-form-field>
-                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                    <mat-label>Picked Up By</mat-label>
-                    <input matInput placeholder="Picked Up By"
-                            name="PickedUpBy"
-                            formControlName="PickedUpBy">
-                </mat-form-field> -->
             </form>
         </div>
     </div>
     
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
         <div style="width: 100%">
-            <button mat-raised-button
-                    
+            <button #mainButton mat-raised-button
                     class="save-button orange"
                     style="width: 100%; "
                     [disabled]="composeForm.invalid"

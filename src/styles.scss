@@ -4,8 +4,10 @@
 // Import app.theme.scss
 @import "app/app.theme";
 
-
-
 .orange {
     background-color: #ffa928;
+}
+
+simple-notifications {
+    z-index: 10000;
 }

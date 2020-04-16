@@ -35,7 +35,10 @@
     <div *ngIf="isLoading" class="loader">
         <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
     </div>
-    
+    <div *ngIf="isRefreshing && !isLoading" class="mini-loader">
+        <mat-spinner diameter="20"></mat-spinner>
+    </div>
+
     <mat-table *ngIf="!isLoading" #table [dataSource]="dataSource"
                 [@animateStagger]="{value:'50'}" matSort>
         <!-- FulfillmentNumber Column -->

@@ -123,6 +123,13 @@ outbound-list {
         justify-content: center;
         align-items: center;
     }
+    .mini-loader {
+        position: absolute;
+        z-index: 99100;
+        padding: 15px;
+        right: 0;
+        top: 240px;
+    }
     .mat-table {
         flex-grow: 1;
         overflow: auto;

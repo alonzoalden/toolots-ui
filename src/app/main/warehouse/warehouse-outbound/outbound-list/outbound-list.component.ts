@@ -30,9 +30,6 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     fileURL = environment.fileURL;
     files: any;
     dataSource: any;
-    // displayedColumns = ['Actions', 'FulfillmentNumber',
-    //     'TransactionDate', 'ShippingMethod', 'PickedUpBy', 'PickedUpOn', 'PickConfirmedBy', 'PickConfirmedOn', 'PickedBy',
-    //     'PackedBy', 'PackedOn', 'ShippedBy', 'ShippedOn', 'PickedOn', 'HasMissingItem', 'ShippingMethod'];
     displayedColumns = ['Actions', 'FulfillmentNumber', 'TransactionDate', 'ShippingMethod'];
     selected: any;
     pIndex: number;
@@ -43,12 +40,13 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     searchTerm: string;
     searchEnabled: boolean;
     dialogRef: any;
-    // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild('mainInput') mainInput: ElementRef;
     interval: any;
     currentSnackBar: any;
     shippingMethod: string;
+    inputEnabled: boolean;
+    // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild('mainInput') mainInput: ElementRef;
 
     private _unsubscribeAll: Subject<any>;
     constructor(
@@ -62,6 +60,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this.searchTerm = '';
         this.searchEnabled = false;
+        this.inputEnabled = true;
     }
 
     ngOnInit(): void {
@@ -214,12 +213,16 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
 
     }
     shippingTypeDialog(): void {
+        this.inputEnabled = false;
         this.dialogRef = this._matDialog.open(SelectShippingTypeDialogComponent, {
             panelClass: 'edit-dimensions-dialog',
-            disableClose: true
+            disableClose: true,
+            autoFocus: false
         });
         this.dialogRef.afterClosed()
             .subscribe(shippingtype => {
+                this.inputEnabled = true;
+                this.focusMainInput();
                 if (!shippingtype) {
                     return;
                 }
@@ -231,18 +234,23 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             });
     }
     addFulfillmentDialog(): void {
+        this.inputEnabled = false;
+        const term = this.searchTerm;
+        this.searchTerm = '';
         const _data = {
             ShippingMethod: this.shippingMethod,
-            FulfillmentNumber: this.searchTerm,
+            FulfillmentNumber: term,
         };
         this.dialogRef = this._matDialog.open(AddFulfillmentDialogComponent, {
             panelClass: 'edit-dimensions-dialog',
             disableClose: true,
-            data: _data
+            data: _data,
+            autoFocus: false
         });
         this.dialogRef.afterClosed()
             .subscribe(data => {
-                this.searchTerm = '';
+                this.inputEnabled = true;
+                this.focusMainInput();
                 if (!data) {
                     return;
                 }
@@ -254,12 +262,14 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
                             this.applySearch(data.FulfillmentNumber);
                         }
                         this._snackBar.openFromComponent(SnackbarComponent, {
-                            data: { type: 'success', message: `Fulfillment created.` },
+                            data: { type: 'success', message: `Pick Up added.` },
                         });
                     });
             });
     }
     focusMainInput() {
-        this.mainInput.nativeElement.focus();
+        if (this.inputEnabled) {
+            this.mainInput.nativeElement.focus();
+        }
     }
 }

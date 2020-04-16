@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
@@ -7,14 +7,13 @@ import { ItemList, Item } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { WarehouseOutboundService } from '../../warehouse-outbound.service';
-declare const dymo: any;
 
 @Component({
     templateUrl: './select-shipping-type.component.html',
     styleUrls: ['./select-shipping-type.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SelectShippingTypeDialogComponent implements OnInit, OnDestroy {
+export class SelectShippingTypeDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     showExtraToFields: boolean;
     shippingType: string;
     isLoading: boolean;
@@ -24,6 +23,7 @@ export class SelectShippingTypeDialogComponent implements OnInit, OnDestroy {
         'Parcel - UPS',
     ];
     private _unsubscribeAll: Subject<any>;
+    @ViewChild('shippingTypesRadio') shippingTypesRadio: ElementRef;
 
     constructor(
         private _formBuilder: FormBuilder,
@@ -32,11 +32,14 @@ export class SelectShippingTypeDialogComponent implements OnInit, OnDestroy {
         private _snackBar: MatSnackBar,
         @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
-        // Set the defaults
         this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
+        this.shippingType = 'Will Call';
+    }
+    ngAfterViewInit(): void {
+        this.shippingTypesRadio.nativeElement.children[0].focus();
     }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
