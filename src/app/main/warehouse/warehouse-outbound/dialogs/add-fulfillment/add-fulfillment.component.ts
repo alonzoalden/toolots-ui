@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
@@ -32,6 +32,16 @@ export class AddFulfillmentDialogComponent implements OnInit, AfterViewInit, OnD
     private _unsubscribeAll: Subject<any>;
     @ViewChild('mainButton') mainButton: MatButton;
 
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+        if (event.key === 'Enter' && this.composeForm.valid) {
+            this.onSelect();
+        }
+        if (event.key === 'Escape') {
+            this.matDialogRef.close();
+        }
+    }
+
     constructor(
         private _formBuilder: FormBuilder,
         public matDialogRef: MatDialogRef<AddFulfillmentDialogComponent>,
@@ -50,7 +60,7 @@ export class AddFulfillmentDialogComponent implements OnInit, AfterViewInit, OnD
         this.composeForm = this.createProductForm();
     }
     ngAfterViewInit(): void {
-        this.mainButton.focus();
+        // this.mainButton.focus();
     }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
