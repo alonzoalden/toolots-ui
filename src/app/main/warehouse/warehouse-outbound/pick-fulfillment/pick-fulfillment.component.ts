@@ -82,7 +82,14 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
                 }
                 this.dataSource = new MatTableDataSource<FulfillmentLine>(this.selected.FulfillmentLines);
                 this.dataSource.sort = this.sort;
-                this.onSelect(this.dataSource.data[0]);
+                if (!this.selectedFulfillmentLine) {
+                    this.onSelect(this.dataSource.data[0]);
+                }
+                if (this.selectedFulfillmentLine) {
+                    const previousLine = this.dataSource.data
+                        .find((item) => this.selectedFulfillmentLine.FulfillmentLineID === item.FulfillmentLineID);
+                    this.onSelect(previousLine);
+                }
             });
         this.warehouseOutboundService.onFulfillmentLineSelected
             .pipe(takeUntil(this._unsubscribeAll))
@@ -112,48 +119,6 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
         this.searchTerm = '';
         this.warehouseOutboundService.onFulfillmentLineSelected.next(fulfillmentline);
     }
-
-    // refreshFulfillments() {
-    //     this.isRefreshing = true;
-    //     this.warehouseOutboundService.getFulfillmentList()
-    //         .pipe(takeUntil(this._unsubscribeAll))
-    //         .subscribe(items => {
-    //             if (items.length) {
-
-    //                 // if dataSource already exists, just replace dataSource.data with items
-    //                 if (this.dataSource) {
-    //                     this.dataSource.data = items;
-
-    //                     // if something is already selected
-    //                     if (this.selected.FulfillmentID) {
-    //                         this.reselectAfterRefresh();
-    //                     }
-    //                 }
-
-    //                 // create dataSource when we first get items
-    //                 else {
-    //                     this.dataSource = new MatTableDataSource<Fulfillment>(items);
-    //                     this.dataSource.sort = this.sort;
-    //                     // this.dataSource.paginator = this.paginator;
-    //                 }
-    //                 this.isLoading = false;
-    //                 this.isRefreshing = false;
-    //                 setTimeout(() => {
-    //                     this.focusMainInput();
-    //                 }, 1);
-    //             }
-    //         });
-    // }
-
-    // reselectAfterRefresh() {
-    //     const foundItem = this.dataSource.data.find((item: Fulfillment) => item.FulfillmentID === this.selected.FulfillmentID);
-    //     if (foundItem) {
-    //         this.warehouseOutboundService.onFulfillmentSelected.next(foundItem);
-    //     }
-    //     else {
-    //         console.log('your selected item has been removed from the list');
-    //     }
-    // }
 
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();

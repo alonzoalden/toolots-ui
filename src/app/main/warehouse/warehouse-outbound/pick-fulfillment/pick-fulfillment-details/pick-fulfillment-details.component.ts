@@ -37,7 +37,6 @@ export class PickFulfillmentDetailsSidebarComponent implements OnInit, OnDestroy
         this.warehouseOutboundService.onFulfillmentSelected
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selected => {
-                console.log(selected);
                 this.selected = selected;
                 if (this.scrollContainerEl) {
                     this.scrollContainerEl.nativeElement.scrollTop = 0;
