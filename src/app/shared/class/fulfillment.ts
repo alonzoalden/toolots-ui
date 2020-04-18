@@ -31,16 +31,18 @@ export class FulfillmentLine {
     constructor(
         public FulfillmentLineID: string,
         public ItemID: string,
+        public ItemImagePath: string,
         public ItemTPIN: string,
         public ItemSKU: string,
         public Quantity: number,
-        public IsNotFound: string,
-        public IsPicked: string,
+        public IsNotFound: boolean,
+        public IsPicked: boolean,
         public ConfirmedBy: string,
         public ConfirmedOn: Date,
         public FulfillmentLineInventoryDetails: FulfillmentLineInventoryDetail[],
         public FulfillmentLineConfirms: FulfillmentLineConfirm[],
-
+        public orderedQty: number,
+        public confirmedQty: number
     ) {}
 }
 export class FulfillmentLineInventoryDetail {

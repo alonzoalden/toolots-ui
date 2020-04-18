@@ -29,10 +29,9 @@
         </div>
         <div *ngIf="selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center"
             [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <button class="main-action"
+            <button class="main-action" [routerLink]="['pick']" mat-raised-button
                 [ngClass]="warehouseService.buttonColorDict[selected.Action]
-                    ? warehouseService.buttonColorDict[selected.Action] : 'primary'"
-                mat-raised-button>
+                    ? warehouseService.buttonColorDict[selected.Action] : 'primary'">
                 <span class="btn-title">{{selected.Action}}</span>
             </button>
         </div>
@@ -60,7 +59,7 @@
                 <th>Picked Up On</th>
                 <td>{{ selected.PickedUpOn | date }}</td>
             </tr>
-            <ng-container *ngIf="selected.Action === 'Pick'">
+            <ng-container *ngIf="selected.ShippingMethod === 'LTL'">
                 <tr class="owner">
                     <th>Pick Confirmed By</th>
                     <td>{{ selected.PickConfirmedBy }}</td>

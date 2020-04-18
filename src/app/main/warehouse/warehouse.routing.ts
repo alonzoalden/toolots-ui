@@ -7,6 +7,7 @@ import { WarehouseItemManagerListComponent } from './warehouse-item-manager/item
 import { WarehouseOutboundComponent } from './warehouse-outbound/warehouse-outbound.component';
 import { WarehouseOutboundListComponent } from './warehouse-outbound/outbound-list/outbound-list.component';
 import { WarehouseInboundComponent } from './warehouse-inbound/warehouse-inbound.component';
+import { PickFulfillmentComponent } from './warehouse-outbound/pick-fulfillment/pick-fulfillment.component';
 
 const WAREHOUSE_ROUTES: Routes = [
     {
@@ -38,6 +39,10 @@ const WAREHOUSE_ROUTES: Routes = [
                     {
                         path: '',
                         component: WarehouseOutboundListComponent,
+                    },
+                    {
+                        path: 'pick',
+                        component: PickFulfillmentComponent
                     }
                 ]
             },

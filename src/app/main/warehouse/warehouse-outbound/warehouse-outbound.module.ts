@@ -28,6 +28,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { WarehouseOutboundDetailsSidebarComponent } from './outbound-sidebars/outbound-details/outbound-details.component';
 import { SelectShippingTypeDialogComponent } from './dialogs/select-shipping-type/select-shipping-type.component';
 import { AddFulfillmentDialogComponent } from './dialogs/add-fulfillment/add-fulfillment.component';
+import { PickFulfillmentDetailsSidebarComponent } from './pick-fulfillment/pick-fulfillment-details/pick-fulfillment-details.component';
+import { PickFulfillmentComponent } from './pick-fulfillment/pick-fulfillment.component';
 
 const routes: Routes = [];
 
@@ -37,7 +39,9 @@ const routes: Routes = [];
         WarehouseOutboundListComponent,
         WarehouseOutboundDetailsSidebarComponent,
         SelectShippingTypeDialogComponent,
-        AddFulfillmentDialogComponent
+        AddFulfillmentDialogComponent,
+        PickFulfillmentDetailsSidebarComponent,
+        PickFulfillmentComponent
     ],
     imports: [
         RouterModule.forChild(routes),

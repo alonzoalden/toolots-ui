@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-outbound-list {
+pick-fulfillment {
     display: flex;
     -webkit-box-flex: 1;
     flex: 1 0 auto;
@@ -185,7 +185,22 @@ outbound-list {
     .mat-row {
         width: 100%;
     }
+    .mat-header {
+        align-items: flex-end !important;
+    }
     .mat-cell {
-        padding-right: 7px; 
+        border-right: 1px solid #eee;
+    }
+    .mat-column-Item {
+        flex: 0 0 27% !important;
+        min-width: 27% !important;
+    }
+    .mat-column-BIN {
+        flex: 0 0 18% !important;
+        min-width: 18% !important;
+    }
+    .mat-column-ConfirmedBIN {
+        flex: 0 0 18% !important;
+        min-width: 18% !important;
     }
 }

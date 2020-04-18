@@ -73,7 +73,7 @@ export class AddFulfillmentDialogComponent implements OnInit, AfterViewInit, OnD
             FulfillmentNumber: this.composeForm.value.FulfillmentNumber,
             ShippingMethod: this.composeForm.value.ShippingMethod,
         };
-        this.warehouseOutboundService.pickUpButtonFulfillment(pickUpData)
+        this.warehouseOutboundService.addPickUpFulfillment(pickUpData)
             .subscribe(
                 data => {
                     this.isLoading = false;

@@ -7,12 +7,13 @@
             <div class="main-list-layout list-container">
                 <!-- HEADER  -->
                 <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
-                    <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'50px'}}">
-                        <div fxLayout="row" fxLayoutAlign="start center">
+                    <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'250px'}}">
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center">
                             <h1 fxLayout="row" fxLayoutAlign="start center">
                                 <button mat-icon-button [routerLink]="['../../']"><mat-icon>business</mat-icon> </button>
                                 <mat-icon>chevron_right</mat-icon> Outbound</h1>
-                        </div>
+                        </div> -->
+                        <h1> Fulfillment - {{selected.FulfillmentNumber}} </h1>
                     </div>
                     <!-- SEARCH BAR  -->
                     <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
@@ -20,7 +21,7 @@
                             <div class="search" fxLayout="row" fxLayoutAlign="start center">
                                 <mat-icon class="secondary-text">search</mat-icon>
                                 <input #mainInput [disabled]="isLoading" [(ngModel)]="searchTerm"
-                                    [placeholder]="isLoading ? 'Please wait...' : 'Search Item'"
+                                    [placeholder]="isLoading ? 'Please wait...' : 'Search Fulfillment Line (TPIN / SKU)'"
                                     (keyup.enter)=applySearch(searchTerm) (focusout)="focusMainInput()">
                                 <button mat-icon-button *ngIf="searchTerm" (click)="searchTerm = ''; warehouseOutboundService.clearSelected()">
                                     <mat-icon matTooltip="Clear">clear</mat-icon>
@@ -46,66 +47,74 @@
 
                 <mat-table *ngIf="!isLoading" #table [dataSource]="dataSource"
                             [@animateStagger]="{value:'50'}" matSort>
-                    <!-- FulfillmentNumber Column -->
-                    <ng-container matColumnDef="FulfillmentNumber">
-                        <mat-header-cell *matHeaderCellDef>Fulfillment #</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{ row.FulfillmentNumber }}</mat-cell>
-                    </ng-container>
-
-                    <!-- TransactionDate Column -->
-                    <ng-container matColumnDef="TransactionDate">
-                        <mat-header-cell *matHeaderCellDef>Transaction Date</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{ row.TransactionDate | date }}</mat-cell>
-                    </ng-container>
-
-                    <!-- Modified Column -->
-                    <ng-container matColumnDef="Actions">
-                        <mat-header-cell *matHeaderCellDef >Actions</mat-header-cell>
-                        <mat-cell *matCellDef="let row" >
-                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                            <mat-menu #moreMenu="matMenu">
-                                <button mat-menu-item>
-                                    {{ row.Action }}
-                                </button>
-                                <hr>
-                                <button mat-menu-item>
-                                    Convert Shipping Method
-                                </button>
-                                <button mat-menu-item>
-                                    Address
-                                </button>
-                            </mat-menu>
+                    <!-- Item Column -->
+                    <ng-container matColumnDef="Item">
+                        <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div fxLayout="row">
+                                <div style="overflow: hidden; margin-right: 6px;" fxLayoutAlign="center center">
+                                    <img style="width: 40px;" src="{{fileURL + row.ItemImagePath}}">
+                                </div>
+                                <div fxLayout="column">
+                                    <div>{{ row.ItemTPIN }}</div>
+                                    <div>{{ row.ItemSKU }}</div>
+                                </div>
+                            </div>
                         </mat-cell>
                     </ng-container>
 
-                    
-                    <!-- ShippingMethod Button Column -->
-                        
-                    <ng-container matColumnDef="ShippingMethod">
-                        <mat-header-cell *matHeaderCellDef>Shipping Method</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{ row.ShippingMethod | date }}</mat-cell>
-                    </ng-container>
-
-                    <!-- Detail Button Column -->
-                    <ng-container matColumnDef="detail-button">
-                        
-                        <!-- fxHide.gt-md // original settings was to hide these for gt-md -->
-                        <mat-header-cell *matHeaderCellDef fxFlex="48px"></mat-header-cell>
-                        <mat-cell *matCellDef="let row" fxFlex="48px">
-                            <button mat-icon-button class="sidebar-toggle"
-                                    (click)="toggleSidebar('outbound-details-sidebar')">
-                                <mat-icon class="secondary-text">info</mat-icon>
-                            </button>
+                    <!-- BIN Column -->
+                    <ng-container matColumnDef="BIN">
+                        <mat-header-cell *matHeaderCellDef>BIN</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div fxLayout="column">
+                                <div *ngFor="let bin of row.FulfillmentLineInventoryDetails">
+                                    {{ bin.BinNumber + '(' + bin.Quantity + ')'}}
+                                </div>
+                            </div>
                         </mat-cell>
                     </ng-container>
-                    
+
+                    <!-- ConfirmedBIN Column -->
+                    <ng-container matColumnDef="ConfirmedBIN">
+                        <mat-header-cell *matHeaderCellDef>Confirmed BIN</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div fxLayout="column">
+                                <div *ngFor="let bin of row.FulfillmentLineConfirms">
+                                    {{ bin.BinNumber + '(' + bin.Quantity + ')'}}
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- OrderedQty -->
+                    <ng-container matColumnDef="OrderedQty">
+                        <mat-header-cell *matHeaderCellDef>Ordered Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Quantity }}</mat-cell>
+                    </ng-container>
+
+                    <!-- ConfirmedQty Column -->
+                    <ng-container matColumnDef="ConfirmedQty">
+                        <mat-header-cell *matHeaderCellDef>Confirmed Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.confirmedQty }}</mat-cell>
+                    </ng-container>
+
+                    <!-- Missing -->
+                    <ng-container matColumnDef="Missing">
+                        <mat-header-cell *matHeaderCellDef>Missing</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.IsNotFound ? 'Yes' : 'No' }}</mat-cell>
+                    </ng-container>
+
+                    <!-- Picked Column -->
+                    <ng-container matColumnDef="Picked">
+                        <mat-header-cell *matHeaderCellDef>Picked</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.IsPicked ? 'Yes' : 'No' }}</mat-cell>
+                    </ng-container>
                     <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"
                             (click)="onSelect(row)"
                             id={{row.FulfillmentID}}
-                            [ngClass]="{'selected' : row == selected}"
+                            [ngClass]="{'selected' : row == selectedFulfillmentLine}"
                             [@animate]="!selected && {value:'*',params:{y:'100%'}}"
                     >
                     </mat-row>
@@ -115,7 +124,7 @@
                 style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
                 Please search for an item.
             </div> -->
-            <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData.length === 0"
+            <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData?.length === 0"
                 [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">
                 No items found.
             </div>
@@ -130,6 +139,6 @@
     <!-- SIDEBAR -->
     <fuse-sidebar class="sidebar details-sidebar" name="outbound-details-sidebar" position="right"
             lockedOpen="gt-sm">
-        <outbound-details-sidebar></outbound-details-sidebar>
+        <pick-fulfillment-details-sidebar></pick-fulfillment-details-sidebar>
     </fuse-sidebar> 
 </div>

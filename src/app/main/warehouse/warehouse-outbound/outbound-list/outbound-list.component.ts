@@ -93,9 +93,9 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     onSelect(selected: Fulfillment): void {
         this.searchTerm = '';
         this.warehouseOutboundService.onFulfillmentSelected.next(selected);
-        // this.warehouseOutboundService.getFulfillment(selected.FulfillmentID)
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe();
+        this.warehouseOutboundService.getFulfillment(selected.FulfillmentID)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe();
     }
 
     refreshFulfillments() {
@@ -196,19 +196,23 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             return this.warehouseOutboundService.clearSelected();
         }
         // find fulfillmentIndex from new list
-        const foundFulfillmentIndex = this.dataSource.data.findIndex((fulfillment: Fulfillment) => {
-            return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
-        });
+        // const foundFulfillmentIndex = this.dataSource.data.findIndex((fulfillment: Fulfillment) => {
+        //     return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
+        // });
         // set paginator from fulfillmentIndex by pageSize
         // this.dataSource.paginator.pageIndex = Math.floor(foundFulfillmentIndex / this.paginator.pageSize);
         this.dataSource.data = this.dataSource.data;
 
         // set foundFulfillment to be selected
-        this.warehouseOutboundService.onFulfillmentSelected.next(foundFulfillment);
+        // this.warehouseOutboundService.onFulfillmentSelected.next(foundFulfillment);
+        this.onSelect(foundFulfillment);
+        this._snackBar.openFromComponent(SnackbarComponent, {
+            data: { type: 'success', message: `${foundFulfillment.FulfillmentNumber} located.` },
+        });
 
         // timeout to make sure page loads then scroll item into view
         setTimeout(() => {
-            document.getElementById(foundFulfillment.FulfillmentID).scrollIntoView({behavior: 'smooth', block: 'center'});
+            document.getElementById(foundFulfillment.FulfillmentID).scrollIntoView({block: 'center'});
         }, 10);
 
     }
