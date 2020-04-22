@@ -1,0 +1,42 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">Enter Quantity</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div>
+            <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <mat-label>Quantity</mat-label>
+                    <input matInput placeholder="Quantity"
+                            name="Quantity"
+                            formControlName="Quantity"
+                            type="number"
+                            min="0"
+                            max={{data}}
+                            required
+                            (input)="setMax()"
+                            >
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div style="width: 100%">
+            <button #mainButton mat-raised-button color="accent"
+                    class="save-button"
+                    [disabled]="composeForm.invalid"
+                    (click)=onSelect()>
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isLoading">OK</span>
+                    <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

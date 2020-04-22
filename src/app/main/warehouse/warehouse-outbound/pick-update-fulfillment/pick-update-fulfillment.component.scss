@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-pick-fulfillment {
+pick-update-fulfillment {
     display: flex;
     -webkit-box-flex: 1;
     flex: 1 0 auto;
@@ -8,11 +8,11 @@ pick-fulfillment {
     min-width: 100%;
     max-height: 100%;
     .sidebar {
-        width: 360px !important;
-        min-width: 360px !important;
-        max-width: 360px !important;
-        z-index: 1;
-    }
+            width: 360px !important;
+            min-width: 360px !important;
+            max-width: 360px !important;
+            z-index: 1;
+        }
     .center {
         overflow: hidden;
         .header {

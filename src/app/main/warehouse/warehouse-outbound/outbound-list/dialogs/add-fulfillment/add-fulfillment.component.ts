@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { ItemList, Item } from 'app/shared/class/item';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
-import { WarehouseOutboundService } from '../../warehouse-outbound.service';
+import { WarehouseOutboundService } from '../../../warehouse-outbound.service';
 import { Fulfillment } from 'app/shared/class/fulfillment';
 // import { NotificationComponent } from 'app/shared/components/notification/notification.component';
 import { NotificationsService } from 'angular2-notifications';
@@ -49,7 +49,6 @@ export class AddFulfillmentDialogComponent implements OnInit, AfterViewInit, OnD
         private _snackBar: MatSnackBar,
         // private notificationComponent: NotificationComponent,
         @Inject(MAT_DIALOG_DATA) private data: {ShippingMethod, FulfillmentNumber},
-        private notificationsService: NotificationsService,
         private _service: NotificationsService
     ) {
         // Set the defaults

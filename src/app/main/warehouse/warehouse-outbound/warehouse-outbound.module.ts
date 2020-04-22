@@ -25,11 +25,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { WarehouseOutboundDetailsSidebarComponent } from './outbound-sidebars/outbound-details/outbound-details.component';
-import { SelectShippingTypeDialogComponent } from './dialogs/select-shipping-type/select-shipping-type.component';
-import { AddFulfillmentDialogComponent } from './dialogs/add-fulfillment/add-fulfillment.component';
-import { PickFulfillmentDetailsSidebarComponent } from './pick-fulfillment/pick-fulfillment-details/pick-fulfillment-details.component';
+import { WarehouseOutboundDetailsSidebarComponent } from './outbound-list/outbound-details/outbound-details.component';
+import { SelectShippingTypeDialogComponent } from './outbound-list/dialogs/select-shipping-type/select-shipping-type.component';
+import { AddFulfillmentDialogComponent } from './outbound-list/dialogs/add-fulfillment/add-fulfillment.component';
+import { PickFulfillmentActionsComponent } from './pick-fulfillment/pick-fulfillment-actions/pick-fulfillment-actions.component';
 import { PickFulfillmentComponent } from './pick-fulfillment/pick-fulfillment.component';
+import { PickUpdateFulfillmentComponent } from './pick-update-fulfillment/pick-update-fulfillment.component';
+// tslint:disable-next-line: max-line-length
+import { PickUpdateFulfillmentDetailsSidebarComponent } from './pick-update-fulfillment/pick-update-fulfillment-details/pick-update-fulfillment-details.component';
+import { EnterQtyDialogComponent } from './pick-update-fulfillment/dialogs/enter-qty/enter-qty.component';
+import { UpdateConfirmedQtyDialogComponent } from './pick-fulfillment/dialogs/update-confirmed-qty/update-confirmed-qty.component';
+import {
+    UpdateConfirmedQtyActionsComponent
+} from './pick-fulfillment/dialogs/update-confirmed-qty/update-confirmed-qty-actions/update-confirmed-qty-actions.component';
 
 const routes: Routes = [];
 
@@ -40,8 +48,13 @@ const routes: Routes = [];
         WarehouseOutboundDetailsSidebarComponent,
         SelectShippingTypeDialogComponent,
         AddFulfillmentDialogComponent,
-        PickFulfillmentDetailsSidebarComponent,
-        PickFulfillmentComponent
+        PickFulfillmentActionsComponent,
+        PickFulfillmentComponent,
+        PickUpdateFulfillmentComponent,
+        PickUpdateFulfillmentDetailsSidebarComponent,
+        EnterQtyDialogComponent,
+        UpdateConfirmedQtyDialogComponent,
+        UpdateConfirmedQtyActionsComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -76,7 +89,9 @@ const routes: Routes = [];
     ],
     entryComponents: [
         SelectShippingTypeDialogComponent,
-        AddFulfillmentDialogComponent
+        AddFulfillmentDialogComponent,
+        EnterQtyDialogComponent,
+        UpdateConfirmedQtyDialogComponent
     ]
 })
 export class WarehouseOutboundModule {

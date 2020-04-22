@@ -16,8 +16,8 @@ import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.compo
 import { Fulfillment } from 'app/shared/class/fulfillment';
 import { WarehouseItemManagerService } from '../../warehouse-item-manager/warehouse-item-manager.service';
 import { DOCUMENT } from '@angular/common';
-import { SelectShippingTypeDialogComponent } from '../dialogs/select-shipping-type/select-shipping-type.component';
-import { AddFulfillmentDialogComponent } from '../dialogs/add-fulfillment/add-fulfillment.component';
+import { SelectShippingTypeDialogComponent } from './dialogs/select-shipping-type/select-shipping-type.component';
+import { AddFulfillmentDialogComponent } from './dialogs/add-fulfillment/add-fulfillment.component';
 
 @Component({
     selector: 'outbound-list',
@@ -206,9 +206,9 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         // set foundFulfillment to be selected
         // this.warehouseOutboundService.onFulfillmentSelected.next(foundFulfillment);
         this.onSelect(foundFulfillment);
-        this._snackBar.openFromComponent(SnackbarComponent, {
-            data: { type: 'success', message: `${foundFulfillment.FulfillmentNumber} located.` },
-        });
+        // this._snackBar.openFromComponent(SnackbarComponent, {
+        //     data: { type: 'success', message: `${foundFulfillment.FulfillmentNumber} located.` },
+        // });
 
         // timeout to make sure page loads then scroll item into view
         setTimeout(() => {

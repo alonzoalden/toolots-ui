@@ -8,7 +8,11 @@ const appRoutes: Routes = [
       path: 'warehouse',
       loadChildren: () => import('./main/warehouse/warehouse.module').then(mod => mod.WarehouseModule),
       canLoad: [ AuthGuard ],
-  }
+  },
+  // {
+  //   path: '**',
+  //   redirectTo: ''
+  // }
 ];
 
 @NgModule({

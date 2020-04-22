@@ -8,6 +8,7 @@ import { WarehouseOutboundComponent } from './warehouse-outbound/warehouse-outbo
 import { WarehouseOutboundListComponent } from './warehouse-outbound/outbound-list/outbound-list.component';
 import { WarehouseInboundComponent } from './warehouse-inbound/warehouse-inbound.component';
 import { PickFulfillmentComponent } from './warehouse-outbound/pick-fulfillment/pick-fulfillment.component';
+import { PickUpdateFulfillmentComponent } from './warehouse-outbound/pick-update-fulfillment/pick-update-fulfillment.component';
 
 const WAREHOUSE_ROUTES: Routes = [
     {
@@ -42,8 +43,18 @@ const WAREHOUSE_ROUTES: Routes = [
                     },
                     {
                         path: 'pick',
-                        component: PickFulfillmentComponent
-                    }
+                        component: PickFulfillmentComponent,
+                        // children: [
+                        //     {
+                        //         path: 'update',
+                        //         component: PickUpdateFulfillmentComponent,
+                        //     },
+                        // ]
+                    },
+                    {
+                        path: 'pick/update',
+                        component: PickUpdateFulfillmentComponent,
+                    },
                 ]
             },
             {

@@ -13,24 +13,25 @@ import { MatDialog } from '@angular/material/dialog';
 import { MailComposeDialogComponent } from 'app/main/warehouse/warehouse-item-manager/dialogs/edit-dimensions/edit-dimensions.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
-import { Fulfillment, FulfillmentLine } from 'app/shared/class/fulfillment';
+import { Fulfillment, FulfillmentLine, FulfillmentLineConfirm } from 'app/shared/class/fulfillment';
 import { WarehouseItemManagerService } from '../../warehouse-item-manager/warehouse-item-manager.service';
 import { DOCUMENT } from '@angular/common';
 import { SelectShippingTypeDialogComponent } from '../outbound-list/dialogs/select-shipping-type/select-shipping-type.component';
 import { AddFulfillmentDialogComponent } from '../outbound-list/dialogs/add-fulfillment/add-fulfillment.component';
+import { EnterQtyDialogComponent } from './dialogs/enter-qty/enter-qty.component';
 
 @Component({
-    selector: 'pick-fulfillment',
-    templateUrl: './pick-fulfillment.component.html',
-    styleUrls: ['./pick-fulfillment.component.scss'],
+    selector: 'pick-update-fulfillment',
+    templateUrl: './pick-update-fulfillment.component.html',
+    styleUrls: ['./pick-update-fulfillment.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PickUpdateFulfillmentComponent implements OnInit, AfterViewInit, OnDestroy {
     fileURL = environment.fileURL;
     files: any;
     dataSource: any;
-    displayedColumns = ['Item', 'BIN', 'ConfirmedBIN', 'OrderedQty', 'ConfirmedQty', 'Missing', 'Picked'];
+    displayedColumns = ['BinNumber', 'Quantity'];
     selected: any;
     pIndex: number;
     isLoading: boolean;
@@ -44,7 +45,8 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
     currentSnackBar: any;
     shippingMethod: string;
     inputEnabled: boolean;
-    selectedFulfillmentLine: any;
+    selectedFulfillmentLine: FulfillmentLine;
+    selectedFulfillmentLineConfirm: FulfillmentLineConfirm;
     // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild('mainInput') mainInput: ElementRef;
@@ -53,15 +55,13 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
     constructor(
         private _fuseSidebarService: FuseSidebarService,
         public warehouseOutboundService: WarehouseOutboundService,
-        private warehouseItemManagerService: WarehouseItemManagerService,
         public _matDialog: MatDialog,
-        private _snackBar: MatSnackBar,
-        @Inject(DOCUMENT) document
+        private _snackBar: MatSnackBar
     ) {
         this._unsubscribeAll = new Subject();
         this.searchTerm = '';
         this.searchEnabled = false;
-        // this.inputEnabled = true;
+        this.inputEnabled = true;
     }
 
     ngOnInit(): void {
@@ -71,30 +71,25 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
             .subscribe(selected => {
                 this.isLoading = false;
                 this.selected = selected;
-                // add quantities
-                if (this.selected.FulfillmentLines) {
-                    this.selected.FulfillmentLines.forEach((line: FulfillmentLine) => {
-                        this.warehouseOutboundService.setTotalConfirmedQty(line);
-                        this.warehouseOutboundService.setPickedBasedOffQty(line);
-                    });
-                    if (!this.dataSource) {
-                        this.refreshDataSource();
-                    }
-                    if (!this.selectedFulfillmentLine) {
-                        this.onSelect(this.dataSource.data[0]);
-                    }
-                }
             });
         this.warehouseOutboundService.onFulfillmentLineSelected
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((selectedfulfillmentline: FulfillmentLine) => {
-                this.selectedFulfillmentLine = selectedfulfillmentline;
+            .subscribe(fulfillmentline => {
+                this.selectedFulfillmentLine = fulfillmentline;
+                this.dataSource = new MatTableDataSource<FulfillmentLineConfirm>(this.selectedFulfillmentLine.FulfillmentLineConfirms);
+                this.dataSource.sort = this.sort;
+                this.onSelect(this.dataSource.data[0]);
             });
-        this.warehouseOutboundService.onPickInputEnabled
+        this.warehouseOutboundService.onFulfillmentLineConfirmSelected
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(inputenabled => {
-                this.inputEnabled = inputenabled;
+            .subscribe(fulfillmentlineconfirm => {
+                this.selectedFulfillmentLineConfirm = fulfillmentlineconfirm;
             });
+        // this.warehouseOutboundService.onPickInputEnabled
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(inputenabled => {
+        //         this.inputEnabled = inputenabled;
+        //     });
     }
 
     ngAfterViewInit() {
@@ -106,13 +101,10 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
         this._unsubscribeAll.complete();
         // clearInterval(this.interval);
     }
-    refreshDataSource(): void {
-        this.dataSource = new MatTableDataSource<FulfillmentLine>(this.selected.FulfillmentLines);
-        this.dataSource.sort = this.sort;
-    }
-    onSelect(fulfillmentline: FulfillmentLine): void {
+
+    onSelect(fulfillmentlineconfirm: FulfillmentLineConfirm): void {
         this.searchTerm = '';
-        this.warehouseOutboundService.onFulfillmentLineSelected.next(fulfillmentline);
+        this.warehouseOutboundService.onFulfillmentLineConfirmSelected.next(fulfillmentlineconfirm);
     }
 
     toggleSidebar(name): void {
@@ -154,7 +146,7 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
 
         // timeout to make sure page loads then scroll item into view
         setTimeout(() => {
-            document.getElementById(foundFulfillment.FulfillmentID).scrollIntoView({block: 'center' });
+            document.getElementById(foundFulfillment.FulfillmentID).scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 10);
 
     }

@@ -1,0 +1,109 @@
+
+<div class="page-layout simple inner-scroll">
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+        <!-- CONTENT -->
+        <div class="content" #scrollContainer>
+            <div class="main-list-layout list-container">
+                <div *ngIf="selected && selected.FulfillmentID" class="toolbar accent" fxLayout="row" fxLayoutAlign="flex-end center">
+                    <button *ngIf="selected.FulfillmentID" 
+                        aria-label="close" mat-icon-button (click)="onDialogClose()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <!-- HEADER  -->
+                <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+                    <div class="breadcrumb text-truncate h1 p24" 
+                        style="width: 100%; text-align: left;">
+                        <h1 style="display: flex;">
+                            Fulfillment - {{selected.FulfillmentNumber}}
+                            <span style="width: 100%" [@animate]="{value:'*',params:{x:'300px'}}"> - {{selectedFulfillmentLine.ItemTPIN}}</span>
+                        </h1>
+                    </div>
+                    <!-- SEARCH BAR  -->
+                    <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                        <div class="search-wrapper">
+                            <div class="search" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon class="secondary-text">search</mat-icon>
+                                <input #mainInput [disabled]="isLoading" [(ngModel)]="searchTerm"
+                                    [placeholder]="isLoading ? 'Please wait...' : 'Search Bin Number'"
+                                    (keyup.enter)=applySearch(searchTerm) (focusout)="focusMainInput()">
+                                <button mat-icon-button *ngIf="searchTerm" (click)="searchTerm = ''; warehouseOutboundService.clearSelected()">
+                                    <mat-icon matTooltip="Clear">clear</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="width: 12px;"></div>
+                        <button [disabled]="(selected.FulfillmentNumber?.toLowerCase() === searchTerm.toLowerCase()) || !searchTerm"
+                            color="primary" mat-fab (click)="applySearch(searchTerm)">Search</button>
+                    </div>
+                    <div class="hero-text">
+                        <mat-icon class="hero-icon">next_week</mat-icon>
+                    </div>
+                </div>
+                <!-- /HEADER  -->
+                <div fxLayout="row">
+                        <div *ngIf="isLoading" class="loader">
+                            <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
+                        </div>
+                        <div *ngIf="isRefreshing && !isLoading" class="mini-loader">
+                            <mat-spinner diameter="20"></mat-spinner>
+                        </div>
+
+                        <mat-table *ngIf="!isLoading" #table [dataSource]="dataSource"
+                                    matSort>
+                            
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="ID">
+                                <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{row.FulfillmentLineConfirmID}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- Quantity Column -->
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{row.Quantity}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- BinNumber Column -->
+                            <ng-container matColumnDef="BinNumber">
+                                <mat-header-cell *matHeaderCellDef>Bin Number</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{row.BinNumber}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                    (click)="onSelect(row)"
+                                    id={{row.FulfillmentLineConfirmID}}
+                                    [ngClass]="{'selected' : row == selectedFulfillmentLineConfirm}"
+                                    [@animate]="!selected && {value:'*',params:{y:'100%'}}"
+                            >
+                            </mat-row>
+                        </mat-table>
+                        <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData?.length === 0"
+                            [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">
+                            No items found.
+                        </div>
+                    <div class="sidebar">
+                        <update-confirmed-qty-actions></update-confirmed-qty-actions>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+    <!-- SIDEBAR -->
+    <!-- <fuse-sidebar class="sidebar details-sidebar" name="outbound-details-sidebar" position="right"
+            lockedOpen="gt-sm">
+        <pick-update-fulfillment-details-sidebar></pick-update-fulfillment-details-sidebar>
+    </fuse-sidebar> -->
+</div>

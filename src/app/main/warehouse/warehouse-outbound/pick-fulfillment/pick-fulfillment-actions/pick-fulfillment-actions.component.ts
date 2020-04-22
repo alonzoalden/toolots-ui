@@ -8,14 +8,17 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 import { FulfillmentLine } from 'app/shared/class/fulfillment';
 import { Router } from '@angular/router';
+import { UpdateConfirmedQtyDialogComponent } from '../dialogs/update-confirmed-qty/update-confirmed-qty.component';
+import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'pick-fulfillment-details-sidebar',
-    templateUrl: './pick-fulfillment-details.component.html',
-    styleUrls: ['./pick-fulfillment-details.component.scss'],
+    selector: 'pick-fulfillment-actions',
+    templateUrl: './pick-fulfillment-actions.component.html',
+    styleUrls: ['./pick-fulfillment-actions.component.scss'],
     animations: fuseAnimations
 })
-export class PickFulfillmentDetailsSidebarComponent implements OnInit, OnDestroy {
+export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
     selected: any;
     isEdit: boolean;
     dialogRef: any;
@@ -29,6 +32,7 @@ export class PickFulfillmentDetailsSidebarComponent implements OnInit, OnDestroy
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
         private router: Router,
+        private _snackBar: MatSnackBar,
     ) {
         this._unsubscribeAll = new Subject();
     }
@@ -77,15 +81,16 @@ export class PickFulfillmentDetailsSidebarComponent implements OnInit, OnDestroy
             this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.ConfirmedBy,
             this.selectedFulfillmentLine.ConfirmedOn,
             this.selectedFulfillmentLine.FulfillmentLineInventoryDetails,
-            this.selectedFulfillmentLine.FulfillmentLineConfirms, null, null
+            this.selectedFulfillmentLine.FulfillmentLineConfirms, this.selectedFulfillmentLine.confirmedQty
         );
         newdata.IsPicked = !newdata.IsPicked;
-        if (newdata.IsPicked && newdata.IsNotFound) {
-            newdata.IsNotFound = false;
-        }
+        this.warehouseOutboundService.setPickedBasedOffQty(newdata);
+        this.warehouseOutboundService.setMissing(newdata);
+        this.warehouseOutboundService.copyInventoryDetailsIntoConfirms(newdata);
         this.warehouseOutboundService.updatePickFulfillmentLine(newdata)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
+                this.selectedFulfillmentLine.IsPicked = data.IsPicked;
                 this.checkPickIncomplete();
             });
     }
@@ -97,16 +102,34 @@ export class PickFulfillmentDetailsSidebarComponent implements OnInit, OnDestroy
             this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.ConfirmedBy,
             this.selectedFulfillmentLine.ConfirmedOn,
             this.selectedFulfillmentLine.FulfillmentLineInventoryDetails,
-            this.selectedFulfillmentLine.FulfillmentLineConfirms, null, null
+            this.selectedFulfillmentLine.FulfillmentLineConfirms, null
         );
         newdata.IsNotFound = !newdata.IsNotFound;
-        if (newdata.IsNotFound && newdata.IsPicked) {
-            newdata.IsPicked = false;
-        }
+        this.warehouseOutboundService.setPicked(newdata);
         this.warehouseOutboundService.updatePickFulfillmentLine(newdata)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
+                this.selectedFulfillmentLine.IsNotFound = data.IsNotFound;
                 this.checkPickIncomplete();
+            });
+    }
+
+    openDialogEnterConfirmedQty() {
+        this.warehouseOutboundService.onPickInputEnabled.next(false);
+        this.dialogRef = this._matDialog.open(UpdateConfirmedQtyDialogComponent, {
+            panelClass: 'edit-dimensions-dialog',
+            width: '90%',
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(updatedconfirmedqty => {
+                this.warehouseOutboundService.onPickInputEnabled.next(true);
+                this.warehouseOutboundService.setPickedBasedOffQty(this.selectedFulfillmentLine);
+                // if (!response) {
+                //     return;
+                // }
+                // this._snackBar.openFromComponent(SnackbarComponent, {
+                //     data: { type: 'success', message: `Confirmed Quantity updated.` },
+                // });
             });
     }
 }

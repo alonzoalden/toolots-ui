@@ -32,7 +32,6 @@ export const navigation: FuseNavigation[] = [
                         type     : 'item',
                         icon     : 'next_week',
                         url      : '/warehouse/outbound',
-                        exactMatch: true
                     },
                     {
                         id       : 'inbound',

@@ -41,7 +41,6 @@ export class FulfillmentLine {
         public ConfirmedOn: Date,
         public FulfillmentLineInventoryDetails: FulfillmentLineInventoryDetail[],
         public FulfillmentLineConfirms: FulfillmentLineConfirm[],
-        public orderedQty: number,
         public confirmedQty: number
     ) {}
 }
