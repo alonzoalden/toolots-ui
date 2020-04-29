@@ -95,6 +95,7 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
             .subscribe(inputenabled => {
                 this.inputEnabled = inputenabled;
             });
+        this.warehouseOutboundService.getLocationBinList();
     }
 
     ngAfterViewInit() {

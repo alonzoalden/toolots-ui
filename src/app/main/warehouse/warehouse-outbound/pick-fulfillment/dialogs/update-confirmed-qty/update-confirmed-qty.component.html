@@ -1,41 +1,46 @@
 
-<div class="page-layout simple inner-scroll">
+<div class="page-layout simple inner-scroll dialog-content-wrapper">
     <!-- CENTER -->
     <div class="center" fxFlex>
         <!-- CONTENT -->
         <div class="content" #scrollContainer>
             <div class="main-list-layout list-container">
                 <div *ngIf="selected && selected.FulfillmentID" class="toolbar accent" fxLayout="row" fxLayoutAlign="flex-end center">
-                    <button *ngIf="selected.FulfillmentID" 
+                    <!-- <button *ngIf="selected.FulfillmentID" 
                         aria-label="close" mat-icon-button (click)="onDialogClose()">
                         <mat-icon>close</mat-icon>
-                    </button>
+                    </button> -->
                 </div>
                 <!-- HEADER  -->
                 <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
                     <div class="breadcrumb text-truncate h1 p24" 
                         style="width: 100%; text-align: left;">
                         <h1 style="display: flex;">
-                            Fulfillment - {{selected.FulfillmentNumber}}
-                            <span style="width: 100%" [@animate]="{value:'*',params:{x:'300px'}}"> - {{selectedFulfillmentLine.ItemTPIN}}</span>
+                            Fulfillment - {{selected.FulfillmentNumber + ' '}} 
+                            <span *ngIf="selectedFulfillmentLine" style="width: 100%" [@animate]="{value:'*',params:{x:'300px'}}"> - {{selectedFulfillmentLine.ItemTPIN}}</span>
                         </h1>
                     </div>
-                    <!-- SEARCH BAR  -->
+                    <!-- SEARCH DROPDOWN BAR  -->
                     <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-                        <div class="search-wrapper">
-                            <div class="search" fxLayout="row" fxLayoutAlign="start center">
-                                <mat-icon class="secondary-text">search</mat-icon>
-                                <input #mainInput [disabled]="isLoading" [(ngModel)]="searchTerm"
-                                    [placeholder]="isLoading ? 'Please wait...' : 'Search Bin Number'"
-                                    (keyup.enter)=applySearch(searchTerm) (focusout)="focusMainInput()">
-                                <button mat-icon-button *ngIf="searchTerm" (click)="searchTerm = ''; warehouseOutboundService.clearSelected()">
-                                    <mat-icon matTooltip="Clear">clear</mat-icon>
-                                </button>
-                            </div>
-                        </div>
+                        <ng-select  
+                            [items]="locationBinList"
+                            [virtualScroll]="true"
+                            bindLabel="BinNumber"
+                            bindValue="BinNumber"
+                            [(ngModel)]="searchTerm"
+                            appearance="outline"
+                            placeholder="Select Bin Location"
+                            #mainInput
+                            (focusout)="focusMainInput()"
+                            [openOnEnter]=false
+                            (keydown.enter)=applySearch(searchTerm)
+                        >
+                        </ng-select>
                         <div style="width: 12px;"></div>
-                        <button [disabled]="(selected.FulfillmentNumber?.toLowerCase() === searchTerm.toLowerCase()) || !searchTerm"
-                            color="primary" mat-fab (click)="applySearch(searchTerm)">Search</button>
+                        <div style="height: 100%; padding-bottom: 1.25em;" fxLayoutAlign="center center">
+                            <button [disabled]="!searchTerm"
+                                color="primary" mat-fab (click)="applySearch(searchTerm)">ADD</button>
+                        </div>
                     </div>
                     <div class="hero-text">
                         <mat-icon class="hero-icon">next_week</mat-icon>
@@ -50,7 +55,7 @@
                             <mat-spinner diameter="20"></mat-spinner>
                         </div>
 
-                        <mat-table *ngIf="!isLoading" #table [dataSource]="dataSource"
+                        <mat-table #table [dataSource]="dataSource"
                                     matSort>
                             
                             <!-- ID Column -->
@@ -64,8 +69,41 @@
                             <!-- Quantity Column -->
                             <ng-container matColumnDef="Quantity">
                                 <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    {{row.Quantity}}
+                                <mat-cell *matCellDef="let row; let i = index">
+                                    <div *ngIf="row !== selectedFulfillmentLineConfirm || !editConfirmQuantity">
+                                        {{row.Quantity}}
+                                    </div>
+                                    <div *ngIf="row === selectedFulfillmentLineConfirm && editConfirmQuantity"
+                                        fxLayoutAlign="space-between center">
+                                        <!-- <mat-form-field floatLabel="always" class="w-100-p"> -->
+                                            <!-- <mat-label>Enter Quantity</mat-label> -->
+                                            <input placeholder="Enter Quantity"
+                                                    name="Quantity"
+                                                    [(ngModel)]="tempQuantity"
+                                                    type="number"
+                                                    min="0"
+                                                    max={{getMaxPerRow(i)}}
+                                                    (keyup)="keyuptest($event, i)"
+                                                    (keydown.enter)="submitEnterQty(row, i)"
+                                                    required
+                                                    [ngClass]="{error: tempQuantity > getMaxPerRow(i)}"
+                                                    style="border: solid 1px rgba(0,0,0,0.12);
+                                                    border-radius: 5px;
+                                                    -webkit-transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                                                    transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                                                    padding-bottom: 0; padding: 4px 0; width: 70px; min-width: 40px; margin-right: 15px;"
+                                                    id="{{row.BinNumber}}"
+                                            >
+                                            <button (click)="submitEnterQty(row, i)" [disabled]="(tempQuantity > getMaxPerRow(i)) || tempQuantity === null " mat-icon-button color="accent"
+                                                style="width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;">
+                                                <!-- <mat-icon style="font-size: 20px">done</mat-icon> -->
+                                                OK
+                                            </button>
+                                            <!-- <button (click)="cancelEnterQty(row)" mat-icon-button color="warn" style="width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;">
+                                                <mat-icon style="font-size: 20px">close</mat-icon>
+                                            </button> -->
+                                        <!-- </mat-form-field> -->
+                                    </div>
                                 </mat-cell>
                             </ng-container>
 
@@ -74,6 +112,14 @@
                                 <mat-header-cell *matHeaderCellDef>Bin Number</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                     {{row.BinNumber}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- Actions Column -->
+                            <ng-container matColumnDef="Actions">
+                                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <mat-icon *ngIf="row.Quantity === 0" (click)="removeBin(row)">close</mat-icon>
                                 </mat-cell>
                             </ng-container>
 
@@ -86,10 +132,10 @@
                             >
                             </mat-row>
                         </mat-table>
-                        <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData?.length === 0"
+                        <!-- <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData?.length === 0"
                             [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">
                             No items found.
-                        </div>
+                        </div> -->
                     <div class="sidebar">
                         <update-confirmed-qty-actions></update-confirmed-qty-actions>
                     </div> 
@@ -99,11 +145,18 @@
         <!-- / CONTENT -->
 
     </div>
-    <!-- / CENTER -->
 
-    <!-- SIDEBAR -->
-    <!-- <fuse-sidebar class="sidebar details-sidebar" name="outbound-details-sidebar" position="right"
-            lockedOpen="gt-sm">
-        <pick-update-fulfillment-details-sidebar></pick-update-fulfillment-details-sidebar>
-    </fuse-sidebar> -->
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    color="primary"
+                    (click)="onDialogClose()"
+                    class="save-button"
+                    aria-label="CLOSE">
+                <div fxLayoutAlign="center">
+                    <span class="btn-title">OK</span>
+                </div>
+            </button>
+        </div>
+    </div>
 </div>

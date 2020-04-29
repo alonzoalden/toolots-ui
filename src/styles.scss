@@ -4,6 +4,8 @@
 // Import app.theme.scss
 @import "app/app.theme";
 
+// Import Ng Select theme
+@import "~@ng-select/ng-select/themes/material.theme.css";
 .orange {
     background-color: #fb8c00;
 }

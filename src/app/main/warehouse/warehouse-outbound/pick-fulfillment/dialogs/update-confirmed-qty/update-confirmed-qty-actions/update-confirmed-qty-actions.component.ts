@@ -27,6 +27,7 @@ export class UpdateConfirmedQtyActionsComponent implements OnInit, OnDestroy {
     selectedFulfillmentLineConfirm: FulfillmentLineConfirm;
     pickIncomplete: boolean;
     inputEnabled: boolean;
+    editConfirmQuantity: boolean;
     @ViewChild('scrollContainer') scrollContainerEl: ElementRef;
     private _unsubscribeAll: Subject<any>;
     constructor(
@@ -57,11 +58,11 @@ export class UpdateConfirmedQtyActionsComponent implements OnInit, OnDestroy {
             .subscribe((fulfillmentlineconfirm: FulfillmentLineConfirm) => {
                 this.selectedFulfillmentLineConfirm = fulfillmentlineconfirm;
             });
-        // this.warehouseOutboundService.onPickUpdateInputEnabled
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((inputenabled: boolean) => {
-        //         this.inputEnabled = inputenabled;
-        //     });
+        this.warehouseOutboundService.editConfirmQuantity
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((editquantity: boolean) => {
+                this.editConfirmQuantity = editquantity;
+            });
     }
 
     ngOnDestroy(): void {
@@ -105,5 +106,8 @@ export class UpdateConfirmedQtyActionsComponent implements OnInit, OnDestroy {
         //             data: { type: 'success', message: `Confirmed Quantity updated.` },
         //         });
         //     });
+    }
+    enterConfirmQty() {
+        this.warehouseOutboundService.toggleEnterConfirmedQty();
     }
 }

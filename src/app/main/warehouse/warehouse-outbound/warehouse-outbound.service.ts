@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, Subject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, takeUntil } from 'rxjs/operators';
 import { Fulfillment, FulfillmentLine, FulfillmentLineConfirm } from 'app/shared/class/fulfillment';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -15,25 +15,28 @@ export class WarehouseOutboundService {
     outboundList: BehaviorSubject<any>;
     locationBinList: BehaviorSubject<any>;
     isEdit: BehaviorSubject<any>;
+    editConfirmQuantity: BehaviorSubject<any>;
     filteredCourses: any[];
     currentCategory: string;
     searchTerm: BehaviorSubject<any>;
-
     private apiURL = environment.webapiURL;
+    private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _httpClient: HttpClient,
-        private _service: NotificationsService
-    ) {
-        // Set the defaults
-        this.onFulfillmentSelected = new BehaviorSubject({});
-        this.onFulfillmentLineSelected = new BehaviorSubject({});
-        this.onFulfillmentLineConfirmSelected = new BehaviorSubject({});
-        this.onPickInputEnabled = new BehaviorSubject(true);
-        this.outboundList = new BehaviorSubject([]);
-        this.locationBinList = new BehaviorSubject([]);
-        this.isEdit = new BehaviorSubject({});
-        this.searchTerm = new BehaviorSubject('');
+        private _service: NotificationsService,
+        ) {
+            // Set the defaults
+            this.onFulfillmentSelected = new BehaviorSubject({});
+            this.onFulfillmentLineSelected = new BehaviorSubject({});
+            this.onFulfillmentLineConfirmSelected = new BehaviorSubject({});
+            this.onPickInputEnabled = new BehaviorSubject(true);
+            this.outboundList = new BehaviorSubject([]);
+            this.locationBinList = new BehaviorSubject([]);
+            this.isEdit = new BehaviorSubject({});
+            this.editConfirmQuantity = new BehaviorSubject(null);
+            this.searchTerm = new BehaviorSubject('');
+            this._unsubscribeAll = new Subject();
     }
 
     getFulfillmentList(): Observable<any> {
@@ -46,13 +49,16 @@ export class WarehouseOutboundService {
             );
     }
 
-    getLocationBinList(): Observable<any> {
-        return this._httpClient.get<any>(this.apiURL + '/location/binlist')
-            .pipe(
-                tap(data => {
+    getLocationBinList(): void {
+        this._httpClient.get<any>(this.apiURL + '/location/binlist')
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                data => {
                     this.locationBinList.next(data);
-                }),
-                catchError(this.handleError)
+                },
+                error => {
+                    console.log(error);
+                },
             );
     }
 
@@ -112,9 +118,9 @@ export class WarehouseOutboundService {
     }
 
     setPickedBasedOffQty(fulfillmentline: FulfillmentLine) {
-        if (fulfillmentline.confirmedQty !== 0 && (fulfillmentline.confirmedQty < fulfillmentline.Quantity)) {
+        if (fulfillmentline.confirmedQty !== 0 && fulfillmentline.confirmedQty < fulfillmentline.Quantity) {
             fulfillmentline.IsPicked = false;
-            // return this._service.error('Error', 'Pick set to No', {timeOut: 3000, clickToClose: true});
+            // this._service.error('Warning', `${fulfillmentline.ItemTPIN} can not be picked`, {timeOut: 3000, clickToClose: true});
         }
     }
     setMissing(fulfillmentline: FulfillmentLine) {
@@ -136,5 +142,11 @@ export class WarehouseOutboundService {
             errorMessage = `Response error: ${err.error.Message}`;
         }
         return throwError(errorMessage);
+    }
+
+    toggleEnterConfirmedQty() {
+        this.editConfirmQuantity.next(
+            !this.editConfirmQuantity.value
+        );
     }
 }

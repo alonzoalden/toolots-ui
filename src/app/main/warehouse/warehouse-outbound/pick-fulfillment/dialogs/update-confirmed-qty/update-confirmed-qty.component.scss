@@ -17,7 +17,8 @@
         border-left: 1px solid #eee;
     }
     mat-table {
-        width: 100%
+        width: 100%;
+        z-index: 10;
     }
     .sub-header {
         position: relative;
@@ -27,7 +28,6 @@
         padding-top: 4px;
         padding-bottom: 50px;
         text-align: center;
-        overflow: hidden;
         width: 100%;
         mat-icon {
             font-size: 24px;
@@ -83,9 +83,9 @@
         }
         .action-container {
             display: flex;
+            align-items: center;
             padding: 0 70px;
             width: 100%;
-
             .search-wrapper {
                 z-index: 12 !important;
                 border-radius: 28px;
@@ -133,11 +133,13 @@
             flex-direction: column;
     
             .save-button {
-                width: 69px;
-                height: 36px;
+                // width: 69px;
+                // height: 36px;
+                width: 204px;
+                height: 48px;
                 .btn-title {
                     color: #fff;
-                    font-size: 18px;
+                    font-size: 22px;
                     text-transform: uppercase;
                 }
             }
@@ -184,6 +186,14 @@
             }
         }
     }
+    .mat-column-Actions {
+        text-align: right;
+        flex: 0 0 10% !important;
+        min-width: 10% !important;
+    }
+    .error {
+        border-color: red !important;
+    }
 }
 .ps__rail-x {
     height: 0;
@@ -199,4 +209,24 @@
     width: 10px !important;
     height: 10px !important;
     margin-right: 10px !important;
+}
+
+.ng-select {
+    width: 100%;
+    z-index: 9999 !important;
+    .ng-select-container .ng-value-container {
+        padding-top: 15px;
+        padding-left: 5px;
+        .ng-placeholder {
+            background-color: #039be5;
+            color: #fff !important;
+            margin-top: -5px;
+        }
+    }
+}
+.ng-select .ng-select-container .ng-value-container .ng-input {
+    bottom: 16px;
+}
+.ng-select.ng-select-single .ng-select-container .ng-value-container {
+    color: #fff;
 }

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { UpdateConfirmedQtyDialogComponent } from '../dialogs/update-confirmed-qty/update-confirmed-qty.component';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'pick-fulfillment-actions',
@@ -33,6 +34,7 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService,
         private router: Router,
         private _snackBar: MatSnackBar,
+        private _service: NotificationsService
     ) {
         this._unsubscribeAll = new Subject();
     }
@@ -91,10 +93,21 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 this.selectedFulfillmentLine.IsPicked = data.IsPicked;
+                this.selectedFulfillmentLine.IsNotFound = data.IsNotFound;
+                this.selectedFulfillmentLine.FulfillmentLineConfirms = data.FulfillmentLineConfirms;
+                this.warehouseOutboundService.setTotalConfirmedQty(this.selectedFulfillmentLine);
                 this.checkPickIncomplete();
+                // if (data.picked) {
+                //     this._service.success('Success', `${fulfillmentline.ItemTPIN} successfully picked`, {timeOut: 3000, clickToClose: true});
+                // }
             });
     }
     sendMissingItem(fulfillmentline: FulfillmentLine): void {
+        if (this.selectedFulfillmentLine.confirmedQty === this.selectedFulfillmentLine.Quantity) {
+            this._service.error('Warning', `${fulfillmentline.ItemTPIN} has already been confirmed`, {timeOut: 3000, clickToClose: true});
+            return;
+        }
+
         const newdata = new FulfillmentLine(this.selectedFulfillmentLine.FulfillmentLineID,
             this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
             this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
@@ -110,6 +123,7 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 this.selectedFulfillmentLine.IsNotFound = data.IsNotFound;
+                this.selectedFulfillmentLine.IsPicked = data.IsPicked;
                 this.checkPickIncomplete();
             });
     }
@@ -118,17 +132,24 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
         this.warehouseOutboundService.onPickInputEnabled.next(false);
         this.dialogRef = this._matDialog.open(UpdateConfirmedQtyDialogComponent, {
             panelClass: 'edit-dimensions-dialog',
-            width: '90%',
+            autoFocus: false,
+            disableClose: true,
+            width: '70%',
         });
         this.dialogRef.afterClosed()
             .subscribe(updatedconfirmedqty => {
                 this.warehouseOutboundService.onPickInputEnabled.next(true);
-                this.warehouseOutboundService.setPickedBasedOffQty(this.selectedFulfillmentLine);
+                if (this.selectedFulfillmentLine.confirmedQty < this.selectedFulfillmentLine.Quantity) {
+                    this.selectedFulfillmentLine.IsPicked = false;
+                    this._service.error('Warning',
+                        `${this.selectedFulfillmentLine.ItemTPIN} pick set to no`,
+                        {timeOut: 3000, clickToClose: true});
+                }
                 // if (!response) {
                 //     return;
                 // }
                 // this._snackBar.openFromComponent(SnackbarComponent, {
-                //     data: { type: 'success', message: `Confirmed Quantity updated.` },
+                //     data: { type: 'success', message: `Quantity Updated` },
                 // });
             });
     }

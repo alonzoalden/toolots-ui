@@ -37,20 +37,20 @@
         <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
             <div style="margin: 20px 0 20px 0; width: 100%">
-                <button class="main-action" 
+                <button [disabled]="editConfirmQuantity" class="main-action" 
                     mat-raised-button style="background-color: #43a047;"
                     (click)="addConfirmedQty()">
                     <mat-icon class="big-icon-button">add_circle</mat-icon>
                 </button>
             </div>
             <div style="margin-bottom: 20px; width: 100%">
-                <button class="main-action" (click)="subtractConfirmedQty()"
+                <button [disabled]="editConfirmQuantity" class="main-action" (click)="subtractConfirmedQty()"
                     mat-raised-button style="background-color: #e53935;">
                     <mat-icon class="big-icon-button">remove_circle</mat-icon>
                 </button>
             </div>
             <div style="margin-bottom: 20px; width: 100%">
-                <button (click)="openDialogEnterQty()"
+                <button (click)="enterConfirmQty()"
                     class="main-action" mat-raised-button color="accent">
                     <span class="btn-title">Enter Qty</span>
                 </button>

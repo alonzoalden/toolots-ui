@@ -220,7 +220,6 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
         this.inputEnabled = false;
         this.dialogRef = this._matDialog.open(SelectShippingTypeDialogComponent, {
             panelClass: 'edit-dimensions-dialog',
-            disableClose: true,
             autoFocus: false
         });
         this.dialogRef.afterClosed()

@@ -38,6 +38,8 @@ import { UpdateConfirmedQtyDialogComponent } from './pick-fulfillment/dialogs/up
 import {
     UpdateConfirmedQtyActionsComponent
 } from './pick-fulfillment/dialogs/update-confirmed-qty/update-confirmed-qty-actions/update-confirmed-qty-actions.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [];
 
@@ -82,6 +84,8 @@ const routes: Routes = [];
         MatRadioModule,
         FuseSharedModule,
         FuseSidebarModule,
+        NgSelectModule,
+        FormsModule
     ],
     providers: [
         WarehouseOutboundService,
