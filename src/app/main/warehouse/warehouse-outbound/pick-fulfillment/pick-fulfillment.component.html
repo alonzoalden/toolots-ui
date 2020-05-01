@@ -105,6 +105,12 @@
                         <mat-cell *matCellDef="let row">{{ row.IsNotFound ? 'Yes' : 'No' }}</mat-cell>
                     </ng-container>
 
+                    <!-- Unreachable -->
+                    <ng-container matColumnDef="Unreachable">
+                        <mat-header-cell *matHeaderCellDef>Unreachable</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Unreachable ? 'Yes' : 'No' }}</mat-cell>
+                    </ng-container>
+
                     <!-- Picked Column -->
                     <ng-container matColumnDef="Picked">
                         <mat-header-cell *matHeaderCellDef>Picked</mat-header-cell>

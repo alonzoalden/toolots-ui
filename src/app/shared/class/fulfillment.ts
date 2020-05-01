@@ -37,6 +37,7 @@ export class FulfillmentLine {
         public Quantity: number,
         public IsNotFound: boolean,
         public IsPicked: boolean,
+        public Unreachable: boolean,
         public ConfirmedBy: string,
         public ConfirmedOn: Date,
         public FulfillmentLineInventoryDetails: FulfillmentLineInventoryDetail[],

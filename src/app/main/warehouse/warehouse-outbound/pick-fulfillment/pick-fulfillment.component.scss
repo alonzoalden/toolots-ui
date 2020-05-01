@@ -192,15 +192,29 @@ pick-fulfillment {
         border-right: 1px solid #eee;
     }
     .mat-column-Item {
-        flex: 0 0 27% !important;
-        min-width: 27% !important;
+        flex: 0 0 25% !important;
+        min-width: 25% !important;
     }
     .mat-column-BIN {
-        flex: 0 0 18% !important;
-        min-width: 18% !important;
+        flex: 0 0 15% !important;
+        min-width: 15% !important;
     }
     .mat-column-ConfirmedBIN {
-        flex: 0 0 18% !important;
-        min-width: 18% !important;
+        flex: 0 0 15% !important;
+        min-width: 15% !important;
+    }
+    .mat-column-ConfirmedBIN {
+        flex: 0 0 15% !important;
+        min-width: 15% !important;
+    }
+    .mat-column-Missing {
+        flex: 0 0 9% !important;
+        min-width: 9% !important;
+    }
+    .mat-column-Picked {
+        flex: 0 0 7% !important;
+        min-width: 7% !important;
+        // justify-content: flex-end;
+        padding-right: 4px;
     }
 }

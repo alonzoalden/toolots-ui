@@ -77,7 +77,7 @@ export class UpdateConfirmedQtyDialogComponent implements OnInit, AfterViewInit,
         this.inputEnabled = true;
         this.editConfirmQuantity = false;
         this._unsubscribeAll = new Subject();
-        this.selectedFulfillmentLine = new FulfillmentLine(null, null, null, null, null, null, null, null, null, null, [], [], null);
+        this.selectedFulfillmentLine = new FulfillmentLine(null, null, null, null, null, null, null, null, null, null, null, [], [], null);
     }
 
     ngOnInit(): void {
@@ -173,6 +173,7 @@ export class UpdateConfirmedQtyDialogComponent implements OnInit, AfterViewInit,
         }
     }
     onDialogClose() {
+        this.warehouseOutboundService.editConfirmQuantity.next(false);
         const updatedConfirmedQuantity = this.dataSource.data
             .reduce((total, val: FulfillmentLineConfirm) => total = total + val.Quantity, 0);
         this.selectedFulfillmentLine.confirmedQty = updatedConfirmedQuantity;
@@ -219,6 +220,7 @@ export class UpdateConfirmedQtyDialogComponent implements OnInit, AfterViewInit,
             return;
         }
         this.warehouseOutboundService.toggleEnterConfirmedQty();
+        this.focusMainInput();
         row.Quantity = this.tempQuantity;
     }
     cancelEnterQty(row: FulfillmentLineConfirm) {

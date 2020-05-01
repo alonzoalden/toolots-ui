@@ -120,17 +120,21 @@ export class WarehouseOutboundService {
     setPickedBasedOffQty(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.confirmedQty !== 0 && fulfillmentline.confirmedQty < fulfillmentline.Quantity) {
             fulfillmentline.IsPicked = false;
-            // this._service.error('Warning', `${fulfillmentline.ItemTPIN} can not be picked`, {timeOut: 3000, clickToClose: true});
+            this._service.error('Warning', `${fulfillmentline.ItemTPIN} can not be picked`, {timeOut: 3000, clickToClose: true});
+            return false;
         }
+        return true;
     }
     setMissing(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.IsPicked && fulfillmentline.IsNotFound) {
             fulfillmentline.IsNotFound = false;
+            this._service.success('Warning', `${fulfillmentline.ItemTPIN} set to missing`, {timeOut: 3000, clickToClose: true});
         }
     }
     setPicked(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.IsNotFound && fulfillmentline.IsPicked) {
             fulfillmentline.IsPicked = false;
+            this._service.error('Warning', `${fulfillmentline.ItemTPIN} has been unpicked`, {timeOut: 3000, clickToClose: true});
         }
     }
 

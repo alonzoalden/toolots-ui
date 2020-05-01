@@ -80,13 +80,16 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
             this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
             this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
             this.selectedFulfillmentLine.Quantity, this.selectedFulfillmentLine.IsNotFound,
-            this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.ConfirmedBy,
+            this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
+            this.selectedFulfillmentLine.ConfirmedBy,
             this.selectedFulfillmentLine.ConfirmedOn,
             this.selectedFulfillmentLine.FulfillmentLineInventoryDetails,
             this.selectedFulfillmentLine.FulfillmentLineConfirms, this.selectedFulfillmentLine.confirmedQty
         );
         newdata.IsPicked = !newdata.IsPicked;
-        this.warehouseOutboundService.setPickedBasedOffQty(newdata);
+        if (!this.warehouseOutboundService.setPickedBasedOffQty(newdata)) {
+            return;
+        }
         this.warehouseOutboundService.setMissing(newdata);
         this.warehouseOutboundService.copyInventoryDetailsIntoConfirms(newdata);
         this.warehouseOutboundService.updatePickFulfillmentLine(newdata)
@@ -97,9 +100,22 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
                 this.selectedFulfillmentLine.FulfillmentLineConfirms = data.FulfillmentLineConfirms;
                 this.warehouseOutboundService.setTotalConfirmedQty(this.selectedFulfillmentLine);
                 this.checkPickIncomplete();
-                // if (data.picked) {
-                //     this._service.success('Success', `${fulfillmentline.ItemTPIN} successfully picked`, {timeOut: 3000, clickToClose: true});
-                // }
+                if (fulfillmentline.IsPicked && !data.IsPicked) {
+                    this._service.error('Error',
+                       `${fulfillmentline.ItemTPIN} can not be picked`, {timeOut: 3000, clickToClose: true});
+                }
+                if (data.IsPicked) {
+                    this._service.success('Success',
+                       `${fulfillmentline.ItemTPIN} successfully picked`, {timeOut: 3000, clickToClose: true});
+                }
+                if (!data.IsPicked && data.Quantity > data.confirmedQty) {
+                    this._service.error('Error',
+                       `${fulfillmentline.ItemTPIN} has been unpicked`, {timeOut: 3000, clickToClose: true});
+                }
+                if (!data.IsPicked) {
+                    this._service.error('Error',
+                       `${fulfillmentline.ItemTPIN} has been unpicked`, {timeOut: 3000, clickToClose: true});
+                }
             });
     }
     sendMissingItem(fulfillmentline: FulfillmentLine): void {
@@ -112,7 +128,8 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
             this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
             this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
             this.selectedFulfillmentLine.Quantity, this.selectedFulfillmentLine.IsNotFound,
-            this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.ConfirmedBy,
+            this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
+            this.selectedFulfillmentLine.ConfirmedBy,
             this.selectedFulfillmentLine.ConfirmedOn,
             this.selectedFulfillmentLine.FulfillmentLineInventoryDetails,
             this.selectedFulfillmentLine.FulfillmentLineConfirms, null
@@ -125,6 +142,44 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
                 this.selectedFulfillmentLine.IsNotFound = data.IsNotFound;
                 this.selectedFulfillmentLine.IsPicked = data.IsPicked;
                 this.checkPickIncomplete();
+                if (data.IsNotFound) {
+                    this._service.success('Warning', `${fulfillmentline.ItemTPIN} is missing`, {timeOut: 3000, clickToClose: true});
+                }
+                if (!data.IsNotFound) {
+                    this._service.success('Success', `${fulfillmentline.ItemTPIN} is not missing`, {timeOut: 3000, clickToClose: true});
+                }
+            });
+    }
+    sendUnreachableItem(fulfillmentline: FulfillmentLine): void {
+        if (this.selectedFulfillmentLine.confirmedQty === this.selectedFulfillmentLine.Quantity) {
+            this._service.error('Warning', `${fulfillmentline.ItemTPIN} has already been confirmed`, {timeOut: 3000, clickToClose: true});
+            return;
+        }
+
+        const newdata = new FulfillmentLine(this.selectedFulfillmentLine.FulfillmentLineID,
+            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
+            this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
+            this.selectedFulfillmentLine.Quantity, this.selectedFulfillmentLine.IsNotFound,
+            this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
+            this.selectedFulfillmentLine.ConfirmedBy,
+            this.selectedFulfillmentLine.ConfirmedOn,
+            this.selectedFulfillmentLine.FulfillmentLineInventoryDetails,
+            this.selectedFulfillmentLine.FulfillmentLineConfirms, null
+        );
+        newdata.Unreachable = !newdata.Unreachable;
+        this.warehouseOutboundService.setPicked(newdata);
+        this.warehouseOutboundService.updatePickFulfillmentLine(newdata)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                this.selectedFulfillmentLine.Unreachable = data.Unreachable;
+                this.selectedFulfillmentLine.IsPicked = data.IsPicked;
+                this.checkPickIncomplete();
+                if (data.Unreachable) {
+                    this._service.success('Warning', `${fulfillmentline.ItemTPIN} is unreachable`, {timeOut: 3000, clickToClose: true});
+                }
+                if (!data.Unreachable) {
+                    this._service.success('Success', `${fulfillmentline.ItemTPIN} is now reachable`, {timeOut: 3000, clickToClose: true});
+                }
             });
     }
 
@@ -139,7 +194,8 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
         this.dialogRef.afterClosed()
             .subscribe(updatedconfirmedqty => {
                 this.warehouseOutboundService.onPickInputEnabled.next(true);
-                if (this.selectedFulfillmentLine.confirmedQty < this.selectedFulfillmentLine.Quantity) {
+                if (this.selectedFulfillmentLine.IsPicked
+                    && this.selectedFulfillmentLine.confirmedQty < this.selectedFulfillmentLine.Quantity) {
                     this.selectedFulfillmentLine.IsPicked = false;
                     this._service.error('Warning',
                         `${this.selectedFulfillmentLine.ItemTPIN} pick set to no`,

@@ -30,7 +30,7 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
     fileURL = environment.fileURL;
     files: any;
     dataSource: any;
-    displayedColumns = ['Item', 'BIN', 'ConfirmedBIN', 'OrderedQty', 'ConfirmedQty', 'Missing', 'Picked'];
+    displayedColumns = ['Item', 'BIN', 'ConfirmedBIN', 'OrderedQty', 'ConfirmedQty', 'Unreachable', 'Missing', 'Picked'];
     selected: any;
     pIndex: number;
     isLoading: boolean;
@@ -75,7 +75,7 @@ export class PickFulfillmentComponent implements OnInit, AfterViewInit, OnDestro
                 if (this.selected.FulfillmentLines) {
                     this.selected.FulfillmentLines.forEach((line: FulfillmentLine) => {
                         this.warehouseOutboundService.setTotalConfirmedQty(line);
-                        this.warehouseOutboundService.setPickedBasedOffQty(line);
+                        // this.warehouseOutboundService.setPickedBasedOffQty(line);
                     });
                     if (!this.dataSource) {
                         this.refreshDataSource();
