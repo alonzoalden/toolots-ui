@@ -47,4 +47,13 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
         this.warehouseOutboundService.onFulfillmentSelected.next({});
         // this._fuseSidebarService.getSidebar('outbound-details-sidebar').toggleOpen();
     }
+    goToAction(action: string) {
+        let str = '';
+        action.toLowerCase().split('').forEach(letter => {
+            if (letter !== ' ') {
+                str += letter;
+            }
+        });
+        return str;
+    }
 }

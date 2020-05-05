@@ -29,7 +29,7 @@
         </div>
         <div *ngIf="selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center"
             [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <button class="main-action" [routerLink]="['pick']" mat-raised-button
+            <button class="main-action" [routerLink]="[goToAction(selected.Action)]" mat-raised-button
                 [ngClass]="warehouseService.buttonColorDict[selected.Action]
                     ? warehouseService.buttonColorDict[selected.Action] : 'primary'">
                 <span class="btn-title">{{selected.Action}}</span>

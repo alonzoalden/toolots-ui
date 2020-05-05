@@ -9,6 +9,7 @@ import { WarehouseOutboundListComponent } from './warehouse-outbound/outbound-li
 import { WarehouseInboundComponent } from './warehouse-inbound/warehouse-inbound.component';
 import { PickFulfillmentComponent } from './warehouse-outbound/pick-fulfillment/pick-fulfillment.component';
 import { PickUpdateFulfillmentComponent } from './warehouse-outbound/pick-update-fulfillment/pick-update-fulfillment.component';
+import { MarkshipFulfillmentComponent } from './warehouse-outbound/markship-fulfillment/markship-fulfillment.component';
 
 const WAREHOUSE_ROUTES: Routes = [
     {
@@ -44,6 +45,16 @@ const WAREHOUSE_ROUTES: Routes = [
                     {
                         path: 'pick',
                         component: PickFulfillmentComponent,
+                        // children: [
+                        //     {
+                        //         path: 'update',
+                        //         component: PickUpdateFulfillmentComponent,
+                        //     },
+                        // ]
+                    },
+                    {
+                        path: 'markship',
+                        component: MarkshipFulfillmentComponent,
                         // children: [
                         //     {
                         //         path: 'update',

@@ -11,6 +11,7 @@ export class WarehouseOutboundService {
     onFulfillmentSelected: BehaviorSubject<any>;
     onFulfillmentLineSelected: BehaviorSubject<any>;
     onFulfillmentLineConfirmSelected: BehaviorSubject<any>;
+    onFulfillmentLinePackageSelected: BehaviorSubject<any>;
     onPickInputEnabled: BehaviorSubject<any>;
     outboundList: BehaviorSubject<any>;
     locationBinList: BehaviorSubject<any>;
@@ -25,18 +26,19 @@ export class WarehouseOutboundService {
     constructor(
         private _httpClient: HttpClient,
         private _service: NotificationsService,
-        ) {
-            // Set the defaults
-            this.onFulfillmentSelected = new BehaviorSubject({});
-            this.onFulfillmentLineSelected = new BehaviorSubject({});
-            this.onFulfillmentLineConfirmSelected = new BehaviorSubject({});
-            this.onPickInputEnabled = new BehaviorSubject(true);
-            this.outboundList = new BehaviorSubject([]);
-            this.locationBinList = new BehaviorSubject([]);
-            this.isEdit = new BehaviorSubject({});
-            this.editConfirmQuantity = new BehaviorSubject(null);
-            this.searchTerm = new BehaviorSubject('');
-            this._unsubscribeAll = new Subject();
+    ) {
+        // Set the defaults
+        this.onFulfillmentSelected = new BehaviorSubject({});
+        this.onFulfillmentLineSelected = new BehaviorSubject({});
+        this.onFulfillmentLineConfirmSelected = new BehaviorSubject({});
+        this.onFulfillmentLinePackageSelected = new BehaviorSubject({});
+        this.onPickInputEnabled = new BehaviorSubject(true);
+        this.outboundList = new BehaviorSubject([]);
+        this.locationBinList = new BehaviorSubject([]);
+        this.isEdit = new BehaviorSubject({});
+        this.editConfirmQuantity = new BehaviorSubject(null);
+        this.searchTerm = new BehaviorSubject('');
+        this._unsubscribeAll = new Subject();
     }
 
     getFulfillmentList(): Observable<any> {
@@ -79,7 +81,7 @@ export class WarehouseOutboundService {
                 catchError(this.handleError)
             );
     }
-    addPickUpFulfillment(body: {FulfillmentNumber, ShippingMethod}): Observable<any> {
+    addPickUpFulfillment(body: { FulfillmentNumber, ShippingMethod }): Observable<any> {
         return this._httpClient.put<any>(this.apiURL + '/fulfillment/pickup', body)
             .pipe(
                 catchError(this.handleError)
@@ -105,7 +107,7 @@ export class WarehouseOutboundService {
     setTotalConfirmedQty(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.FulfillmentLineConfirms) {
             fulfillmentline.confirmedQty = fulfillmentline.FulfillmentLineConfirms
-                    .reduce((total, val) => total += val.Quantity, 0);
+                .reduce((total, val) => total += val.Quantity, 0);
         }
     }
 
@@ -120,7 +122,7 @@ export class WarehouseOutboundService {
     setPickedBasedOffQty(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.confirmedQty !== 0 && fulfillmentline.confirmedQty < fulfillmentline.Quantity) {
             fulfillmentline.IsPicked = false;
-            this._service.error('Warning', `${fulfillmentline.ItemTPIN} can not be picked`, {timeOut: 3000, clickToClose: true});
+            this._service.error('Warning', `${fulfillmentline.ItemTPIN} can not be picked`, { timeOut: 3000, clickToClose: true });
             return false;
         }
         return true;
@@ -128,13 +130,13 @@ export class WarehouseOutboundService {
     setMissing(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.IsPicked && fulfillmentline.IsNotFound) {
             fulfillmentline.IsNotFound = false;
-            this._service.success('Warning', `${fulfillmentline.ItemTPIN} set to missing`, {timeOut: 3000, clickToClose: true});
+            this._service.success('Warning', `${fulfillmentline.ItemTPIN} set to missing`, { timeOut: 3000, clickToClose: true });
         }
     }
     setPicked(fulfillmentline: FulfillmentLine) {
         if (fulfillmentline.IsNotFound && fulfillmentline.IsPicked) {
             fulfillmentline.IsPicked = false;
-            this._service.error('Warning', `${fulfillmentline.ItemTPIN} has been unpicked`, {timeOut: 3000, clickToClose: true});
+            this._service.error('Warning', `${fulfillmentline.ItemTPIN} has been unpicked`, { timeOut: 3000, clickToClose: true });
         }
     }
 

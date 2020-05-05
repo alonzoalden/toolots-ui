@@ -40,6 +40,14 @@ import {
 } from './pick-fulfillment/dialogs/update-confirmed-qty/update-confirmed-qty-actions/update-confirmed-qty-actions.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { MarkshipFulfillmentComponent } from './markship-fulfillment/markship-fulfillment.component';
+import {
+    MarkshipFulfillmentActionsComponent
+} from './markship-fulfillment/markship-fulfillment-actions/markship-fulfillment-actions.component';
+import { FulfillmentPackageDialogComponent } from './markship-fulfillment/fulfillment-package/fulfillment-package.component';
+import {
+    FulfillmentPackageActionsComponent
+} from './markship-fulfillment/fulfillment-package/fulfillment-package-actions/fulfillment-package-actions.component';
 
 const routes: Routes = [];
 
@@ -56,7 +64,11 @@ const routes: Routes = [];
         PickUpdateFulfillmentDetailsSidebarComponent,
         EnterQtyDialogComponent,
         UpdateConfirmedQtyDialogComponent,
-        UpdateConfirmedQtyActionsComponent
+        UpdateConfirmedQtyActionsComponent,
+        MarkshipFulfillmentComponent,
+        MarkshipFulfillmentActionsComponent,
+        FulfillmentPackageActionsComponent,
+        FulfillmentPackageDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -95,7 +107,8 @@ const routes: Routes = [];
         SelectShippingTypeDialogComponent,
         AddFulfillmentDialogComponent,
         EnterQtyDialogComponent,
-        UpdateConfirmedQtyDialogComponent
+        UpdateConfirmedQtyDialogComponent,
+        FulfillmentPackageDialogComponent
     ]
 })
 export class WarehouseOutboundModule {

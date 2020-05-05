@@ -1,0 +1,263 @@
+<div class="page-layout simple right-sidebar inner-scroll">
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+        <!-- CONTENT -->
+        <div class="content" #scrollContainer>
+            <div class="main-list-layout list-container accent">
+                <!-- HEADER  -->
+                <div fxLayout="row" style="height: 202px; min-height: 202px; max-height: 202px;">
+                    <div class="sub-header" fxLayoutAlign="flex-start" style="margin-top: 59px;">
+                        <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'250px'}}">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <button [routerLink]="['..']" mat-icon-button><mat-icon>arrow_back</mat-icon></button>
+                                <h1>Fulfillment - {{selected.FulfillmentNumber}} </h1>
+                            </div>
+                        </div>
+                        <div class="hero-text">
+                            <mat-icon class="hero-icon">next_week</mat-icon>
+                        </div>
+                    </div>
+                    <div class="sidebar side-header accent" fxLayout="column" fxLayoutAlign="space-between">
+                        <div class="header-content p-16" style="padding-bottom: 10px !important;">
+                            <div *ngIf="selected && selected.FulfillmentID" class="toolbar" fxLayout="row"
+                                fxLayoutAlign="space-between center" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                                <div class="subtitle secondary-text">
+                                    <span>{{selected.FulfillmentNumber}}</span>
+                                </div>
+                                <div>
+                                    <button [routerLink]="['..']" *ngIf="selected.FulfillmentID" aria-label="close" mat-icon-button>
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        
+                            <div fxFlex fxLayout="row" fxLayoutAlign="center end"
+                                [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                                <button class="main-action darkblue" style="width: 100%; height: 102px;" mat-raised-button>
+                                    <span class="btn-title" style="font-size: 22px;">{{selected.Action}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!-- /HEADER  -->
+
+                <div *ngIf="isLoading" class="loader">
+                    <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
+                </div>
+                <div *ngIf="isRefreshing && !isLoading" class="mini-loader">
+                    <mat-spinner diameter="20"></mat-spinner>
+                </div>
+
+                <div class="table-section-header" fxLayout="row" style="padding-top: 10px !important">
+                    <span>Packing Slip</span>
+                    <button mat-raised-button class="green"> <mat-icon style="color: #fff">add</mat-icon> </button>
+                    <button mat-raised-button class="red"> <mat-icon style="color: #fff">remove</mat-icon> </button>
+                    <button mat-raised-button color="primary"> Address </button>
+                </div>
+                <mat-table style="background-color: #fff;" *ngIf="!isLoading" #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" matSort>
+                    <ng-container matColumnDef="Fulfillment">
+                        <mat-header-cell *matHeaderCellDef>Fulfillment</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            {{selected?.FulfillmentNumber}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Address1">
+                        <mat-header-cell *matHeaderCellDef>Address 1</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            {{row.Address1}}
+                        </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="Address2">
+                        <mat-header-cell *matHeaderCellDef>Address 2</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            {{row.Address2}}
+                        </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="City">
+                        <mat-header-cell *matHeaderCellDef>City</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.City }}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="State">
+                        <mat-header-cell *matHeaderCellDef>State</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.State }}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="Zip">
+                        <mat-header-cell *matHeaderCellDef>Zip</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Zip }}</mat-cell>
+                    </ng-container> 
+                    
+                    <mat-header-row #sort *matHeaderRowDef="displayedColumnsPackingSlip; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsPackingSlip;" (click)="onSelect(row)"
+                        id={{row.FulfillmentID}} [ngClass]="{'selected' : row == selectedFulfillmentLine}"
+                        [@animate]="!selected && {value:'*',params:{y:'100%'}}">
+                    </mat-row>
+                </mat-table>
+                
+                <div class="table-section-header" fxLayout="row">
+                    <span>Package</span>
+                    <button mat-raised-button class="green" (click)="openDialogFulfillmentPackage()"> <mat-icon style="color: #fff">add</mat-icon> </button>
+                    <button mat-raised-button color="warn"> <mat-icon style="color: #fff">remove</mat-icon> </button>
+                    <button mat-raised-button color="primary"> Edit </button>
+                    <button mat-raised-button color="primary"> Reprint </button>
+                    <button mat-raised-button color="warn"> Void </button>
+                </div>
+                <mat-table style="background-color: #fff;" *ngIf="!isLoading" #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" matSort>
+                    
+                    <!-- PackageNumber Column -->
+                    <ng-container matColumnDef="PackageNumber">
+                        <mat-header-cell *matHeaderCellDef>Package #</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.PackageNumber}}</mat-cell>
+                    </ng-container>
+                    <!-- Length Column -->
+                    <ng-container matColumnDef="Length">
+                        <mat-header-cell *matHeaderCellDef>Length</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.Length}}</mat-cell>
+                    </ng-container>
+                    <!-- Width Column -->
+                    <ng-container matColumnDef="Width">
+                        <mat-header-cell *matHeaderCellDef>Width</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.Width}}</mat-cell>
+                    </ng-container>
+                    <!-- Height Column -->
+                    <ng-container matColumnDef="Height">
+                        <mat-header-cell *matHeaderCellDef>Height</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.Height}}</mat-cell>
+                    </ng-container>
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="Weight">
+                        <mat-header-cell *matHeaderCellDef>Weight</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.Weight}}</mat-cell>
+                    </ng-container>
+                    <!-- TrackingNumber Column -->
+                    <ng-container matColumnDef="TrackingNumber">
+                        <mat-header-cell *matHeaderCellDef>Tracking #</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.TrackingNumber}}</mat-cell>
+                    </ng-container>
+                    
+                    <mat-header-row #sort *matHeaderRowDef="displayedColumnsPackage; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsPackage;" (click)="onSelect(row)"
+                        id={{row.FulfillmentID}} [ngClass]="{'selected' : row == selectedFulfillmentLine}"
+                        [@animate]="!selected && {value:'*',params:{y:'100%'}}">
+                    </mat-row>
+                </mat-table>
+
+                <div class="table-section-header" fxLayout="row">
+                    <span>Item</span>
+                </div>
+                <mat-table style="background-color: #fff;" *ngIf="!isLoading" #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}" matSort>
+                    <!-- Fulfillment Column -->
+                    <ng-container matColumnDef="Fulfillment">
+                        <mat-header-cell *matHeaderCellDef>Fulfillment</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{selected?.FulfillmentNumber}}</mat-cell>
+                    </ng-container>
+                    <!-- Item Column -->
+                    <ng-container matColumnDef="Item">
+                        <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div fxLayout="row">
+                                <div style="overflow: hidden; margin-right: 6px;" fxLayoutAlign="center center">
+                                    <img style="width: 40px;" src="{{fileURL + row.ItemImagePath}}">
+                                </div>
+                                <div fxLayout="column">
+                                    <div>{{ row.ItemTPIN }}</div>
+                                    <div>{{ row.ItemSKU }}</div>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- BIN Column -->
+                    <ng-container matColumnDef="BIN">
+                        <mat-header-cell *matHeaderCellDef>BIN</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div fxLayout="column">
+                                <div *ngFor="let bin of row.FulfillmentLineInventoryDetails">
+                                    {{ bin.BinNumber + '(' + bin.Quantity + ')'}}
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- ConfirmedBIN Column -->
+                    <ng-container matColumnDef="ConfirmedBIN">
+                        <mat-header-cell *matHeaderCellDef>Confirmed BIN</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div fxLayout="column">
+                                <div *ngFor="let bin of row.FulfillmentLineConfirms">
+                                    {{ bin.BinNumber + '(' + bin.Quantity + ')'}}
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- OrderedQty -->
+                    <ng-container matColumnDef="OrderedQty">
+                        <mat-header-cell *matHeaderCellDef>Ordered Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Quantity }}</mat-cell>
+                    </ng-container>
+
+                    <!-- PackedQty -->
+                    <ng-container matColumnDef="PackedQty">
+                        <mat-header-cell *matHeaderCellDef>Packed Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Quantity }}</mat-cell>
+                    </ng-container>
+
+                    <!-- SelectedPackageQty -->
+                    <ng-container matColumnDef="SelectedPackageQty">
+                        <mat-header-cell *matHeaderCellDef>Selected Package Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Quantity }}</mat-cell>
+                    </ng-container>
+
+                    <!-- ConfirmedQty Column -->
+                    <ng-container matColumnDef="ConfirmedQty">
+                        <mat-header-cell *matHeaderCellDef>Confirmed Qty</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.confirmedQty }}</mat-cell>
+                    </ng-container>
+
+                    <!-- Missing -->
+                    <ng-container matColumnDef="Missing">
+                        <mat-header-cell *matHeaderCellDef>Missing</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.IsNotFound ? 'Yes' : 'No' }}</mat-cell>
+                    </ng-container>
+
+                    <!-- Unreachable -->
+                    <ng-container matColumnDef="Unreachable">
+                        <mat-header-cell *matHeaderCellDef>Unreachable</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.Unreachable ? 'Yes' : 'No' }}</mat-cell>
+                    </ng-container>
+
+                    <!-- Picked Column -->
+                    <ng-container matColumnDef="Picked">
+                        <mat-header-cell *matHeaderCellDef>Picked</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{ row.IsPicked ? 'Yes' : 'No' }}</mat-cell>
+                    </ng-container>
+                    <mat-header-row #sort *matHeaderRowDef="displayedColumnsItem; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsItem;" (click)="onSelect(row)"
+                        id={{row.FulfillmentID}} [ngClass]="{'selected' : row == selectedFulfillmentLine}"
+                        [@animate]="!selected && {value:'*',params:{y:'100%'}}">
+                    </mat-row>
+                </mat-table>
+
+
+                <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData?.length === 0"
+                    [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">
+                    No items found.
+                </div>
+                <!-- <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator> -->
+            </div>
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+    <!-- SIDEBAR -->
+    <!-- <fuse-sidebar class="sidebar details-sidebar" name="outbound-details-sidebar" position="right" lockedOpen="gt-sm">
+        <markship-fulfillment-actions></markship-fulfillment-actions>
+    </fuse-sidebar> -->
+</div>
