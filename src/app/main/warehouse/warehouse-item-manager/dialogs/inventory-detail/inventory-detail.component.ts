@@ -14,7 +14,6 @@ import { MatTableDataSource } from '@angular/material/table';
     selector: 'inventory-detail',
     templateUrl: './inventory-detail.component.html',
     styleUrls: ['./inventory-detail.component.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class InventoryDetailDialogComponent implements OnInit, OnDestroy{
     showExtraToFields: boolean;

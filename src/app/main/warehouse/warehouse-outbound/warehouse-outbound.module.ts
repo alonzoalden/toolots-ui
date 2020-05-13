@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WarehouseOutboundDetailsSidebarComponent } from './outbound-list/outbound-details/outbound-details.component';
 import { SelectShippingTypeDialogComponent } from './outbound-list/dialogs/select-shipping-type/select-shipping-type.component';
 import { AddFulfillmentDialogComponent } from './outbound-list/dialogs/add-fulfillment/add-fulfillment.component';
@@ -41,13 +42,16 @@ import {
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { MarkshipFulfillmentComponent } from './markship-fulfillment/markship-fulfillment.component';
-import {
-    MarkshipFulfillmentActionsComponent
-} from './markship-fulfillment/markship-fulfillment-actions/markship-fulfillment-actions.component';
-import { FulfillmentPackageDialogComponent } from './markship-fulfillment/fulfillment-package/fulfillment-package.component';
+import { FulfillmentPackageDialogComponent } from './markship-fulfillment/dialogs/fulfillment-package/fulfillment-package.component';
 import {
     FulfillmentPackageActionsComponent
-} from './markship-fulfillment/fulfillment-package/fulfillment-package-actions/fulfillment-package-actions.component';
+} from './markship-fulfillment/dialogs/fulfillment-package/fulfillment-package-actions/fulfillment-package-actions.component';
+import {
+    FulfillmentPackageEditDimensionsDialogComponent
+} from './markship-fulfillment/dialogs/fulfillment-package-edit-dimensions/fulfillment-package-edit-dimensions.component';
+import {
+    FulfillmentPackingSlipEditAddressDialogComponent
+} from './markship-fulfillment/dialogs/fulfillment-packing-slip-edit-address/fulfillment-packing-slip-edit-address.component';
 
 const routes: Routes = [];
 
@@ -66,9 +70,10 @@ const routes: Routes = [];
         UpdateConfirmedQtyDialogComponent,
         UpdateConfirmedQtyActionsComponent,
         MarkshipFulfillmentComponent,
-        MarkshipFulfillmentActionsComponent,
         FulfillmentPackageActionsComponent,
-        FulfillmentPackageDialogComponent
+        FulfillmentPackageDialogComponent,
+        FulfillmentPackageEditDimensionsDialogComponent,
+        FulfillmentPackingSlipEditAddressDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -94,6 +99,7 @@ const routes: Routes = [];
         MatChipsModule,
         MatSnackBarModule,
         MatRadioModule,
+        MatButtonToggleModule,
         FuseSharedModule,
         FuseSidebarModule,
         NgSelectModule,
@@ -108,7 +114,9 @@ const routes: Routes = [];
         AddFulfillmentDialogComponent,
         EnterQtyDialogComponent,
         UpdateConfirmedQtyDialogComponent,
-        FulfillmentPackageDialogComponent
+        FulfillmentPackageDialogComponent,
+        FulfillmentPackageEditDimensionsDialogComponent,
+        FulfillmentPackingSlipEditAddressDialogComponent
     ]
 })
 export class WarehouseOutboundModule {

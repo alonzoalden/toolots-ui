@@ -186,7 +186,7 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
     openDialogEnterConfirmedQty() {
         this.warehouseOutboundService.onPickInputEnabled.next(false);
         this.dialogRef = this._matDialog.open(UpdateConfirmedQtyDialogComponent, {
-            panelClass: 'edit-dimensions-dialog',
+            panelClass: 'update-qty-dialog',
             autoFocus: false,
             disableClose: true,
             width: '70%',

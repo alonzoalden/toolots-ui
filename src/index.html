@@ -209,7 +209,10 @@
         <!-- / FUSE Splash Screen -->
 
         <app></app>
-
+        <script>
+            parent.postMessage(location.hash, location.origin);
+        </script>
+        
     </body>
 
 </html>

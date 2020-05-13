@@ -219,7 +219,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
     shippingTypeDialog(): void {
         this.inputEnabled = false;
         this.dialogRef = this._matDialog.open(SelectShippingTypeDialogComponent, {
-            panelClass: 'edit-dimensions-dialog',
+            panelClass: 'edit-fields-dialog',
             autoFocus: false
         });
         this.dialogRef.afterClosed()
@@ -245,7 +245,7 @@ export class WarehouseOutboundListComponent implements OnInit, OnDestroy {
             FulfillmentNumber: term,
         };
         this.dialogRef = this._matDialog.open(AddFulfillmentDialogComponent, {
-            panelClass: 'edit-dimensions-dialog',
+            panelClass: 'edit-fields-dialog',
             disableClose: true,
             data: _data,
             autoFocus: false

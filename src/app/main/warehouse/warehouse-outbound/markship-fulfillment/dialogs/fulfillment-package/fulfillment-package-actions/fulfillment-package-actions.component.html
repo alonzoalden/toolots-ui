@@ -1,29 +1,28 @@
 <!-- SIDEBAR CONTENT -->
 <div class="content" fxLayout="column" fusePerfectScrollbar #scrollContainer>
     <div class="p-24" fxLayout="column" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
-        <!-- <div><strong>TPIN</strong>: <span style="margin-left: 10px;">{{ selectedFulfillmentLine?.ItemTPIN }}</span></div> -->
-
-        <div fxFlex fxLayout="column" fxLayoutAlign="center center"
+        <div class="main-action-container" fxFlex fxLayout="column" fxLayoutAlign="center center"
             [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <div style="margin: 20px 0 20px 0; width: 100%">
+            <div>
                 <button [disabled]="editConfirmQuantity" class="main-action green" 
                     mat-raised-button 
                     (click)="addQty()">
                     <mat-icon class="big-icon-button">add_circle</mat-icon>
                 </button>
             </div>
-            <div style="margin-bottom: 20px; width: 100%">
+            <div>
                 <button [disabled]="editConfirmQuantity" class="main-action red" (click)="subtractQty()"
                     mat-raised-button>
                     <mat-icon class="big-icon-button">remove_circle</mat-icon>
                 </button>
             </div>
-            <div style="margin-bottom: 20px; width: 100%">
-                <button (click)="enterConfirmQty()"
-                    class="main-action" mat-raised-button color="accent">
-                    <span class="btn-title">Enter Qty</span>
-                </button>
+            <div>
+                <mat-button-toggle [checked]="editConfirmQuantity" (click)="enterConfirmQty()"
+                    class="main-action mat-elevation-z1" fxLayout="row">
+                    <span value="false" class="toggle-button">{{ editConfirmQuantity ? 'Cancel Enter Qty' : 'Enter Qty' }}</span>
+                </mat-button-toggle>
             </div>
         </div>
+    </div>
 </div>
 <!-- / SIDEBAR CONTENT -->

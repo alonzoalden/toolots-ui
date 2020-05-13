@@ -14,7 +14,6 @@ import { MatTableDataSource } from '@angular/material/table';
     selector: 'potential-location',
     templateUrl: './potential-location.component.html',
     styleUrls: ['./potential-location.component.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class PotentialLocationDialogComponent implements OnInit, OnDestroy {
     showExtraToFields: boolean;

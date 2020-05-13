@@ -14,11 +14,7 @@ export class WarehouseService {
         'LB',
         'KG'
     ];
-    buttonColorDict = {
-        'Pack': 'green',
-        'Pick': 'orange',
-        'Mark Ship': 'pink',
-    };
+
 
     constructor() {}
 

@@ -79,7 +79,7 @@ export class WarehouseItemManagerDetailsSidebarComponent implements OnInit, OnDe
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
-            panelClass: 'edit-dimensions-dialog'
+            panelClass: 'edit-fields-dialog'
         });
         this.dialogRef.afterClosed()
             .subscribe(response => {

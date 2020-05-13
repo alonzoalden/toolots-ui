@@ -2,16 +2,15 @@ import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/co
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
-import { WarehouseOutboundService } from '../../../warehouse-outbound.service';
+import { WarehouseOutboundService } from '../../../../warehouse-outbound.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { WarehouseService } from 'app/main/warehouse/warehouse.service';
 import { FulfillmentLine, FulfillmentLineConfirm, Fulfillment } from 'app/shared/class/fulfillment';
 import { Router } from '@angular/router';
-// import { EnterQtyDialogComponent } from '../dialogs/enter-qty/enter-qty.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
 import { NotificationsService } from 'angular2-notifications';
+import { MatButtonToggle } from '@angular/material/button-toggle';
 
 @Component({
     selector: 'fulfillment-package-actions',
@@ -29,13 +28,13 @@ export class FulfillmentPackageActionsComponent implements OnInit, OnDestroy {
     pickIncomplete: boolean;
     inputEnabled: boolean;
     editConfirmQuantity: boolean;
+    @ViewChild('qtyToggle') qtyToggle: MatButtonToggle;
     @ViewChild('scrollContainer') scrollContainerEl: ElementRef;
     private _unsubscribeAll: Subject<any>;
     constructor(
         private warehouseOutboundService: WarehouseOutboundService,
         public warehouseService: WarehouseService,
         public _matDialog: MatDialog,
-        private _fuseSidebarService: FuseSidebarService,
         private router: Router,
         private _snackBar: MatSnackBar,
         private _service: NotificationsService
@@ -75,6 +74,7 @@ export class FulfillmentPackageActionsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+        this.warehouseOutboundService.editConfirmQuantity.next(false);
     }
     clearSelected(): void {
         this.router.navigate(['warehouse/outbound/pick']);
@@ -84,7 +84,7 @@ export class FulfillmentPackageActionsComponent implements OnInit, OnDestroy {
             this.selectedFulfillmentLinePackage.Quantity++;
         }
         else {
-            this._service.error('Error', 'Quantity can not exceed ordered quantity', {timeOut: 3000, clickToClose: true});
+            this._service.info('Max Limit', 'Can not exceed ordered quantity', {timeOut: 3000, clickToClose: true});
             return;
         }
     }

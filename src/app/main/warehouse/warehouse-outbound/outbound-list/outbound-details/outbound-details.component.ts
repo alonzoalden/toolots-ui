@@ -20,7 +20,7 @@ export class WarehouseOutboundDetailsSidebarComponent implements OnInit, OnDestr
     @ViewChild('scrollContainer') scrollContainerEl: ElementRef;
     private _unsubscribeAll: Subject<any>;
     constructor(
-        private warehouseOutboundService: WarehouseOutboundService,
+        public warehouseOutboundService: WarehouseOutboundService,
         public warehouseService: WarehouseService,
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,

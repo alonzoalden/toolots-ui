@@ -13,7 +13,6 @@ import { WarehouseService } from 'app/main/warehouse/warehouse.service';
     selector: 'edit-dimensions-dialog',
     templateUrl: './edit-dimensions.component.html',
     styleUrls: ['./edit-dimensions.component.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class MailComposeDialogComponent implements OnInit, OnDestroy{
     showExtraToFields: boolean;

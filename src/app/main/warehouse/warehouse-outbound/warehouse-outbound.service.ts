@@ -22,7 +22,11 @@ export class WarehouseOutboundService {
     searchTerm: BehaviorSubject<any>;
     private apiURL = environment.webapiURL;
     private _unsubscribeAll: Subject<any>;
-
+    buttonColorDict = {
+        'Pack': 'purple',
+        'Mark Ship': 'green',
+        'Pick': 'blue',
+    };
     constructor(
         private _httpClient: HttpClient,
         private _service: NotificationsService,

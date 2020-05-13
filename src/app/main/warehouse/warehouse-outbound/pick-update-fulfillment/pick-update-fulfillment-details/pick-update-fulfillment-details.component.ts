@@ -87,7 +87,7 @@ export class PickUpdateFulfillmentDetailsSidebarComponent implements OnInit, OnD
     openDialogEnterQty() {
         // this.warehouseOutboundService.onPickUpdateInputEnabled.next(false);
         this.dialogRef = this._matDialog.open(EnterQtyDialogComponent, {
-            panelClass: 'edit-dimensions-dialog',
+            panelClass: 'edit-fields-dialog',
             data: this.totalConfirmedQuantity() - this.selectedFulfillmentLineConfirm.Quantity
         });
         this.dialogRef.afterClosed()

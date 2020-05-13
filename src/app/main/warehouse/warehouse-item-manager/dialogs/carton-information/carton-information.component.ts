@@ -14,7 +14,6 @@ import { MatTableDataSource } from '@angular/material/table';
     selector: 'carton-information',
     templateUrl: './carton-information.component.html',
     styleUrls: ['./carton-information.component.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class CartonInformationDialogComponent implements OnInit, OnDestroy{
     showExtraToFields: boolean;

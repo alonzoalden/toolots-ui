@@ -1,0 +1,135 @@
+
+<div class="page-layout simple inner-scroll dialog-content-wrapper">
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+        <!-- CONTENT -->
+        <div class="content" #scrollContainer>
+            <mat-toolbar class="mat-accent m-0" >
+                <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                    <span class="title dialog-title">Add Package</span>
+                    <button mat-icon-button (click)="this.matDialogRef.close()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-toolbar-row>
+            </mat-toolbar>
+            <div class="main-list-layout list-container">
+                <!-- HEADER  -->
+                <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+                    <div class="breadcrumb text-truncate h1 p24" style="width: 100%; text-align: left;">
+                        <h1 style="display: flex;">
+                            Fulfillment - {{selected.FulfillmentNumber + ' '}} 
+                        </h1>
+                    </div>
+                    <!-- SEARCH DROPDOWN BAR  -->
+                    <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                        <ng-select  
+                            [items]="selected.FulfillmentLines"
+                            [virtualScroll]="true"
+                            bindLabel="ItemTPIN"
+                            [(ngModel)]="searchTerm"
+                            appearance="outline"
+                            placeholder="Select Item TPIN"
+                            #mainInput
+                            (focusout)="focusMainInput()"
+                            [openOnEnter]=false
+                            (keydown.enter)=applySearch(searchTerm)
+                        >
+                        </ng-select>
+                        <div style="width: 12px;"></div>
+                        <div style="height: 100%; padding-bottom: 1.25em;" fxLayoutAlign="center center">
+                            <button [disabled]="!searchTerm"
+                                color="primary" mat-fab (click)="applySearch(searchTerm)">ADD</button>
+                        </div>
+                    </div>
+                    <div class="hero-text">
+                        <mat-icon class="hero-icon">next_week</mat-icon>
+                    </div>
+                </div>
+                <!-- /HEADER  -->
+                <div fxLayout="row">
+                    <div fxLayoutAlign="center center" *ngIf="isLoading">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <mat-table #table [dataSource]="dataSource" matSort>
+                        <!-- ID Column -->
+                        <ng-container matColumnDef="ID">
+                            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                {{row.FulfillmentLineConfirmID}}
+                            </mat-cell>
+                        </ng-container>
+                        <!-- TPIN Column -->
+                        <ng-container matColumnDef="TPIN">
+                            <mat-header-cell *matHeaderCellDef>TPIN</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                {{row.ItemTPIN}}
+                            </mat-cell>
+                        </ng-container>
+                        <!-- VendorSKU Column -->
+                        <ng-container matColumnDef="VendorSKU">
+                            <mat-header-cell *matHeaderCellDef>Vendor SKU</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                {{row.ItemSKU}}
+                            </mat-cell>
+                        </ng-container>
+                        <!-- Quantity Column -->
+                        <ng-container matColumnDef="Quantity">
+                            <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                            <mat-cell *matCellDef="let row; let i = index">
+                                <div *ngIf="row !== selectedFulfillmentLinePackage || !editConfirmQuantity"
+                                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                                    <strong>{{row.Quantity}}</strong>
+                                </div>
+                                <div *ngIf="row === selectedFulfillmentLinePackage && editConfirmQuantity"
+                                    fxLayoutAlign="space-between center">
+                                    <!-- <mat-form-field floatLabel="always" class="w-100-p"> -->
+                                        <!-- <mat-label>Enter Quantity</mat-label> -->
+                                        <input placeholder="Enter Qty"
+                                                name="Quantity"
+                                                [(ngModel)]="tempQuantity"
+                                                type="number"
+                                                min="0"
+                                                max={{selectedFulfillmentLine.Quantity}}
+                                                (keydown.enter)="submitEnterQty(row, i)"
+                                                required
+                                                [ngClass]="{error: tempQuantity > selectedFulfillmentLine.Quantity}"
+                                                class="row-input"
+                                                id={{row.ItemTPIN}}
+                                                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                                        >
+                                        <button (click)="submitEnterQty(row, i)" [disabled]="(tempQuantity > selectedFulfillmentLine.Quantity) || tempQuantity === null " mat-icon-button color="accent"
+                                            class="row-input-button">
+                                            OK
+                                        </button>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                (click)="onSelect(row)"
+                                [ngClass]="{'selected' : row == selectedFulfillmentLinePackage}"
+                                [@animate]="!selected && {value:'*',params:{y:'100%'}}"
+                        >
+                        </mat-row>
+                    </mat-table>
+                    <div class="sidebar">
+                        <fulfillment-package-actions class="dialog-actions-sidebar"></fulfillment-package-actions>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button
+                color="primary"
+                (click)="onDialogClose()"
+                class="save-button"
+                aria-label="CLOSE">
+            <div fxLayoutAlign="center">
+                <span class="btn-title">Create Shipping Label</span>
+            </div>
+        </button>
+    </div>
+</div>

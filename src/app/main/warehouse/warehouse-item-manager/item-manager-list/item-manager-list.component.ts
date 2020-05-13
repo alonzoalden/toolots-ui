@@ -131,7 +131,7 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
     }
     composeDialog(): void {
         this.dialogRef = this._matDialog.open(MailComposeDialogComponent, {
-            panelClass: 'edit-dimensions-dialog'
+            panelClass: 'edit-fields-dialog'
         });
         this.dialogRef.afterClosed()
             .subscribe(response => {
@@ -166,7 +166,7 @@ export class WarehouseItemManagerListComponent implements OnInit, OnDestroy {
     }
     composeDialogPrintLabel(): void {
         this.dialogRef = this._matDialog.open(PrintLabelDialogComponent, {
-            panelClass: 'edit-dimensions-dialog',
+            panelClass: 'edit-fields-dialog',
             disableClose: true
         });
         this.dialogRef.afterClosed()
