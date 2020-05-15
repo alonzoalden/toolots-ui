@@ -1,16 +1,26 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar class="mat-accent m-0" >
+<div class="dialog-content-wrapper" style="height: 100%;">
+    <!-- <mat-toolbar class="mat-accent m-0" >
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title">Edit Package Dimensions</span>
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
-    </mat-toolbar>
-    <div fxLayout="row" class="name p-24 accent">
-        <h2>Fulfillment - {{selected.FulfillmentNumber}}</h2>
+    </mat-toolbar> -->
+   
+    <!-- HEADER  -->
+    <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+        <div class="breadcrumb text-truncate h1 p24" style="width: 100%; text-align: left;">
+            <h1 style="display: flex;">
+                Package Dimensions
+            </h1>
+        </div>
+        <div class="hero-text">
+            <mat-icon class="hero-icon">next_week</mat-icon>
+        </div>
     </div>
-    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="padding-top: 24px !important;">
+    <!-- /HEADER  -->
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: scroll; padding-top: 24px !important;background-color: #fff;">
         <div>
             <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
                 <mat-form-field appearance="outline" floatLabel="always">
@@ -71,7 +81,7 @@
         </div>
     </div>
 
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <!-- <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
         <div>
             <button mat-raised-button
                     color="primary"
@@ -85,5 +95,5 @@
                 </div>
             </button>
         </div>
-    </div>
+    </div> -->
 </div>

@@ -14,6 +14,7 @@ import { Fulfillment, FulfillmentLine } from 'app/shared/class/fulfillment';
     selector: 'fulfillment-package-edit-dimensions-dialog',
     templateUrl: './fulfillment-package-edit-dimensions.component.html',
     styleUrls: ['./fulfillment-package-edit-dimensions.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class FulfillmentPackageEditDimensionsDialogComponent implements OnInit, OnDestroy{
     showExtraToFields: boolean;

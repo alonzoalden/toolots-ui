@@ -26,6 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
 import { WarehouseOutboundDetailsSidebarComponent } from './outbound-list/outbound-details/outbound-details.component';
 import { SelectShippingTypeDialogComponent } from './outbound-list/dialogs/select-shipping-type/select-shipping-type.component';
 import { AddFulfillmentDialogComponent } from './outbound-list/dialogs/add-fulfillment/add-fulfillment.component';
@@ -100,6 +101,7 @@ const routes: Routes = [];
         MatSnackBarModule,
         MatRadioModule,
         MatButtonToggleModule,
+        MatStepperModule,
         FuseSharedModule,
         FuseSidebarModule,
         NgSelectModule,

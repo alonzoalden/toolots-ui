@@ -1,1 +1,27 @@
 @import "src/@fuse/scss/fuse";
+.mat-horizontal-content-container {
+    padding: 0 !important;
+    order: 1 !important;
+    background-color: #039be5;
+}
+.mat-horizontal-stepper-header-container {
+    order: 2 !important;
+}
+.mat-horizontal-stepper-content {
+    height: 90vh;
+    max-height: 90vh;
+}
+.compose-form > div > .mat-form-field:first-of-type {
+    margin-right: 20px;
+}
+
+.body.theme-default .mat-button-toggle-checked {
+    background-color: #fff !important;
+}
+
+// body.theme-default .mat-button-toggle-checked {
+//     background: #fff !important;
+// }
+// body.theme-default .mat-button-toggle-appearance-standard {
+//     background-color: #039be5;
+// }

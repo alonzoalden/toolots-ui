@@ -188,4 +188,18 @@ outbound-list {
     .mat-cell {
         padding-right: 7px; 
     }
+    .mat-column-Actions {
+        flex: 0 0 21% !important;
+        min-width: 21% !important;
+    }
+    .mat-column-FulfillmentNumber {
+        flex: 0 0 20% !important;
+        min-width: 20% !important;
+    }
+    @media screen and (max-width: 769px) {
+        .sub-header .breadcrumb,
+        .sub-header .action-container {
+            padding: 0 30px;
+        }
+    }
 }

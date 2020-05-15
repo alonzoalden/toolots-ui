@@ -1,135 +1,294 @@
 
 <div class="page-layout simple inner-scroll dialog-content-wrapper">
     <!-- CENTER -->
-    <div class="center" fxFlex>
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Add Package <span style="margin: 0 6px">-</span> Fulfillment # {{selected.FulfillmentNumber + ' '}} </span>
+            <button mat-icon-button (click)="this.matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="center" style="height: 77vh !important; background-color: #039be5;">
+
         <!-- CONTENT -->
-        <div class="content" #scrollContainer>
-            <mat-toolbar class="mat-accent m-0" >
-                <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                    <span class="title dialog-title">Add Package</span>
-                    <button mat-icon-button (click)="this.matDialogRef.close()" aria-label="Close dialog">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-toolbar-row>
-            </mat-toolbar>
-            <div class="main-list-layout list-container">
+        <ng-container *ngIf="editDimensionsPage" >
+            <div class="content" style="height: 100%; display: flex; flex-direction: column;" [@animate]="{value:'*',params:{x:'100%'}}"  style="background-color: #fff; height: 100%; overflow: hidden;">
+                <!-- <div class="main-list-layout list-container" > -->
+                
+               
                 <!-- HEADER  -->
                 <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+                    <!-- <mat-toolbar class="mat-accent m-0" >
+                        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="start center">
+                            <button style="z-index:999 !important;" mat-icon-button (click)="editDimensionsPage = !editDimensionsPage" aria-label="Close dialog">
+                                <mat-icon>arrow_back</mat-icon>
+                            </button>
+                        </mat-toolbar-row>
+                    </mat-toolbar> -->
                     <div class="breadcrumb text-truncate h1 p24" style="width: 100%; text-align: left;">
-                        <h1 style="display: flex;">
-                            Fulfillment - {{selected.FulfillmentNumber + ' '}} 
-                        </h1>
-                    </div>
-                    <!-- SEARCH DROPDOWN BAR  -->
-                    <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-                        <ng-select  
-                            [items]="selected.FulfillmentLines"
-                            [virtualScroll]="true"
-                            bindLabel="ItemTPIN"
-                            [(ngModel)]="searchTerm"
-                            appearance="outline"
-                            placeholder="Select Item TPIN"
-                            #mainInput
-                            (focusout)="focusMainInput()"
-                            [openOnEnter]=false
-                            (keydown.enter)=applySearch(searchTerm)
-                        >
-                        </ng-select>
-                        <div style="width: 12px;"></div>
-                        <div style="height: 100%; padding-bottom: 1.25em;" fxLayoutAlign="center center">
-                            <button [disabled]="!searchTerm"
-                                color="primary" mat-fab (click)="applySearch(searchTerm)">ADD</button>
-                        </div>
+                        <h1>Set Package Dimensions</h1>
                     </div>
                     <div class="hero-text">
                         <mat-icon class="hero-icon">next_week</mat-icon>
                     </div>
                 </div>
                 <!-- /HEADER  -->
-                <div fxLayout="row">
-                    <div fxLayoutAlign="center center" *ngIf="isLoading">
-                        <mat-spinner></mat-spinner>
+                <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: scroll; padding-top: 24px !important; background-color: #fff;">
+                    <div>
+                        <form name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                            <div fxLayout="row">
+                                <mat-form-field appearance="outline" floatLabel="always">
+                                    <mat-label>Shipping Method</mat-label>
+                                    <mat-select placeholder="Shipping Method"
+                                        name="ShippingMethod"
+                                        formControlName="ShippingMethod"
+                                        required>
+                                        <!-- <mat-option *ngFor="let item of shippingMethods" value="{{item}}">{{ item }}</mat-option> -->
+                                        <mat-option *ngFor="let item of shippingMethods" value="{{item}}">{{ item }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Declared Value (USD)</mat-label>
+                                    <input matInput placeholder="Declared Value"
+                                        name="Value"
+                                        formControlName="Value"
+                                        type="tel"
+                                        min="0"
+                                        required>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Length (in)</mat-label>
+                                    <input matInput placeholder="Length"
+                                        name="Length"
+                                        formControlName="Length"
+                                        type="tel"
+                                        min="0"
+                                        required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Width (in)</mat-label>
+                                    <input matInput placeholder="Width"
+                                        name="Width"
+                                        formControlName="Width"
+                                        type="tel"
+                                        min="0"
+                                        required>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Height (in)</mat-label>
+                                    <input matInput placeholder="Height"
+                                        name="Height"
+                                        formControlName="Height"
+                                        type="tel"
+                                        min="0"
+                                        required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Weight (lb)</mat-label>
+                                    <input matInput placeholder="Weight"
+                                        name="Weight"
+                                        formControlName="Weight"
+                                        type="tel"
+                                        min="0"
+                                        required>
+                                </mat-form-field>
+                            </div>
+                        </form>
                     </div>
-                    <mat-table #table [dataSource]="dataSource" matSort>
-                        <!-- ID Column -->
-                        <ng-container matColumnDef="ID">
-                            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                {{row.FulfillmentLineConfirmID}}
-                            </mat-cell>
-                        </ng-container>
-                        <!-- TPIN Column -->
-                        <ng-container matColumnDef="TPIN">
-                            <mat-header-cell *matHeaderCellDef>TPIN</mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                {{row.ItemTPIN}}
-                            </mat-cell>
-                        </ng-container>
-                        <!-- VendorSKU Column -->
-                        <ng-container matColumnDef="VendorSKU">
-                            <mat-header-cell *matHeaderCellDef>Vendor SKU</mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                {{row.ItemSKU}}
-                            </mat-cell>
-                        </ng-container>
-                        <!-- Quantity Column -->
-                        <ng-container matColumnDef="Quantity">
-                            <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-                            <mat-cell *matCellDef="let row; let i = index">
-                                <div *ngIf="row !== selectedFulfillmentLinePackage || !editConfirmQuantity"
-                                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                                    <strong>{{row.Quantity}}</strong>
-                                </div>
-                                <div *ngIf="row === selectedFulfillmentLinePackage && editConfirmQuantity"
-                                    fxLayoutAlign="space-between center">
-                                    <!-- <mat-form-field floatLabel="always" class="w-100-p"> -->
-                                        <!-- <mat-label>Enter Quantity</mat-label> -->
-                                        <input placeholder="Enter Qty"
-                                                name="Quantity"
-                                                [(ngModel)]="tempQuantity"
-                                                type="number"
-                                                min="0"
-                                                max={{selectedFulfillmentLine.Quantity}}
-                                                (keydown.enter)="submitEnterQty(row, i)"
-                                                required
-                                                [ngClass]="{error: tempQuantity > selectedFulfillmentLine.Quantity}"
-                                                class="row-input"
-                                                id={{row.ItemTPIN}}
-                                                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                                        >
-                                        <button (click)="submitEnterQty(row, i)" [disabled]="(tempQuantity > selectedFulfillmentLine.Quantity) || tempQuantity === null " mat-icon-button color="accent"
-                                            class="row-input-button">
-                                            OK
-                                        </button>
-                                </div>
-                            </mat-cell>
-                        </ng-container>
+                <!-- </div> -->
+            </div>
+                <!-- <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div>
+                        <button mat-raised-button
+                                color="primary"
+                                (click)="onDialogClose()"
+                                class="save-button-max"
+                                [disabled]="composeForm.invalid"
+                                aria-label="Generate Shipping Label">
+                            <div fxLayoutAlign="center">
+                                <span *ngIf="!isSaving">Generate Shipping Label</span>
+                                <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                            </div>
+                        </button>
+                    </div>
+                </div> -->
+            </div>
+            
+        </ng-container>
 
-                        <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                (click)="onSelect(row)"
-                                [ngClass]="{'selected' : row == selectedFulfillmentLinePackage}"
-                                [@animate]="!selected && {value:'*',params:{y:'100%'}}"
-                        >
-                        </mat-row>
-                    </mat-table>
-                    <div class="sidebar">
-                        <fulfillment-package-actions class="dialog-actions-sidebar"></fulfillment-package-actions>
-                    </div> 
+        <ng-container *ngIf="!editDimensionsPage">
+            <div class="content" #scrollContainer [@animate]="{value:'*',params:{x:'-100%'}}" style="background-color: #039be5;  height: 100%; overflow: hidden;">
+                
+                <div class="main-list-layout list-container" style="background-color: #fff; height: 100%;">
+                    <!-- HEADER  -->
+                    <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+                        <div class="breadcrumb text-truncate h1 p24" style="width: 100%; text-align: left;">
+                            <h1 style="display: flex;">
+                                Set Item Quantity
+                            </h1>
+                        </div>
+                        <!-- SEARCH DROPDOWN BAR  -->
+                        <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                            <ng-select  
+                                [items]="selected.FulfillmentLines"
+                                [virtualScroll]="true"
+                                bindLabel="ItemTPIN"
+                                [(ngModel)]="searchTerm"
+                                appearance="outline"
+                                placeholder="Select Item TPIN"
+                                #mainInput
+                                (focusout)="focusMainInput()"
+                                [openOnEnter]=false
+                                (keydown.enter)=applySearch(searchTerm)
+                            >
+                            </ng-select>
+                            <div style="width: 12px;"></div>
+                            <div style="height: 100%; padding-bottom: 1.25em;" fxLayoutAlign="center center">
+                                <button [disabled]="!searchTerm"
+                                    color="primary" mat-fab (click)="applySearch(searchTerm)">ADD</button>
+                            </div>
+                        </div>
+                        <div class="hero-text">
+                            <mat-icon class="hero-icon">next_week</mat-icon>
+                        </div>
+                    </div>
+                    <!-- /HEADER  -->
+                    <div fxLayout="row">
+                        <div fxLayoutAlign="center center" *ngIf="isLoading">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                        <mat-table #table [dataSource]="dataSource" matSort>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="ID">
+                                <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{row.FulfillmentLineConfirmID}}
+                                </mat-cell>
+                            </ng-container>
+                            <!-- TPIN Column -->
+                            <ng-container matColumnDef="TPIN">
+                                <mat-header-cell *matHeaderCellDef>TPIN</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{row.ItemTPIN}}
+                                </mat-cell>
+                            </ng-container>
+                            <!-- VendorSKU Column -->
+                            <ng-container matColumnDef="VendorSKU">
+                                <mat-header-cell *matHeaderCellDef>Vendor SKU</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{row.ItemSKU}}
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Quantity Column -->
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                                <mat-cell *matCellDef="let row; let i = index">
+                                    <div *ngIf="row !== selectedFulfillmentLinePackage || !editConfirmQuantity"
+                                        [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                                        <strong>{{row.Quantity}}</strong>
+                                    </div>
+                                    <div *ngIf="row === selectedFulfillmentLinePackage && editConfirmQuantity"
+                                        fxLayoutAlign="space-between center">
+                                        <!-- <mat-form-field floatLabel="always" class="w-100-p"> -->
+                                            <!-- <mat-label>Enter Quantity</mat-label> -->
+                                            <input 
+                                                    name="Quantity"
+                                                    [(ngModel)]="tempQuantity"
+                                                    type="number"
+                                                    min="0"
+                                                    max={{selectedFulfillmentLine.Quantity}}
+                                                    (keydown.enter)="submitEnterQty(row, i)"
+                                                    required
+                                                    [ngClass]="{error: tempQuantity > selectedFulfillmentLine.Quantity}"
+                                                    class="row-input"
+                                                    id={{row.ItemTPIN}}
+                                                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                                            >
+                                            <button (click)="submitEnterQty(row, i)" [disabled]="(tempQuantity > selectedFulfillmentLine.Quantity) || tempQuantity === null " mat-icon-button color="accent"
+                                                class="row-input-button">
+                                                OK
+                                            </button>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                    (click)="onSelect(row)"
+                                    [ngClass]="{'selected' : row == selectedFulfillmentLinePackage}"
+                                    [@animate]="!selected && {value:'*',params:{y:'100%'}}"
+                            >
+                            </mat-row>
+                        </mat-table>
+                        <div class="sidebar">
+                            <fulfillment-package-actions class="dialog-actions-sidebar"></fulfillment-package-actions>
+                        </div> 
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
         <!-- / CONTENT -->
     </div>
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <div mat-dialog-actions class="m-0" style="padding: 16px 24px;" fxLayout="row" fxLayoutAlign="space-between end">
         <button mat-raised-button
-                color="primary"
                 (click)="onDialogClose()"
+                color="primary"
                 class="save-button"
-                aria-label="CLOSE">
+                style="width: 130px !important;"
+                aria-label="SAVE">
             <div fxLayoutAlign="center">
-                <span class="btn-title">Create Shipping Label</span>
+                <span class="btn-title" >Save</span>
             </div>
         </button>
+        <button [disabled]="!composeForm.value.Width"
+                disabled mat-raised-button
+                color="primary"
+                (click)="editDimensionsPage = !editDimensionsPage"
+                class="save-button"
+                style="width: 200px !important;"
+                aria-label="PACKAGE DIMENSIONS">
+            <div fxLayoutAlign="center">
+                <span class="btn-title">Generate<br> Shipping Label </span>
+            </div>
+        </button>
+        <!-- <mat-button-toggle-group (click)="editDimensionsPage = !editDimensionsPage" style="width: 311px !important;" class="save-button" color="accent">
+            <mat-button-toggle [checked]="!editDimensionsPage"
+                class="save-button" fxLayout="row">
+                <span value="false" class=""> Dimensions</span>
+            </mat-button-toggle>
+            <mat-button-toggle [checked]="editDimensionsPage"
+                class="save-button" fxLayout="row">
+                <span value="false" class=""> Quantity</span>
+            </mat-button-toggle>
+        </mat-button-toggle-group> -->
+        <button *ngIf="!editDimensionsPage"
+                mat-raised-button
+                color="accent"
+                (click)="editDimensionsPage = !editDimensionsPage"
+                class="save-button"
+                style="width: 311px !important;"
+                aria-label="PACKAGE DIMENSIONS">
+            <div fxLayoutAlign="center">
+                <span class="btn-title">Set Dimensions <mat-icon style="margin-left: 5px;">arrow_forward_circle</mat-icon></span>
+            </div>
+        </button>
+        
+        <button *ngIf="editDimensionsPage"
+                mat-raised-button
+                color="accent"
+                (click)="editDimensionsPage = !editDimensionsPage"
+                class="save-button"
+                style="width: 311px !important;"
+                aria-label="PACKAGE QUANTITY">
+            <div fxLayoutAlign="center">
+                <span class="btn-title">Set Quantity <mat-icon style="margin-left: 5px;">arrow_forward_circle</mat-icon></span>
+            </div>
+        </button> 
+       
     </div>
 </div>

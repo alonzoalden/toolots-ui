@@ -13,6 +13,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { MatInput } from '@angular/material/input';
 import { WarehouseOutboundService } from '../../../warehouse-outbound.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 declare const dymo: any;
 
@@ -34,6 +35,9 @@ export class FulfillmentPackageDialogComponent implements OnInit, AfterViewInit,
     selectedFulfillmentLinePackage: any;
     editConfirmQuantity: boolean;
     tempQuantity: number;
+    editDimensionsPage: boolean;
+    composeForm: FormGroup;
+    shippingMethods = ['Best Rate', 'Small Parcel', 'LTL'];
     private _unsubscribeAll: Subject<any>;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild('mainInput') mainInput: NgSelectComponent;
@@ -46,14 +50,17 @@ export class FulfillmentPackageDialogComponent implements OnInit, AfterViewInit,
         }
     }
     constructor(
+        private _formBuilder: FormBuilder,
         public matDialogRef: MatDialogRef<FulfillmentPackageDialogComponent>,
         public warehouseOutboundService: WarehouseOutboundService,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private _service: NotificationsService
     ) {
         this.editConfirmQuantity = false;
+        this.editDimensionsPage = false;
         this._unsubscribeAll = new Subject();
         this.selectedFulfillmentLine = new FulfillmentLine(null, null, null, null, null, null, null, null, null, null, null, [], [], null);
+        this.composeForm = this.createProductForm();
     }
 
     ngOnInit(): void {
@@ -140,9 +147,11 @@ export class FulfillmentPackageDialogComponent implements OnInit, AfterViewInit,
         this.focusMainInput();
     }
     focusMainInput() {
-        if (!this.editConfirmQuantity) {
+        if (!this.editConfirmQuantity && this.mainInput) {
             setTimeout(() => {
-                this.mainInput.focus();
+                if (this.mainInput) {
+                    this.mainInput.focus();
+                }
             }, 10);
         }
     }
@@ -170,5 +179,16 @@ export class FulfillmentPackageDialogComponent implements OnInit, AfterViewInit,
         this.warehouseOutboundService.toggleEnterConfirmedQty();
         this.tempQuantity = row.Quantity;
     }
+    createProductForm(): FormGroup {
+        return this._formBuilder.group({
+            ShippingMethod: [null],
+            Length: [null],
+            Width: [null],
+            Height: [null],
+            Weight: [null],
+            Value: [null],
+        });
+    }
+
 }
 

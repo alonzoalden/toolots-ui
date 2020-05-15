@@ -2,6 +2,7 @@
 
 .update-qty-dialog {
     
+    min-width: 730px;
     input.accent::placeholder {
         color: #fff;
     }
@@ -30,7 +31,7 @@
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             padding-bottom: 0;
             padding: 8px 4px;
-            width: 82px;
+            // width: 82px;
             min-width: 40px;
             margin-right: 5px;
         }
@@ -47,7 +48,7 @@
         // height: 240px;
         // min-height: 240px;
         // max-height: 240px;
-        padding-top: 4px;
+        padding-top: 20px;
         padding-bottom: 50px;
         text-align: center;
         width: 100%;

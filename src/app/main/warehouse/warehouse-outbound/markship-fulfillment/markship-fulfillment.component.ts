@@ -190,7 +190,7 @@ export class MarkshipFulfillmentComponent implements OnInit, OnDestroy {
             panelClass: 'update-qty-dialog',
             autoFocus: false,
             disableClose: true,
-            width: '70%',
+            // width: '80%',
             data: fulfillmentpackage
         });
         this.dialogRef.afterClosed()
@@ -206,8 +206,6 @@ export class MarkshipFulfillmentComponent implements OnInit, OnDestroy {
                     this.fulfillmentLinePackages.push(newpackage);
                     this.refreshDataSource();
                     this.selectedFulfillmentPackage = this.dataSourcePackage.data[this.dataSourcePackage.data.length - 1];
-
-                    this.openDialogFulfillmentPackageEditDimensions();
                 }
                 // this.refreshDataSource();
             });
