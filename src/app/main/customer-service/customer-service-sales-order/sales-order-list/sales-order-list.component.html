@@ -1,0 +1,145 @@
+
+<div class="page-layout simple right-sidebar inner-scroll">
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+        <!-- CONTENT -->
+        <div class="content" #scrollContainer>
+            <div class="main-list-layout list-container">
+                <!-- HEADER  -->
+                <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+                    <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'50px'}}">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <h1 fxLayout="row" fxLayoutAlign="start center">
+                                <button mat-icon-button [routerLink]="['../../']"><mat-icon>perm_phone_msg</mat-icon> </button>
+                                <mat-icon>chevron_right</mat-icon> Sales Order</h1>
+                        </div>
+                    </div>
+                    <!-- SEARCH BAR  -->
+                    <div class="action-container" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                        <div class="search-wrapper">
+                            <div class="search" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon class="secondary-text">search</mat-icon>
+                                <input #mainInput [disabled]="isLoading" [(ngModel)]="searchTerm"
+                                    [placeholder]="isLoading ? 'Please wait...' : 'Search Order'"
+                                    (keyup.enter)=onSearch() (focusout)="focusMainInput()">
+                                <button mat-icon-button *ngIf="searchTerm" (click)="searchTerm = ''">
+                                    <mat-icon matTooltip="Clear">clear</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="width: 12px;"></div>
+                        <button [disabled]="!searchTerm" color="primary" mat-fab
+                            (click)="onSearch()">Search</button>
+                    </div>
+                    <div class="hero-text">
+                        <mat-icon class="hero-icon">perm_phone_msg</mat-icon>
+                    </div>
+                </div>
+                <!-- /HEADER  -->
+                
+                <div *ngIf="isLoading" class="loader">
+                    <mat-spinner [@animate]="{value:'*',params:{y:'225px'}}"></mat-spinner>
+                </div>
+
+                <mat-table *ngIf="selectedSalesOrder" #table [dataSource]="dataSource"
+                            [@animateStagger]="{value:'50'}" matSort>
+                    
+                    <!-- ImagePath Column -->
+                    <ng-container matColumnDef="ItemImagePath">
+                        <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxFlex="64px">
+                            <img *ngIf="row.ItemImagePath" src="{{fileURL}}{{row.ItemImagePath}}">
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- ItemName Column -->
+                    <ng-container matColumnDef="ItemName">
+                        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.ItemName}}</mat-cell>
+                    </ng-container>
+
+                    <!-- TPIN Column -->
+                    <ng-container matColumnDef="ItemTPIN">
+                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>TPIN</mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxHide fxShow.gt-md width="20%"> {{row.ItemTPIN}}</mat-cell>
+                    </ng-container>
+
+                    <!-- VendorSKU Column -->
+                    <ng-container matColumnDef="ItemVendorSKU">
+                        <mat-header-cell *matHeaderCellDef fxHide.xs>Vendor SKU</mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxHide.xs> {{row.ItemVendorSKU}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Quantity Column -->
+                    <ng-container matColumnDef="Quantity">
+                        <mat-header-cell *matHeaderCellDef fxHide.xs>Quantity</mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxHide.xs> {{row.Quantity}}</mat-cell>
+                    </ng-container>
+
+
+                    <!-- Modified Column -->
+                    <ng-container matColumnDef="Actions">
+                        <mat-header-cell *matHeaderCellDef >Actions</mat-header-cell>
+                        <mat-cell *matCellDef="let row" >
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #moreMenu="matMenu">
+                                <button mat-menu-item>
+                                    {{ row.Action }}
+                                </button>
+                                <hr>
+                                <button mat-menu-item>
+                                    Convert Shipping Method
+                                </button>
+                                <button mat-menu-item>
+                                    Address
+                                </button>
+                            </mat-menu>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Detail Button Column -->
+                    <ng-container matColumnDef="detail-button">
+                        
+                        <!-- fxHide.gt-md // original settings was to hide these for gt-md -->
+                        <mat-header-cell *matHeaderCellDef fxFlex="48px"></mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxFlex="48px">
+                            <button mat-icon-button class="sidebar-toggle"
+                                    (click)="toggleSidebar('file-manager-details-sidebar')">
+                                <mat-icon class="secondary-text">info</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"
+                            (click)="onSelect(row)"
+                            [ngClass]="{'selected' : row == selected}"
+                            [@animate]="!selected && {value:'*',params:{y:'100%'}}"
+                    >
+                    </mat-row>
+                </mat-table>
+            <div *ngIf="!isLoading && !selectedSalesOrder"
+                [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}"
+                style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+                Please search for an order.
+            </div>
+            <!-- <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData.length === 0"
+                [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">
+                No items found.
+            </div> -->
+            <!-- <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator> -->
+            </div>
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+    <!-- SIDEBAR -->
+    <fuse-sidebar class="sidebar details-sidebar" name="sales-order-list-details-sidebar" position="right"
+            lockedOpen="gt-xs">
+        <sales-order-list-details-sidebar></sales-order-list-details-sidebar>
+    </fuse-sidebar> 
+</div>

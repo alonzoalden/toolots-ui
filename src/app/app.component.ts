@@ -182,7 +182,7 @@ export class AppComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((member: Member) => {
                 if (member.MemberID) {
-                    this.router.navigate(['/warehouse']);
+                    this.router.navigate(['/customer-service']);
                     this._fuseSplashScreenService.hide();
                 }
             });

@@ -83,6 +83,7 @@ $typography: mat-typography-config(
 // @import "src/app/main/file-manager/file-manager.theme";
 @import "src/app/main/landing/landing.theme";
 @import "src/app/main/warehouse/warehouse.theme";
+@import "src/app/main/customer-service/customer-service.theme";
 
 
 // Define a mixin for easier access
@@ -92,6 +93,7 @@ $typography: mat-typography-config(
     // @include chat-panel-theme($theme);
     // @include toolbar-theme($theme);
     @include warehouse-theme($theme);
+    @include customer-service-theme($theme);
     @include landing-page-theme($theme);
 }
 

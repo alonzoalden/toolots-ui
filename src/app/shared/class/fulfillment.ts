@@ -1,10 +1,3 @@
-// GET https://staging-webapi.toolots.com.cn/gadget/fulfillment/outbound
-// GET https://staging-webapi.toolots.com.cn/gadget/fulfillment/{id}
-
-// PUT
-// fulfillment/{fulfillmentnumber}/pickup
-// fulfillment/{id}
-// fulfillment/fulfillmentline/{id}
 export class Fulfillment {
     constructor(
         public FulfillmentID: string,
@@ -22,9 +15,31 @@ export class Fulfillment {
         public ShippedBy: string,
         public ShippedOn: string,
         public HasMissingItem: string,
+        public ShippingAddressTransID: string,
         public Action: string,
         public FulfillmentLines: FulfillmentLine[],
+        public FulfillmentShipmentTrackings: FulfillmentShipmentTracking[],
 
+
+    ) {}
+}
+
+export class FulfillmentShipmentTracking {
+    constructor(
+        public FulfillmentLineID: string,
+        public ItemID: string,
+        public ItemImagePath: string,
+        public ItemTPIN: string,
+        public ItemSKU: string,
+        public Quantity: number,
+        public IsNotFound: boolean,
+        public IsPicked: boolean,
+        public Unreachable: boolean,
+        public ConfirmedBy: string,
+        public ConfirmedOn: Date,
+        public FulfillmentLineInventoryDetails: FulfillmentLineInventoryDetail[],
+        public FulfillmentLineConfirms: FulfillmentLineConfirm[],
+        public confirmedQty: number
     ) {}
 }
 export class FulfillmentLine {

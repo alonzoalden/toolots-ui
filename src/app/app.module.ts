@@ -29,6 +29,7 @@ import { SnackbarComponent } from './shared/components/snackbar/snackbar.compone
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { SimpleNotificationsModule, NotificationComponent } from 'angular2-notifications';
 import { AppRoutingModule } from './app-routing.module';
+import { WarehouseService } from './main/warehouse/warehouse.service';
 
 @NgModule({
     declarations: [

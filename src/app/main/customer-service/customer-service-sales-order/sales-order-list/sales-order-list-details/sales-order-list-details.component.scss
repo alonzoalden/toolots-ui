@@ -1,0 +1,95 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+    z-index: 1;
+    .header {
+        flex: 0 1 auto;
+        height: 240px;
+        min-height: 240px;
+        max-height: 240px;
+        
+        .header-content {
+            height: 100%;
+            flex: 1;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            display: flex;
+            flex-direction: column;
+            .main-action {
+                width: 170px;
+                height: 72px;
+                .btn-title {
+                    text-transform: uppercase;
+                    font-size: 18px;
+                    color: #fff;
+                }
+            }
+            .subtitle > span {
+                font-size: 20px;
+            }
+        }
+        .preview {
+            img {
+                max-width: 120px;
+            }
+        }
+    }
+
+    .content {
+        flex: 1;
+        ::ng-deep.mat-tab-label {
+            min-width: 0 !important;
+            flex: 1;
+        }
+        mat-tab-group {
+            flex-grow: 1;
+            overflow: auto;
+        }
+        .subtitle {
+            span {
+                color: black;
+                font-weight: 600;
+            }
+        }
+        .file-details {
+
+            .offline-switch {
+                padding-bottom: 16px;
+                font-weight: 600;
+            }
+
+            .title {
+                padding: 16px 0;
+            }
+
+            table {
+                width: 100%;
+                text-align: left;
+
+                tr {
+
+                    th, td {
+                        padding: 16px 0;
+                    }
+
+                    th {
+                        padding-right: 7px;
+                    }
+
+                    &.type {
+                        text-transform: capitalize;
+                    }
+
+                    &.owner {
+                        text-transform: capitalize;
+                    }
+
+                }
+            }
+        }
+    }
+    
+}

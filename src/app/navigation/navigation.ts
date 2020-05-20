@@ -8,6 +8,26 @@ export const navigation: FuseNavigation[] = [
         type     : 'group',
         children : [
             {
+                id       : 'customer_service',
+                title    : 'Customer Service',
+                translate: 'NAV.CUSTOMER_SERVICE',
+                type     : 'collapsable',
+                icon     : 'perm_phone_msg',
+                url      : '/customer-service',
+                exactMatch: true,
+                children : [
+                    {
+                        id       : 'sales_order',
+                        title    : 'Sales Order',
+                        translate: 'NAV.SALES_ORDER',
+                        type     : 'item',
+                        icon     : 'receipt',
+                        url      : '/customer-service/sales-order',
+                        exactMatch: true
+                    }
+                ]
+            },
+            {
                 id       : 'warehouse',
                 title    : 'Warehouse',
                 translate: 'NAV.WAREHOUSE',

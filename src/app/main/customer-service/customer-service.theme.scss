@@ -1,0 +1,40 @@
+@mixin customer-service-theme($theme) {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $accent: map-get($theme, accent);
+    $is-dark: map-get($theme, is-dark);
+
+    .main-list-layout {
+
+        .search-wrapper {
+            background: map-get($background, card);
+
+            .sidebar-toggle {
+                border-right-color: map-get($foreground, divider);
+            }
+
+            .search {
+
+                input {
+                    background: map-get($background, card);
+                    color: map-get($foreground, text);
+                }
+            }
+        }
+
+        .mat-table {
+
+            .mat-row {
+
+                &.selected {
+                    @if ($is-dark) {
+                        background: map-get($background, hover);
+                    } @else {
+                        background: map-get($accent, 50);
+                    }
+                }
+            }
+        }
+    }
+}

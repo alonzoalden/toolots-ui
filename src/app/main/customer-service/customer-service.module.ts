@@ -14,23 +14,19 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthGuard } from 'app/auth/auth.guard';
-import { WarehouseComponent } from './warehouse.component';
-import { WarehouseDashboardComponent } from './warehouse-dashboard/warehouse-dashboard.component';
-import { WarehouseItemManagerModule } from './warehouse-item-manager/warehouse-item-manager.module';
-import { WarehouseItemManagerService } from './warehouse-item-manager/warehouse-item-manager.service';
-import { WarehouseOutboundModule } from './warehouse-outbound/warehouse-outbound.module';
-import { WarehouseRouting } from './warehouse.routing';
-
-import { WarehouseInboundModule } from './warehouse-inbound/warehouse-inbound.module';
-import { WarehouseService } from './warehouse.service';
+import { CustomerServiceDashboardComponent } from './customer-service-dashboard/customer-service-dashboard.component';
+import { CustomerServiceRouting } from './customer-service.routing';
+import { CustomerServiceService } from './customer-service.service';
+import { CustomerServiceComponent } from './customer-service.component';
+import { CustomerServiceSalesOrderModule } from './customer-service-sales-order/customer-service-sales-order.module';
 
 @NgModule({
     declarations: [
-        WarehouseComponent,
-        WarehouseDashboardComponent,
+        CustomerServiceComponent,
+        CustomerServiceDashboardComponent,
     ],
     imports: [
-        WarehouseRouting,
+        CustomerServiceRouting,
         MatButtonModule,
         MatIconModule,
         MatRippleModule,
@@ -48,14 +44,12 @@ import { WarehouseService } from './warehouse.service';
         MatToolbarModule,
         FuseSharedModule,
         FuseSidebarModule,
-        WarehouseItemManagerModule,
-        WarehouseOutboundModule,
-        WarehouseInboundModule,
+
+        CustomerServiceSalesOrderModule
     ],
     providers: [
-        WarehouseService,
-        WarehouseItemManagerService,
+        CustomerServiceService,
         AuthGuard
     ]
 })
-export class WarehouseModule {}
+export class CustomerServiceModule {}
