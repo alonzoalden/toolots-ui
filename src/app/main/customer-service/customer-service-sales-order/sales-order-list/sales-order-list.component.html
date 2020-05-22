@@ -28,20 +28,19 @@
                             </div>
                         </div>
                         <div style="width: 12px;"></div>
-                        <button [disabled]="!searchTerm" color="primary" mat-fab
-                            (click)="onSearch()">Search</button>
+                        <button [disabled]="!searchTerm || selectedSalesOrder?.IncrementID === searchTerm || isLoading" color="primary" mat-fab
+                            (click)="onSearch()">
+                            <span *ngIf="!isLoading">Search</span>
+                            <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                        </button>
                     </div>
                     <div class="hero-text">
                         <mat-icon class="hero-icon">perm_phone_msg</mat-icon>
                     </div>
                 </div>
                 <!-- /HEADER  -->
-                
-                <div *ngIf="isLoading" class="loader">
-                    <mat-spinner [@animate]="{value:'*',params:{y:'225px'}}"></mat-spinner>
-                </div>
 
-                <mat-table *ngIf="selectedSalesOrder" #table [dataSource]="dataSource"
+                <mat-table *ngIf="selectedSalesOrder?.IncrementID && !isLoading" #table [dataSource]="dataSource"
                             [@animateStagger]="{value:'50'}" matSort>
                     
                     <!-- ImagePath Column -->
@@ -61,7 +60,7 @@
                     <!-- TPIN Column -->
                     <ng-container matColumnDef="ItemTPIN">
                         <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>TPIN</mat-header-cell>
-                        <mat-cell *matCellDef="let row" fxHide fxShow.gt-md width="20%"> {{row.ItemTPIN}}</mat-cell>
+                        <mat-cell *matCellDef="let row" fxHide fxShow.gt-md> {{row.ItemTPIN}}</mat-cell>
                     </ng-container>
 
                     <!-- VendorSKU Column -->
@@ -86,14 +85,7 @@
                             </button>
                             <mat-menu #moreMenu="matMenu">
                                 <button mat-menu-item>
-                                    {{ row.Action }}
-                                </button>
-                                <hr>
-                                <button mat-menu-item>
-                                    Convert Shipping Method
-                                </button>
-                                <button mat-menu-item>
-                                    Address
+                                    View Fulfillments Containing Item
                                 </button>
                             </mat-menu>
                         </mat-cell>
@@ -112,10 +104,19 @@
                         </mat-cell>
                     </ng-container>
 
+                    <!-- Complete Column -->
+                    <ng-container matColumnDef="Complete">
+                        <mat-header-cell *matHeaderCellDef>Complete</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <mat-icon *ngIf="row.complete" style="width: 40px; height: 40px; font-size: 40px; color: #43a047;">check_circle</mat-icon>
+                            <mat-icon *ngIf="!row.complete" style="width: 40px; height: 40px; font-size: 40px; color: #e53935;">highlight_off</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
                     <mat-header-row #sort *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"
-                            (click)="onSelect(row)"
-                            [ngClass]="{'selected' : row == selected}"
+                            (click)="onSelect(row)" id={{row.FulfillmentID}}
+                            [ngClass]="{'selected' : row == selectedSalesOrderLine}"
                             [@animate]="!selected && {value:'*',params:{y:'100%'}}"
                     >
                     </mat-row>
@@ -124,6 +125,9 @@
                 [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}"
                 style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
                 Please search for an order.
+            </div>
+            <div *ngIf="isLoading" class="loader">
+                <div class="loading" style="width: 91px;">Please wait</div>
             </div>
             <!-- <div class="center-box-message" *ngIf="!isLoading && dataSource?.filteredData.length === 0"
                 [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}">

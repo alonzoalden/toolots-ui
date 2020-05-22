@@ -4,6 +4,9 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { CustomerServiceService } from 'app/main/customer-service/customer-service.service';
+import { SalesOrderEditAddressDialogComponent } from '../dialogs/sales-order-edit-address/sales-order-edit-address.component';
+import { FulfillmentInformationDialogComponent } from '../dialogs/fulfillment-information/fulfillment-information.component';
 
 @Component({
     selector: 'sales-order-list-details-sidebar',
@@ -12,7 +15,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
     animations: fuseAnimations
 })
 export class CustomerServiceSalesOrderListDetailsSidebarComponent implements OnInit, OnDestroy {
-    selected: any;
+    selectedSalesOrder: any;
     isEdit: boolean;
     dialogRef: any;
     @ViewChild('scrollContainer') scrollContainerEl: ElementRef;
@@ -21,19 +24,17 @@ export class CustomerServiceSalesOrderListDetailsSidebarComponent implements OnI
         // public warehouseOutboundService: WarehouseOutboundService,
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
+        public salesOrderService: CustomerServiceService,
     ) {
         this._unsubscribeAll = new Subject();
     }
 
     ngOnInit(): void {
-        // this.warehouseOutboundService.onFulfillmentSelected
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(selected => {
-        //         this.selected = selected;
-        //         if (this.scrollContainerEl) {
-        //             this.scrollContainerEl.nativeElement.scrollTop = 0;
-        //         }
-        //     });
+        this.salesOrderService.onSalesOrderSelected
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(selected => {
+                this.selectedSalesOrder = selected;
+            });
     }
 
     ngOnDestroy(): void {
@@ -41,16 +42,27 @@ export class CustomerServiceSalesOrderListDetailsSidebarComponent implements OnI
         this._unsubscribeAll.complete();
     }
     clearSelected(): void {
-        // this.warehouseOutboundService.onFulfillmentSelected.next({});
+        this.salesOrderService.onSalesOrderSelected.next({});
         // this._fuseSidebarService.getSidebar('outbound-details-sidebar').toggleOpen();
     }
-    goToAction(action: string) {
-        let str = '';
-        action.toLowerCase().split('').forEach(letter => {
-            if (letter !== ' ') {
-                str += letter;
-            }
+    openDialogSalesOrderEditAddress(): void {
+        // this.inputEnabled = false;
+        this.dialogRef = this._matDialog.open(SalesOrderEditAddressDialogComponent, {
+            panelClass: 'edit-dialog',
+            autoFocus: false
         });
-        return str;
+        this.dialogRef.afterClosed()
+            .subscribe(shippingtype => {
+            });
+    }
+    openDialogSalesOrderViewFulfillments(): void {
+        // this.inputEnabled = false;
+        this.dialogRef = this._matDialog.open(FulfillmentInformationDialogComponent, {
+            panelClass: 'view-list-dialog',
+            autoFocus: false
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(data => {
+            });
     }
 }

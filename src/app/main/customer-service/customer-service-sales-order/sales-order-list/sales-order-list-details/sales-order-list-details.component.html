@@ -1,95 +1,87 @@
 <!-- SIDEBAR HEADER -->
-<div class="header accent" fxLayout="column" fxLayoutAlign="space-between">
-    <div class="header-content p-16">
-        <div *ngIf="selected && selected.FulfillmentID" class="toolbar" fxLayout="row" fxLayoutAlign="space-between center"
-            [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <div class="subtitle secondary-text">
-                <span>{{selected.FulfillmentNumber}}</span>
+<div class="header accent" fxLayout="row" fxLayoutAlign="space-between">
+    <div class="header-content p-24" fxFlex fxLayout="column" fxLayoutAlign="space-between">
+        <div style="margin-top: 0;" *ngIf="selectedSalesOrder && selectedSalesOrder.SalesOrderID" class="toolbar" fxLayout="row" fxLayoutAlign="space-between center"
+            [@animate]="{value:'*',params:{delay:'230ms',scale:'0.2'}}">
+            <div fxLayout="column" fxLayoutAlign="start">
+                <div class="subtitle secondary-text" fxLayout="column" fxLayoutAlign="start">
+                    <span style="font-size: 26px;">{{selectedSalesOrder.IncrementID}}</span>
+                </div>
             </div>
             <div>
-                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+                <button matTooltip="More" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #moreMenu="matMenu">
-                    <button mat-menu-item>
-                        Convert Shipping Method
+                    <button (click)="openDialogSalesOrderViewFulfillments()" *ngIf="selectedSalesOrder.Fulfillments.length" mat-menu-item>
+                        View Fulfillments
                     </button>
-                    <button mat-menu-item>
-                        Address
+                    <button (click)="openDialogSalesOrderEditAddress()" mat-menu-item>
+                        Edit Shipping Address
                     </button>
                 </mat-menu>
-                <button 
-                    aria-label="close" mat-icon-button (click)="clearSelected()">
+                <button (click)="clearSelected()" matTooltip="Close Order" aria-label="close" mat-icon-button (click)="clearSelected()">
                     <mat-icon>close</mat-icon>
                 </button>
             </div>
         </div>
-        <!-- <div *ngIf="!selected.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center">
-            <span>No item selected</span>
-        </div> -->
-        <div *ngIf="selected?.FulfillmentID" fxFlex fxLayout="row" fxLayoutAlign="center center"
-            [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <button class="main-action" [routerLink]="[goToAction(selected.Action)]" mat-raised-button>
-                <span class="btn-title">{{selected.Action}}</span>
-            </button>
+       
+        <div *ngIf="selectedSalesOrder.NetsuiteDocumentNumber" fxLayout="column" fxLayoutAlign="start"
+            [@animate]="{value:'*',params:{delay:'230ms',scale:'0.2'}}">
+            <span style="font-weight: 600;">Netsuite Document Number</span>
+            <div class="subtitle secondary-text" fxLayout="column" fxLayoutAlign="start">
+                <span style="font-size: 18px;">{{selectedSalesOrder.NetsuiteDocumentNumber }}</span>
+            </div>
+        </div>
+        <div *ngIf="selectedSalesOrder.TransactionDate" fxLayout="column" fxLayoutAlign="start"
+            [@animate]="{value:'*',params:{delay:'230ms',scale:'0.2'}}">
+            <span style="font-weight: 600;">Transaction Date</span>
+            <div class="subtitle secondary-text" fxLayout="column" fxLayoutAlign="start">
+                <span style="font-size: 18px;">{{ selectedSalesOrder.TransactionDate | date }}</span>
+            </div>
+        </div>
+        
+        
+        <div *ngIf="!selectedSalesOrder.IncrementID" fxFlex fxLayout="row" fxLayoutAlign="start">
+            <span>No order selected.</span>
         </div>
     </div>
 </div> 
 <!-- / SIDEBAR HEADER -->
 
 <!-- SIDEBAR CONTENT -->
-<div class="content" fxLayout="column" fusePerfectScrollbar #scrollContainer>
-    <div class="file-details p-24" [@animate]="{value:'*',params:{delay:'200ms', y:'25px'}}">
-        <table *ngIf="selected" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-            <!-- <tr class="owner">
-                <th>Shipping Type</th>
-                <td>{{ dictPackingType[selected.ShippingType] }}</td>
-            </tr> -->
-            <!-- <tr class="owner">
-                <th>Shipping Method</th>
-                <td>{{ selected.ShippingMethod }}</td>
-            </tr> -->
-            <tr class="owner">
-                <th>Picked Up By</th>
-                <td>{{ selected.PickedUpBy }}</td>
-            </tr>
-            <tr class="owner">
-                <th>Picked Up On</th>
-                <td>{{ selected.PickedUpOn | date }}</td>
-            </tr>
-            <ng-container *ngIf="selected.ShippingMethod === 'LTL'">
-                <tr class="owner">
-                    <th>Pick Confirmed By</th>
-                    <td>{{ selected.PickConfirmedBy }}</td>
-                </tr>
-                <tr class="owner">
-                    <th>Pick Confirmed On</th>
-                    <td>{{ selected.PickConfirmedOn | date }}</td>
-                </tr>
-            </ng-container>
-            <tr class="owner">
-                <th>Picked By</th>
-                <td>{{ selected.PickedBy }}</td>
-            </tr>
-            <tr class="owner">
-                <th>Picked On</th>
-                <td>{{ selected.PickedOn | date }}</td>
-            </tr>
-        
-            <tr class="owner">
-                <th>Packed By</th>
-                <td>{{ selected.PackedBy }}</td>
-            </tr>
-            <tr class="owner">
-                <th>Packed On</th>
-                <td>{{ selected.PackedOn | date }}</td>
-            </tr>
-            
-            <tr class="owner" *ngIf="selected.HasMissingItem">
-                <th>Has Missing Item</th>
-                <td>{{ selected.HasMissingItem }}</td>
-            </tr>
-        </table>
+ <div class="content" fxLayout="column" fusePerfectScrollbar #scrollContainer>
+    <div class="p-24" *ngIf="selectedSalesOrder.SalesOrderID">
+        <div style="margin-bottom: 30px;" fxLayout="column" fxLayoutAlign="start"
+        [@animate]="{value:'*',params:{delay:'400ms', scale:'0.2', y:'75px'}}">
+            <div style="font-weight: 700; margin-bottom: 2px; line-height: 30px;" fxLayoutAlign="space-between">
+                Shipping Address
+                
+                <button (click)="openDialogSalesOrderEditAddress()" mat-icon-button matTooltip="Edit Shipping Address"><mat-icon>edit</mat-icon></button>
+            </div>
+            <mat-spinner *ngIf="!selectedSalesOrder.shippingAddress" diameter="20" [@animate]="{value:'*',params:{y:'225px'}}"></mat-spinner>
+            <div *ngIf="selectedSalesOrder.shippingAddress" style="line-height: 24px; letter-spacing: 0.2px;" fxLayout="column" fxLayoutAlign="start">
+                <span>{{ selectedSalesOrder.shippingAddress.CompanyName }}</span>
+                <span>{{ selectedSalesOrder.shippingAddress.FirstName }} {{ selectedSalesOrder.shippingAddress.LastName }}</span>
+                <span>{{ selectedSalesOrder.shippingAddress.Address1 }}</span>
+                <span *ngIf="selectedSalesOrder.shippingAddress.Address2">{{ selectedSalesOrder.shippingAddress.Address2 }}</span>
+                <span>{{ selectedSalesOrder.shippingAddress.City }}, {{ selectedSalesOrder.shippingAddress.State }} {{ selectedSalesOrder.shippingAddress.PostalCode }}</span>
+                <span>{{ selectedSalesOrder.shippingAddress.PhoneNumber | phone:'US' }}</span>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start"
+            [@animate]="{value:'*',params:{delay:'450ms', scale:'0.2', y:'75px'}}">
+            <div style="font-weight: 700; margin-bottom: 10px; line-height: 30px;">Billing Address</div>
+            <mat-spinner *ngIf="!selectedSalesOrder.billingAddress" diameter="20" [@animate]="{value:'*',params:{y:'225px'}}"></mat-spinner>
+            <div *ngIf="selectedSalesOrder.billingAddress" style="line-height: 24px; letter-spacing: 0.2px;" fxLayout="column" fxLayoutAlign="start">
+                <span>{{ selectedSalesOrder.billingAddress.CompanyName }}</span>
+                <span>{{ selectedSalesOrder.billingAddress.FirstName }} {{ selectedSalesOrder.billingAddress.LastName }}</span>
+                <span>{{ selectedSalesOrder.billingAddress.Address1 }}</span>
+                <span *ngIf="selectedSalesOrder.billingAddress.Address2">{{ selectedSalesOrder.billingAddress.Address2 }}</span>
+                <span>{{ selectedSalesOrder.billingAddress.City }}, {{ selectedSalesOrder.billingAddress.State }} {{ selectedSalesOrder.billingAddress.PostalCode }}</span>
+                <span>{{ selectedSalesOrder.billingAddress.PhoneNumber | phone:'US' }}</span>
+            </div>
+        </div>
     </div>
 </div>
 <!-- / SIDEBAR CONTENT -->

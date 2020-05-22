@@ -501,7 +501,8 @@
             overflow: hidden;
         }
         .dialog-content-wrapper {
-            max-height: 85vh;
+            //max-height: 85vh;
+            max-height: 70vh;
             display: flex;
             flex-direction: column;
     
@@ -747,14 +748,11 @@
     @include media-breakpoint('gt-xs') {
         width: 640px;
     }
-    .mat-dialog-content {
-        padding-top : 0 !important;
-    }
     .mat-dialog-container {
         padding: 0;
 
         .dialog-content-wrapper {
-            max-height: 85vh;
+            // max-height: 85vh;
             display: flex;
             flex-direction: column;
     

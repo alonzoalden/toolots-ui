@@ -1,4 +1,5 @@
 import { Fulfillment } from './fulfillment';
+import { AddressTrans } from './address';
 
 export class SalesOrder {
     constructor(
@@ -10,6 +11,8 @@ export class SalesOrder {
         public BillingAddressTransID: string,
         public SalesOrderLines: SalesOrderLine[],
         public Fulfillments: Fulfillment[],
+        public shippingAddress: AddressTrans,
+        public billingAddress: AddressTrans,
     ) {}
 }
 export class SalesOrderLine {
@@ -21,5 +24,6 @@ export class SalesOrderLine {
         public ItemVendorSKU: string,
         public ItemImagePath: string,
         public Quantity: number,
+        public complete: boolean,
     ) {}
 }

@@ -23,7 +23,6 @@ export class Fulfillment {
 
     ) {}
 }
-
 export class FulfillmentShipmentTracking {
     constructor(
         public FulfillmentLineID: string,

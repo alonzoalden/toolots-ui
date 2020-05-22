@@ -1,0 +1,116 @@
+<div class="dialog-content-wrapper" style="max-height: 85vh;">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Edit Shipping Address</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <!-- <div fxLayout="row" class="name p-24 accent">
+        <h2>Fulfillment - {{selected.FulfillmentNumber}}</h2>
+    </div> -->
+    <div class="accent" style="padding: 20px; font-size: 16px; letter-spacing: 0.7px;">
+        <div class="compose-form" fxLayout="column" fxFlexLayout="center center" style="line-height: 26px;">
+            <div>{{selected.shippingAddress.CompanyName}}</div>
+            <div>{{selected.shippingAddress.FirstName}} {{selected.shippingAddress.LastName}}</div>
+            <div>{{selected.shippingAddress.Address1}}</div>
+            <div *ngIf="selected.shippingAddress.Address2">{{selected.shippingAddress.Address2}}</div>
+            <div>{{selected.shippingAddress.City}}{{', ' + selected.shippingAddress.State}} {{selected.shippingAddress.PostalCode}}</div>
+            <div>{{selected.shippingAddress.PhoneNumber | phone:'US'}}</div>
+        </div>
+    </div>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div fxLayout="column">
+            
+            <div>
+                <form *ngIf="composeForm" name="composeForm" [formGroup]="composeForm" class="compose-form" fxLayout="column" fxFlex>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Company Name</mat-label>
+                        <input matInput placeholder="Company Name"
+                            name="CompanyName"
+                            formControlName="CompanyName"
+                            >
+                    </mat-form-field>
+                    <div fxLayout="row">
+                        <mat-form-field style="margin-right: 30px;" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="First Name"
+                                name="FirstName"
+                                formControlName="FirstName"
+                                required>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Last Name"
+                                name="LastName"
+                                formControlName="LastName"
+                                >
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Address1</mat-label>
+                        <input matInput placeholder="Address1"
+                            name="Address1"
+                            formControlName="Address1"
+                            required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Address2</mat-label>
+                        <input matInput placeholder="Address2"
+                            name="Address2"
+                            formControlName="Address2">
+                    </mat-form-field>
+                    <div fxLayout="row">
+                        <mat-form-field style="margin-right: 30px;" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>City</mat-label>
+                            <input matInput placeholder="City"
+                                name="City"
+                                formControlName="City"
+                                required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>State</mat-label>
+                            <input matInput placeholder="State"
+                                name="State"
+                                formControlName="State"
+                                required>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Postal Code</mat-label>
+                        <input matInput placeholder="Declared Value"
+                            name="PostalCode"
+                            formControlName="PostalCode"
+                            required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput placeholder="Phon eNumber"
+                            name="PhoneNumber"
+                            formControlName="PhoneNumber"
+                            type="tel"
+                            required>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    color="primary"
+                    (click)="onSave()"
+                    class="save-button-max"
+                    [disabled]="composeForm.invalid"
+                    aria-label="Save">
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isSaving">Save</span>
+                    <mat-spinner color="accent" diameter="20" *ngIf="isSaving"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

@@ -189,22 +189,32 @@ sales-order-list {
         padding-right: 7px;
     }
     .mat-column-Actions {
-        flex: 0 0 12% !important;
-        min-width: 12% !important;
+        flex: 0 0 9% !important;
+        min-width: 9% !important;
+    }
+    
+    .mat-column-ItemName {
+        // flex: 0 0 32% !important;
+        // min-width: 32% !important;
+        padding-right: 10px;
     }
     .mat-column-ItemTPIN {
-        flex: 0 0 18% !important;
-        min-width: 18% !important;
+        flex: 0 0 16% !important;
+        min-width: 16% !important;
         padding-right: 10px;
     }
     .mat-column-ItemVendorSKU {
-        flex: 0 0 18% !important;
-        min-width: 18% !important;
+        flex: 0 0 16% !important;
+        min-width: 16% !important;
     }
-    // .mat-column-FulfillmentNumber {
-    //     flex: 0 0 20% !important;
-    //     min-width: 20% !important;
-    // }
+    .mat-column-Quantity {
+        flex: 0 0 9% !important;
+        min-width: 9% !important;
+    }
+    .mat-column-Complete {
+        flex: 0 0 9% !important;
+        min-width: 9% !important;
+    }
     @media screen and (max-width: 769px) {
         .sub-header .breadcrumb,
         .sub-header .action-container {

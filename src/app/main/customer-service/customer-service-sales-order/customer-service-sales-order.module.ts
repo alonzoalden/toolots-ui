@@ -33,6 +33,12 @@ import { AuthGuard } from 'app/auth/auth.guard';
 import {
     CustomerServiceSalesOrderListDetailsSidebarComponent
 } from './sales-order-list/sales-order-list-details/sales-order-list-details.component';
+import {
+    SalesOrderEditAddressDialogComponent
+} from './sales-order-list/dialogs/sales-order-edit-address/sales-order-edit-address.component';
+import {
+    FulfillmentInformationDialogComponent
+} from './sales-order-list/dialogs/fulfillment-information/fulfillment-information.component';
 
 const routes: Routes = [];
 
@@ -40,7 +46,9 @@ const routes: Routes = [];
     declarations: [
         CustomerServiceSalesOrderComponent,
         CustomerServiceSalesOrderListComponent,
-        CustomerServiceSalesOrderListDetailsSidebarComponent
+        CustomerServiceSalesOrderListDetailsSidebarComponent,
+        SalesOrderEditAddressDialogComponent,
+        FulfillmentInformationDialogComponent
     ],
     imports: [
         CommonModule,
@@ -76,6 +84,10 @@ const routes: Routes = [];
     ], providers: [
         CustomerServiceService,
         AuthGuard
+    ],
+    entryComponents: [
+        SalesOrderEditAddressDialogComponent,
+        FulfillmentInformationDialogComponent
     ]
 })
 export class CustomerServiceSalesOrderModule { }

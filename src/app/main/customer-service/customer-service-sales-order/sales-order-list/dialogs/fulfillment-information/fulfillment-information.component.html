@@ -1,0 +1,129 @@
+<div class="dialog-content-wrapper accent">
+    <mat-toolbar class="mat-accent m-0" >
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">View Fulfillment Information - {{selectedSalesOrder.IncrementID}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <!-- <div fxLayout="row" class="header" style="min-height: 180px;">
+        <div fxFlex="66.6" fxLayoutAlign="start center" class="name p-24" >
+            <h2>{{selectedSalesOrder.IncrementID}}</h2>
+        </div>
+    </div> -->
+    <div mat-dialog-content fusePerfectScrollbar class="p-16 m-0 main-list-layout table-container-body accent">
+        <div class="table-container first-box" fxFlex>
+            <div class="table-section-header accent" fxLayout="row" fxLayoutAlign="space-between end">
+                <span>Fulfillments</span>
+                <span class="hint">Select to view fulfillment lines</span>
+            </div>
+            <mat-table class="mat-elevation-z3" #table [dataSource]="dataSourceFulfillments" matSort fxFlex
+            [@animateStagger]="{value:'50'}">
+                <ng-container matColumnDef="FulfillmentNumber">
+                    <mat-header-cell *matHeaderCellDef>Fulfillment</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.FulfillmentNumber}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TransactionDate">
+                    <mat-header-cell *matHeaderCellDef>Transaction Date</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.TransactionDate | date}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ShippingMethod">
+                    <mat-header-cell *matHeaderCellDef>Shipping Method</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.ShippingMethod}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ShippedOn">
+                    <mat-header-cell *matHeaderCellDef>Shipped On</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.ShippedOn}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="HasMissingItem">
+                    <mat-header-cell *matHeaderCellDef>Missing Item</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.HasMissingItem}}
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row #sort *matHeaderRowDef="displayedColumnsFulfillments; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsFulfillments;" (click)="onSelect(row)"
+                    id={{row.FulfillmentID}} [ngClass]="{'selected' : row == selectedFulfillment}"
+                    [@animate]="!selectedFulfillment && {value:'*',params:{y:'100%'}}"
+                    >
+                </mat-row>
+            </mat-table>
+        </div>
+
+
+        <div class="table-container" fxFlex fusePerfectScrollbar>
+            <div class="table-section-header accent"  fxLayout="row" fxLayoutAlign="space-between end">
+                <span>Fulfillment Lines</span>
+            </div>
+            <mat-table fusePerfectScrollbar class="mat-elevation-z3" #table [dataSource]="dataSourceFulfillmentLines" matSort fxFlex [@animateStagger]="{value:'50'}">
+                <!-- ItemImagePath Column -->
+                <ng-container matColumnDef="ItemImagePath">
+                    <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
+                    <mat-cell *matCellDef="let row" fxFlex="64px">
+                        <img *ngIf="row.ItemImagePath" src="{{fileURL}}{{row.ItemImagePath}}">
+                    </mat-cell>
+                </ng-container>
+                <!-- ItemName Column -->
+                <ng-container matColumnDef="ItemName">
+                    <mat-header-cell *matHeaderCellDef >Item Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.ItemName}}</span>
+                    </mat-cell>
+                </ng-container>
+                <!-- ItemTPIN Column -->
+                <ng-container matColumnDef="ItemTPIN">
+                    <mat-header-cell *matHeaderCellDef >Item TPIN</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.ItemTPIN}}</span>
+                    </mat-cell>
+                </ng-container>
+                <!-- ItemSKU Column -->
+                <ng-container matColumnDef="ItemSKU">
+                    <mat-header-cell *matHeaderCellDef >Item SKU</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.ItemSKU}}</span>
+                    </mat-cell>
+                </ng-container>
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="Quantity">
+                    <mat-header-cell *matHeaderCellDef >Quantity</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span>{{row.Quantity}}</span>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumnsFulfillmentLines; sticky: true
+                "></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsFulfillmentLines;" (click)="onSelectFulfillmentLine(row)"
+                    [ngClass]="{'selected' : row == selectedFulfillmentLine}"
+                    [@animate]="!selectedFulfillmentLine && {value:'*',params:{y:'100%'}}"
+                    >
+                </mat-row>
+            </mat-table>
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <button mat-raised-button
+                    (click)="close()"
+                    class="save-button"
+                    aria-label="CLOSE">
+                <div fxLayoutAlign="center">
+                    <span *ngIf="!isSaving">OK</span>
+                    <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

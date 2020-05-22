@@ -10,7 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'app/shared/components/snackbar/snackbar.component';
-import { Fulfillment } from 'app/shared/class/fulfillment';
+import { Fulfillment, FulfillmentLine } from 'app/shared/class/fulfillment';
 import { DOCUMENT } from '@angular/common';
 import { CustomerServiceService } from '../../customer-service.service';
 import { SalesOrder, SalesOrderLine } from 'app/shared/class/sales-order';
@@ -25,11 +25,11 @@ import { NotificationsService } from 'angular2-notifications';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy {
+export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy, AfterViewInit {
     fileURL = environment.fileURL;
     files: any;
     dataSource: any;
-    displayedColumns = ['Actions', 'ItemImagePath', 'ItemName', 'ItemTPIN', 'ItemVendorSKU', 'detail-button'];
+    displayedColumns = ['ItemImagePath', 'ItemName', 'ItemTPIN', 'ItemVendorSKU', 'Quantity', 'Complete'];
     selected: any;
     pIndex: number;
     isLoading: boolean;
@@ -39,11 +39,11 @@ export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy
     searchTerm: string;
     searchEnabled: boolean;
     dialogRef: any;
-    interval: any;
     currentSnackBar: any;
     shippingMethod: string;
     inputEnabled: boolean;
     selectedSalesOrder: SalesOrder;
+    selectedSalesOrderLine: SalesOrderLine;
     // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild('mainInput') mainInput: ElementRef;
@@ -54,8 +54,8 @@ export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy
         // public warehouseOutboundService: WarehouseOutboundService,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar,
-        public salesOrderService: CustomerServiceService,
-        private _service: NotificationsService,
+        public csService: CustomerServiceService,
+        private notifyService: NotificationsService,
         @Inject(DOCUMENT) document
     ) {
         this._unsubscribeAll = new Subject();
@@ -65,18 +65,59 @@ export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy
     }
 
     ngOnInit(): void {
-        // this.salesOrderService.loadSalesOrderList();
+        this.csService.onSalesOrderSelected
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((order: SalesOrder) => {
+                if (!order.SalesOrderID) {
+                    this.selectedSalesOrder = null;
+                    this.dataSource = null;
+                }
+                if (order.SalesOrderID && order.SalesOrderLines) {
+                    const updatedSalesOrderLines = order.SalesOrderLines
+                        .map((orderline: SalesOrderLine) => {
+                            let count = 0;
+                            if (order.Fulfillments) {
+                                order.Fulfillments.forEach((fulfillment: Fulfillment) => {
+                                    if (fulfillment.FulfillmentLines) {
+                                        fulfillment.FulfillmentLines.forEach((fulfillmentline: FulfillmentLine) => {
+                                            if (fulfillmentline.ItemID === orderline.ItemID) {
+                                                count += fulfillmentline.Quantity;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            if (count === orderline.Quantity) {
+                                orderline.complete = true;
+                            }
+                            else {
+                                orderline.complete = false;
+                            }
+                            return orderline;
+                        });
+                    order.SalesOrderLines = updatedSalesOrderLines;
+                    this.selectedSalesOrder = order;
+                    this.dataSource = new MatTableDataSource<SalesOrderLine>(order.SalesOrderLines);
+                    this.dataSource.sort = this.sort;
+                }
+            });
+        this.csService.onSalesOrderLineSelected
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((order: SalesOrderLine) => {
+                this.selectedSalesOrderLine = order;
+            });
     }
 
-    // ngAfterViewInit() {
-    //     this.focusMainInput();
-    // }
+    ngAfterViewInit() {
+        this.focusMainInput();
+    }
 
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-        clearInterval(this.interval);
+        this.csService.onSalesOrderSelected.next({});
+        this.csService.onSalesOrderLineSelected.next({});
     }
 
     onSearch(): void {
@@ -87,83 +128,37 @@ export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy
             this.currentSnackBar.dismiss();
         }
         this.isLoading = true;
-        this.salesOrderService.getSalesOrder(this.searchTerm)
+        this.csService.onSalesOrderSelected.next({});
+        this.selectedSalesOrder = null;
+        if (this.dataSource) {
+            this.dataSource = null;
+        }
+        this.csService.getSalesOrder(this.searchTerm)
             .subscribe(
-                (order: SalesOrder) => {
-                    this.selectedSalesOrder = order;
-                    if (order.SalesOrderLines.length) {
-                        // create dataSource when we first get items
-                        this.dataSource = new MatTableDataSource<SalesOrderLine>(order.SalesOrderLines);
-                        this.dataSource.sort = this.sort;
-                    }
-                    this.isLoading = false;
-                },
-                (error: any) => {
-                    this._service.error('Oops!', `Please check the order number.`, {timeOut: 3000, clickToClose: true});
+                () => this.isLoading = false,
+                () => {
+                    this.notifyService.error('Oops!', `Please check the order number.`, {timeOut: 3000, clickToClose: true});
                     this.isLoading = false;
                 },
             );
     }
 
-    onSelect(selected: Fulfillment): void {
-        this.searchTerm = '';
-        // this.warehouseOutboundService.onFulfillmentSelected.next(selected);
+    onSelect(selected: SalesOrderLine): void {
+        // this.searchTerm = '';
+        this.csService.onSalesOrderLineSelected.next(selected);
         // this.warehouseOutboundService.getFulfillment(selected.FulfillmentID)
         //     .pipe(takeUntil(this._unsubscribeAll))
         //     .subscribe();
     }
 
-    refreshFulfillments() {
-        this.isRefreshing = true;
-        // this.warehouseOutboundService.getFulfillmentList()
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(items => {
-        //         if (items.length) {
-
-        //             // if dataSource already exists, just replace dataSource.data with items
-        //             if (this.dataSource) {
-        //                 this.dataSource.data = items;
-
-        //                 // if something is already selected
-        //                 if (this.selected.FulfillmentID) {
-        //                     this.reselectAfterRefresh();
-        //                 }
-        //             }
-
-        //             // create dataSource when we first get items
-        //             else {
-        //                 this.dataSource = new MatTableDataSource<Fulfillment>(items);
-        //                 this.dataSource.sort = this.sort;
-        //                 // this.dataSource.paginator = this.paginator;
-        //             }
-        //             this.isLoading = false;
-        //             this.isRefreshing = false;
-        //             setTimeout(() => {
-        //                 this.focusMainInput();
-        //             }, 1);
-        //         }
-        //     });
-    }
-
-    reselectAfterRefresh() {
-        // const foundItem = this.dataSource.data.find((item: Fulfillment) => item.FulfillmentID === this.selected.FulfillmentID);
-        // if (foundItem) {
-        //     // this.warehouseOutboundService.onFulfillmentSelected.next(foundItem);
-        // }
-        // else {
-        //     console.log('your selected item has been removed from the list');
-        // }
-    }
-
     toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
+        // this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 
     toggleSearch(): void {
         this.searchEnabled = !this.searchEnabled;
     }
     cancelSearch(): void {
-        this.toggleSearch();
         this.searchTerm = '';
         this.filterBySearchTerm();
     }
@@ -183,97 +178,6 @@ export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy
                 return course.title.toLowerCase().includes(searchTerm);
             });
         }
-    }
-
-    applySearch(searchValue: string) {
-        if (!searchValue) {
-            return;
-        }
-        if (this.currentSnackBar) {
-            this.currentSnackBar.dismiss();
-        }
-
-        // find fulfillment from new list
-        const foundFulfillment = this.dataSource.data.find((fulfillment: Fulfillment) => {
-            return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
-        });
-
-        if (!foundFulfillment) {
-            this.currentSnackBar = this._snackBar.openFromComponent(SnackbarComponent, {
-                data: { type: 'error', message: `Fulfillment not found.` }, duration: 2000
-            });
-            if (!this.shippingMethod) {
-                this.shippingTypeDialog();
-            }
-            else {
-                this.addFulfillmentDialog();
-            }
-            // return  this.warehouseOutboundService.clearSelected();
-            return;
-        }
-        // find fulfillmentIndex from new list
-        // const foundFulfillmentIndex = this.dataSource.data.findIndex((fulfillment: Fulfillment) => {
-        //     return fulfillment.FulfillmentNumber.toLowerCase() === searchValue.toLowerCase();
-        // });
-        // set paginator from fulfillmentIndex by pageSize
-        // this.dataSource.paginator.pageIndex = Math.floor(foundFulfillmentIndex / this.paginator.pageSize);
-        this.dataSource.data = this.dataSource.data;
-
-        // set foundFulfillment to be selected
-        // this.warehouseOutboundService.onFulfillmentSelected.next(foundFulfillment);
-        this.onSelect(foundFulfillment);
-        // this._snackBar.openFromComponent(SnackbarComponent, {
-        //     data: { type: 'success', message: `${foundFulfillment.FulfillmentNumber} located.` },
-        // });
-
-        // timeout to make sure page loads then scroll item into view
-        setTimeout(() => {
-            document.getElementById(foundFulfillment.FulfillmentID).scrollIntoView({block: 'center'});
-        }, 10);
-
-    }
-    shippingTypeDialog(): void {
-        // this.inputEnabled = false;
-        // this.dialogRef = this._matDialog.open(SelectShippingTypeDialogComponent, {
-        //     panelClass: 'edit-fields-dialog',
-        //     autoFocus: false
-        // });
-        // this.dialogRef.afterClosed()
-        //     .subscribe(shippingtype => {
-        //         this.inputEnabled = true;
-        //         this.focusMainInput();
-        //         if (!shippingtype) {
-        //             return;
-        //         }
-        //         this.shippingMethod = shippingtype;
-        //         // this._snackBar.openFromComponent(SnackbarComponent, {
-        //         //     data: { type: 'success', message: `Shipping Type has been set to: ${shippingtype}.` },
-        //         // });
-        //         this.addFulfillmentDialog();
-        //     });
-    }
-    addFulfillmentDialog(): void {
-        // this.inputEnabled = false;
-        // const term = this.searchTerm;
-        // this.searchTerm = '';
-        // const _data = {
-        //     ShippingMethod: this.shippingMethod,
-        //     FulfillmentNumber: term,
-        // };
-        // this.dialogRef = this._matDialog.open(AddFulfillmentDialogComponent, {
-        //     panelClass: 'edit-fields-dialog',
-        //     disableClose: true,
-        //     data: _data,
-        //     autoFocus: false
-        // });
-        // this.dialogRef.afterClosed()
-        //     .subscribe(data => {
-        //         this.inputEnabled = true;
-        //         this.focusMainInput();
-        //         if (!data) {
-        //             return;
-        //         }
-        //     });
     }
     focusMainInput() {
         if (this.inputEnabled) {
