@@ -59,7 +59,9 @@ export class CustomerServiceSalesOrderListDetailsSidebarComponent implements OnI
         // this.inputEnabled = false;
         this.dialogRef = this._matDialog.open(FulfillmentInformationDialogComponent, {
             panelClass: 'view-list-dialog',
-            autoFocus: false
+            autoFocus: false,
+            width: '84vw',
+            height: '100%',
         });
         this.dialogRef.afterClosed()
             .subscribe(data => {

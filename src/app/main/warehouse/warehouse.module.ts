@@ -23,6 +23,7 @@ import { WarehouseRouting } from './warehouse.routing';
 
 import { WarehouseInboundModule } from './warehouse-inbound/warehouse-inbound.module';
 import { WarehouseService } from './warehouse.service';
+import { CustomerServiceModule } from '../customer-service/customer-service.module';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { WarehouseService } from './warehouse.service';
         WarehouseItemManagerModule,
         WarehouseOutboundModule,
         WarehouseInboundModule,
+        CustomerServiceModule
     ],
     providers: [
         WarehouseService,

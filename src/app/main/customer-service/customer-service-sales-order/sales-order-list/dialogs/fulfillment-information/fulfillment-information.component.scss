@@ -1,49 +1,101 @@
 @import "src/@fuse/scss/fuse";
-.dialog-content-wrapper {
-    max-height: unset !important;
-}
-.table-container-body {
-    // overflow: scroll;
-    padding-top: 16px !important;
-    
-    min-height: 80vh;
+:host {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-.table-container {
-    // overflow: auto;
-    display: flex;
-    flex-direction: column;
+    .smaller {
+        font-size: 12px;
+    }
+    .faded {
+        opacity: 0.66;
+        background-color: #ccc;
+    }
     .mat-table {
+        .mat-row {
+            cursor: pointer;
+        }
+    }
+    .dialog-content-wrapper {
+        max-height: unset !important;
+    }
+    .mat-dialog-content {
+        max-height: unset;
+    }
+    .table-container-body {
+        // overflow: scroll;
+        padding-top: 16px !important;
+        
+        min-height: 80vh;
         height: 100%;
-        border-radius: 4px;
-        overflow: scroll;
+        display: flex;
+        flex-direction: column;
     }
-}
-.table-section-header {
-    padding: 10px 0px 10px 0px;
-    font-size: 20px;
-    color: #000;
-    height: 58px;
-    .hint {
-        font-weight: 200;
-        font-size: 15px;
+    .table-container {
+        transition: opacity 1s ease-in-out all;  
+        // overflow: auto;
+        display: flex;
+        flex-direction: column;
+        .mat-table {
+            height: 100%;
+            border-radius: 4px;
+            overflow: scroll;
+        }
     }
-}
-.table-section-header button {
-    margin-right: 10px;
-}
-.table-section-header .mat-raised-button {
-    padding: 0 10px;
-    min-width: 48px;
-    font-size: 12px;
-}
-.mat-column-Quantity {
-    flex: 0 0 13% !important;
-    min-width: 13% !important;
-}
-.mat-column-PONumber {
-    flex: 0 0 17% !important;
-    min-width: 17% !important;
+    .table-section-header {
+        padding: 10px 0px 10px 0px;
+        font-size: 20px;
+        color: #000;
+        height: 58px;
+        .hint {
+            font-weight: 200;
+            font-size: 15px;
+        }
+    }
+    .table-section-header button {
+        margin-right: 10px;
+    }
+    .table-section-header .mat-raised-button {
+        padding: 0 10px;
+        min-width: 48px;
+        font-size: 12px;
+    }
+    .mat-column-FulfillmentNumber {
+        flex: 0 0 10% !important;
+        min-width: 10% !important;
+    }
+    
+    .mat-column-HasMissingItem {
+        flex: 0 0 9% !important;
+        min-width: 9% !important;
+    }
+    .mat-column-ItemName {
+        // flex: 0 0 40% !important;
+        // min-width: 40% !important;
+        padding-right: 7px;
+    }
+    .mat-column-ItemTPIN {
+        flex: 0 0 13% !important;
+        min-width: 13% !important;
+        
+    }
+    .mat-column-ItemSKU {
+        flex: 0 0 15% !important;
+        min-width: 15% !important;
+        
+    }
+    .mat-column-Ordered {
+        flex: 0 0 7% !important;
+        min-width: 7% !important;
+    }
+    .mat-column-Confirmed {
+        flex: 0 0 9% !important;
+        min-width: 9% !important;
+        padding-right: 10px;
+    }
+    .mat-column-Completed {
+        flex: 0 0 4% !important;
+        min-width: 4% !important;
+    }
+    .mat-header-cell:last-of-type,
+    .mat-cell:last-of-type {
+        padding-right: 0;
+    }
 }

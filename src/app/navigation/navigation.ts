@@ -17,12 +17,12 @@ export const navigation: FuseNavigation[] = [
                 exactMatch: true,
                 children : [
                     {
-                        id       : 'sales_order',
-                        title    : 'Sales Order',
-                        translate: 'NAV.SALES_ORDER',
+                        id       : 'order_detail',
+                        title    : 'Order Detail',
+                        translate: 'NAV.ORDER_DETAIL',
                         type     : 'item',
                         icon     : 'receipt',
-                        url      : '/customer-service/sales-order',
+                        url      : '/customer-service/order-detail',
                         exactMatch: true
                     }
                 ]
@@ -46,6 +46,15 @@ export const navigation: FuseNavigation[] = [
                         exactMatch: true
                     },
                     {
+                        id       : 'order_detail',
+                        title    : 'Order Detail',
+                        translate: 'NAV.ORDER_DETAIL',
+                        type     : 'item',
+                        icon     : 'receipt',
+                        url      : '/warehouse/order-detail',
+                        exactMatch: true
+                    },
+                    {
                         id       : 'outbound',
                         title    : 'Outbound',
                         translate: 'NAV.OUTBOUND',
@@ -61,7 +70,7 @@ export const navigation: FuseNavigation[] = [
                         icon     : 'move_to_inbox',
                         url      : '/warehouse/inbound',
                         exactMatch: true
-                    }
+                    },
 
                 ]
             }

@@ -135,7 +135,10 @@ export class CustomerServiceSalesOrderListComponent implements OnInit, OnDestroy
         }
         this.csService.getSalesOrder(this.searchTerm)
             .subscribe(
-                () => this.isLoading = false,
+                () => {
+                    this.isLoading = false;
+                    this.searchTerm = '';
+                },
                 () => {
                     this.notifyService.error('Oops!', `Please check the order number.`, {timeOut: 3000, clickToClose: true});
                     this.isLoading = false;

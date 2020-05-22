@@ -9,7 +9,7 @@ export const locale = {
             'OUTBOUND': 'Outbound',
             'INBOUND': 'Inbound',
             'CUSTOMER_SERVICE': 'Customer Service',
-            'SALES_ORDER': 'Sales Order',
+            'ORDER_DETAIL': 'Order Detail',
             'SAMPLE'        : {
                 'TITLE': 'Sample',
                 'BADGE': '25'

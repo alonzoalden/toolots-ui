@@ -77,8 +77,8 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
 
     sendPick(fulfillmentline: FulfillmentLine): void {
         const newdata = new FulfillmentLine(this.selectedFulfillmentLine.FulfillmentLineID,
-            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
-            this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
+            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemName,
+            this.selectedFulfillmentLine.ItemImagePath, this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
             this.selectedFulfillmentLine.Quantity, this.selectedFulfillmentLine.IsNotFound,
             this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
             this.selectedFulfillmentLine.ConfirmedBy,
@@ -125,12 +125,11 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
         }
 
         const newdata = new FulfillmentLine(this.selectedFulfillmentLine.FulfillmentLineID,
-            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
-            this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
-            this.selectedFulfillmentLine.Quantity, this.selectedFulfillmentLine.IsNotFound,
-            this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
-            this.selectedFulfillmentLine.ConfirmedBy,
-            this.selectedFulfillmentLine.ConfirmedOn,
+            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemName,
+            this.selectedFulfillmentLine.ItemImagePath, this.selectedFulfillmentLine.ItemTPIN,
+            this.selectedFulfillmentLine.ItemSKU, this.selectedFulfillmentLine.Quantity,
+            this.selectedFulfillmentLine.IsNotFound, this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
+            this.selectedFulfillmentLine.ConfirmedBy, this.selectedFulfillmentLine.ConfirmedOn,
             this.selectedFulfillmentLine.FulfillmentLineInventoryDetails,
             this.selectedFulfillmentLine.FulfillmentLineConfirms, null
         );
@@ -157,8 +156,8 @@ export class PickFulfillmentActionsComponent implements OnInit, OnDestroy {
         }
 
         const newdata = new FulfillmentLine(this.selectedFulfillmentLine.FulfillmentLineID,
-            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemImagePath,
-            this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
+            this.selectedFulfillmentLine.ItemID, this.selectedFulfillmentLine.ItemName,
+            this.selectedFulfillmentLine.ItemImagePath, this.selectedFulfillmentLine.ItemTPIN, this.selectedFulfillmentLine.ItemSKU,
             this.selectedFulfillmentLine.Quantity, this.selectedFulfillmentLine.IsNotFound,
             this.selectedFulfillmentLine.IsPicked, this.selectedFulfillmentLine.Unreachable,
             this.selectedFulfillmentLine.ConfirmedBy,

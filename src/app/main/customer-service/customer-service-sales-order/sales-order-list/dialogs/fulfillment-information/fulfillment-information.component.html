@@ -1,4 +1,4 @@
-<div class="dialog-content-wrapper accent">
+<div class="dialog-content-wrapper accent" fxFlex="column">
     <mat-toolbar class="mat-accent m-0" >
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title" style="overflow: hidden;">View Fulfillment Information - {{selectedSalesOrder.IncrementID}}</span>
@@ -7,19 +7,16 @@
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
-    <!-- <div fxLayout="row" class="header" style="min-height: 180px;">
-        <div fxFlex="66.6" fxLayoutAlign="start center" class="name p-24" >
-            <h2>{{selectedSalesOrder.IncrementID}}</h2>
-        </div>
-    </div> -->
-    <div mat-dialog-content fusePerfectScrollbar class="p-16 m-0 main-list-layout table-container-body accent">
+
+    <div style="height: 100%;">
+    <div mat-dialog-content  class="p-16 m-0 main-list-layout table-container-body accent">
         <div class="table-container first-box" fxFlex>
             <div class="table-section-header accent" fxLayout="row" fxLayoutAlign="space-between end">
                 <span>Fulfillments</span>
                 <span class="hint">Select to view fulfillment lines</span>
             </div>
-            <mat-table class="mat-elevation-z3" #table [dataSource]="dataSourceFulfillments" matSort fxFlex
-            [@animateStagger]="{value:'50'}">
+            <mat-table  #table [dataSource]="dataSourceFulfillments" matSort fxFlex
+                [@animateStagger]="{value:'50'}">
                 <ng-container matColumnDef="FulfillmentNumber">
                     <mat-header-cell *matHeaderCellDef>Fulfillment</mat-header-cell>
                     <mat-cell *matCellDef="let row">
@@ -40,17 +37,39 @@
                     </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="ShippedOn">
-                    <mat-header-cell *matHeaderCellDef>Shipped On</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        {{row.ShippedOn}}
+                <ng-container matColumnDef="PickedUp">
+                    <mat-header-cell *matHeaderCellDef>Picked Up</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="smaller" fxLayout="column" fxLayoutAlign="center start">
+                        <div>{{row.PickedUpBy}}</div>
+                        <div>{{row.PickedUpOn | date }}</div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Picked">
+                    <mat-header-cell *matHeaderCellDef>Picked</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="smaller" fxLayout="column" fxLayoutAlign="center start">
+                        <div>{{row.PickedBy}}</div>
+                        <div>{{row.PickedOn | date }}</div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Packed">
+                    <mat-header-cell *matHeaderCellDef>Packed</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="smaller" fxLayout="column" fxLayoutAlign="center start">
+                        <div>{{row.PackedBy}}</div>
+                        <div>{{row.PackedOn | date }}</div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Shipped">
+                    <mat-header-cell *matHeaderCellDef>Shipped</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="smaller" fxLayout="column" fxLayoutAlign="center start">
+                        <div>{{row.ShippedBy}}</div>
+                        <div>{{row.ShippedOn | date }}</div>
                     </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="HasMissingItem">
                     <mat-header-cell *matHeaderCellDef>Missing Item</mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                        {{row.HasMissingItem}}
+                        {{row.HasMissingItem ? 'Yes' : 'No'}}
                     </mat-cell>
                 </ng-container>
                 <mat-header-row #sort *matHeaderRowDef="displayedColumnsFulfillments; sticky: true"></mat-header-row>
@@ -63,56 +82,117 @@
         </div>
 
 
-        <div class="table-container" fxFlex fusePerfectScrollbar>
-            <div class="table-section-header accent"  fxLayout="row" fxLayoutAlign="space-between end">
-                <span>Fulfillment Lines</span>
+        <div fxFlex fxLayout="row">
+            <div fxFlex="70%" class="table-container mr-16" [ngClass]="{'faded' : !dataSourceFulfillmentLines}">
+                <div class="table-section-header accent"  fxLayout="row" fxLayoutAlign="space-between end">
+                    <span>Fulfillment Lines</span>
+                </div>
+                <mat-table  #table [dataSource]="dataSourceFulfillmentLines" matSort fxFlex [@animateStagger]="{value:'50'}">
+                    <!-- ItemImagePath Column -->
+                    <ng-container matColumnDef="ItemImagePath">
+                        <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxFlex="64px">
+                            <img *ngIf="row.ItemImagePath" src="{{fileURL}}{{row.ItemImagePath}}">
+                        </mat-cell>
+                    </ng-container>
+                    <!-- ItemName Column -->
+                    <ng-container matColumnDef="ItemName">
+                        <mat-header-cell *matHeaderCellDef >Item Name</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.ItemName}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- ItemTPIN Column -->
+                    <ng-container matColumnDef="ItemTPIN">
+                        <mat-header-cell *matHeaderCellDef >Item TPIN</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.ItemTPIN}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- ItemSKU Column -->
+                    <ng-container matColumnDef="ItemSKU">
+                        <mat-header-cell *matHeaderCellDef >Item SKU</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.ItemSKU}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- Quantity Column -->
+                    <ng-container matColumnDef="Ordered">
+                        <mat-header-cell *matHeaderCellDef >Ordered</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.Quantity}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- Confirmed Column -->
+                    <ng-container matColumnDef="Confirmed">
+                        <mat-header-cell *matHeaderCellDef>Confirmed</mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxLayoutAlign="space-between center">
+                            <span>{{row.confirmedQty}}</span>
+                            <mat-icon *ngIf="row.Quantity == row.confirmedQty" style="width: 26px; height: 26px; font-size: 26px; color: #43a047;">check_circle</mat-icon>
+                            <mat-icon *ngIf="row.Quantity > row.confirmedQty" style="width: 26px; height: 26px; font-size: 26px; color: #e53935;">highlight_off</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- Completed Column -->
+                    <ng-container matColumnDef="Completed">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let row" fxLayoutAlign="space-between center">
+                            <mat-icon *ngIf="row.Quantity == row.confirmedQty" style="width: 26px; height: 26px; font-size: 26px; color: #43a047;">check_circle</mat-icon>
+                            <mat-icon *ngIf="row.Quantity > row.confirmedQty" style="width: 26px; height: 26px; font-size: 26px; color: #e53935;">highlight_off</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumnsFulfillmentLines; sticky: true
+                    "></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsFulfillmentLines;" (click)="onSelectFulfillmentLine(row)"
+                        [ngClass]="{'selected' : row == selectedFulfillmentLine}"
+                        [@animate]="!selectedFulfillmentLine && {value:'*',params:{y:'100%'}}"
+                        >
+                    </mat-row>
+                </mat-table>
             </div>
-            <mat-table fusePerfectScrollbar class="mat-elevation-z3" #table [dataSource]="dataSourceFulfillmentLines" matSort fxFlex [@animateStagger]="{value:'50'}">
-                <!-- ItemImagePath Column -->
-                <ng-container matColumnDef="ItemImagePath">
-                    <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
-                    <mat-cell *matCellDef="let row" fxFlex="64px">
-                        <img *ngIf="row.ItemImagePath" src="{{fileURL}}{{row.ItemImagePath}}">
-                    </mat-cell>
-                </ng-container>
-                <!-- ItemName Column -->
-                <ng-container matColumnDef="ItemName">
-                    <mat-header-cell *matHeaderCellDef >Item Name</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        <span>{{row.ItemName}}</span>
-                    </mat-cell>
-                </ng-container>
-                <!-- ItemTPIN Column -->
-                <ng-container matColumnDef="ItemTPIN">
-                    <mat-header-cell *matHeaderCellDef >Item TPIN</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        <span>{{row.ItemTPIN}}</span>
-                    </mat-cell>
-                </ng-container>
-                <!-- ItemSKU Column -->
-                <ng-container matColumnDef="ItemSKU">
-                    <mat-header-cell *matHeaderCellDef >Item SKU</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        <span>{{row.ItemSKU}}</span>
-                    </mat-cell>
-                </ng-container>
-                <!-- Quantity Column -->
-                <ng-container matColumnDef="Quantity">
-                    <mat-header-cell *matHeaderCellDef >Quantity</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        <span>{{row.Quantity}}</span>
-                    </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumnsFulfillmentLines; sticky: true
-                "></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumnsFulfillmentLines;" (click)="onSelectFulfillmentLine(row)"
-                    [ngClass]="{'selected' : row == selectedFulfillmentLine}"
-                    [@animate]="!selectedFulfillmentLine && {value:'*',params:{y:'100%'}}"
-                    >
-                </mat-row>
-            </mat-table>
+
+            <div class="table-container mr-16" [ngClass]="{'faded' : !dataSourceFulfillmentTrackings}" fxFlex>
+                <div class="table-section-header accent"  fxLayout="row" fxLayoutAlign="space-between end">
+                    <span>Trackings</span>
+                </div>
+                <mat-table  #table [dataSource]="dataSourceFulfillmentTrackings" matSort fxFlex [@animateStagger]="{value:'50'}">
+                    <!-- TrackingNumber Column -->
+                    <ng-container matColumnDef="TrackingNumber">
+                        <mat-header-cell *matHeaderCellDef >Tracking Number</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span>{{row.TrackingNumber}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsFulfillmentTrackings;" (click)="onSelectFulfillmentTracking(row)"
+                        [ngClass]="{'selected' : row == selectedFulfillmentTracking}"
+                        [@animate]="!selectedFulfillmentTracking && {value:'*',params:{y:'100%'}}"
+                        >
+                    </mat-row>
+                </mat-table>
+            </div>
+
+            <div class="table-container" [ngClass]="{'faded' : !dataSourceFulfillmentImages}" fxFlex>
+                <div class="table-section-header accent"  fxLayout="row" fxLayoutAlign="space-between end">
+                    <span>Images</span>
+                </div>
+                <mat-table #table [dataSource]="dataSourceFulfillmentImages" matSort fxFlex [@animateStagger]="{value:'50'}">
+                    <!-- ItemImagePath Column -->
+                    <ng-container matColumnDef="ImagePath">
+                        <mat-cell *matCellDef="let row; let i = index" style="padding: 4px">
+                            <img *ngIf="row.ImagePath" (click)="openImageViewer(i)" src="{{row.ImagePath}}">
+                        </mat-cell>
+                    </ng-container>
+                    
+                    
+                    <mat-row *matRowDef="let row; columns: displayedColumnsFulfillmentImages;" (click)="onSelectFulfillmentImage(row)"
+                        [@animate]="!selectedFulfillmentImage && {value:'*',params:{y:'100%'}}"
+                        >
+                    </mat-row>
+                </mat-table>
+            </div>
         </div>
     </div>
+    
+</div>
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
         <div>
             <button mat-raised-button

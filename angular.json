@@ -29,7 +29,8 @@
               "src/silent-refresh.html"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/ngx-lightbox/lightbox.css"
             ],
             "scripts": [
               "src/assets/js/DYMO.Label.Framework.3.0.js"

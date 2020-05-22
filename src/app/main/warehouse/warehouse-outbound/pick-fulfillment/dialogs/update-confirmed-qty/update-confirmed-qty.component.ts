@@ -77,7 +77,8 @@ export class UpdateConfirmedQtyDialogComponent implements OnInit, AfterViewInit,
         this.inputEnabled = true;
         this.editConfirmQuantity = false;
         this._unsubscribeAll = new Subject();
-        this.selectedFulfillmentLine = new FulfillmentLine(null, null, null, null, null, null, null, null, null, null, null, [], [], null);
+        this.selectedFulfillmentLine = new FulfillmentLine(null, null, null,
+            null, null, null, null, null, null, null, null, null, [], [], null);
     }
 
     ngOnInit(): void {

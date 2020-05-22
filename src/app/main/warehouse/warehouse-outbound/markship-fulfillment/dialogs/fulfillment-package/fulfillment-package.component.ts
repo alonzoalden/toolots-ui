@@ -59,7 +59,8 @@ export class FulfillmentPackageDialogComponent implements OnInit, AfterViewInit,
         this.editConfirmQuantity = false;
         this.editDimensionsPage = false;
         this._unsubscribeAll = new Subject();
-        this.selectedFulfillmentLine = new FulfillmentLine(null, null, null, null, null, null, null, null, null, null, null, [], [], null);
+        this.selectedFulfillmentLine = new FulfillmentLine(null, null, null,
+            null, null, null, null, null, null, null, null, null, [], [], null);
         this.composeForm = this.createProductForm();
     }
 

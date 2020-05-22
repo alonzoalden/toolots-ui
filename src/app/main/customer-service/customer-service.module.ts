@@ -19,6 +19,7 @@ import { CustomerServiceRouting } from './customer-service.routing';
 import { CustomerServiceService } from './customer-service.service';
 import { CustomerServiceComponent } from './customer-service.component';
 import { CustomerServiceSalesOrderModule } from './customer-service-sales-order/customer-service-sales-order.module';
+import { LightboxModule } from 'ngx-lightbox';
 
 @NgModule({
     declarations: [
@@ -44,7 +45,7 @@ import { CustomerServiceSalesOrderModule } from './customer-service-sales-order/
         MatToolbarModule,
         FuseSharedModule,
         FuseSidebarModule,
-
+        LightboxModule,
         CustomerServiceSalesOrderModule
     ],
     providers: [

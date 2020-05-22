@@ -6,6 +6,11 @@
             "icon": "build"
         },
         {
+            "title": "Order Detail",
+            "slug": "warehouse/order-detail",
+            "icon": "receipt"
+        },
+        {
             "title": "Outbound",
             "slug": "warehouse/outbound",
             "icon": "next_week"

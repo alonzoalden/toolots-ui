@@ -10,10 +10,16 @@ import { WarehouseInboundComponent } from './warehouse-inbound/warehouse-inbound
 import { PickFulfillmentComponent } from './warehouse-outbound/pick-fulfillment/pick-fulfillment.component';
 import { PickUpdateFulfillmentComponent } from './warehouse-outbound/pick-update-fulfillment/pick-update-fulfillment.component';
 import { MarkshipFulfillmentComponent } from './warehouse-outbound/markship-fulfillment/markship-fulfillment.component';
+import {
+    CustomerServiceSalesOrderComponent
+} from '../customer-service/customer-service-sales-order/customer-service-sales-order.component';
+import {
+    CustomerServiceSalesOrderListComponent
+} from '../customer-service/customer-service-sales-order/sales-order-list/sales-order-list.component';
 
 const WAREHOUSE_ROUTES: Routes = [
     {
-        path: '',
+        path: 'warehouse',
         component: WarehouseComponent,
         canActivate: [AuthGuard],
         children: [
@@ -32,6 +38,17 @@ const WAREHOUSE_ROUTES: Routes = [
                         component: WarehouseItemManagerListComponent,
                     },
                 ]
+            },
+            {
+                path: 'order-detail',
+                component: CustomerServiceSalesOrderComponent,
+                canActivate: [AuthGuard],
+                children: [
+                    {
+                        path: '',
+                        component: CustomerServiceSalesOrderListComponent,
+                    },
+                ],
             },
             {
                 path: 'outbound',

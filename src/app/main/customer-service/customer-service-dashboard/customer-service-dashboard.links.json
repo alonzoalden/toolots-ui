@@ -1,8 +1,8 @@
 {
     "links": [
         {
-            "title": "Sales Order",
-            "slug": "customer-service/sales-order",
+            "title": "Order Detail",
+            "slug": "customer-service/order-detail",
             "icon": "receipt"
         }
     ]

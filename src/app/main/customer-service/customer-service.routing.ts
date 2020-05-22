@@ -7,7 +7,7 @@ import { CustomerServiceSalesOrderListComponent } from './customer-service-sales
 
 const CUSTOMER_SERVICE_ROUTES: Routes = [
     {
-        path: '',
+        path: 'customer-service',
         component: CustomerServiceComponent,
         canActivate: [AuthGuard],
         children: [
@@ -17,7 +17,7 @@ const CUSTOMER_SERVICE_ROUTES: Routes = [
                 canActivate: [AuthGuard],
             },
             {
-                path: 'sales-order',
+                path: 'order-detail',
                 component: CustomerServiceSalesOrderComponent,
                 canActivate: [AuthGuard],
                 children: [

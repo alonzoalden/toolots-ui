@@ -30,6 +30,8 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { SimpleNotificationsModule, NotificationComponent } from 'angular2-notifications';
 import { AppRoutingModule } from './app-routing.module';
 import { WarehouseService } from './main/warehouse/warehouse.service';
+import { WarehouseModule } from './main/warehouse/warehouse.module';
+import { CustomerServiceModule } from './main/customer-service/customer-service.module';
 
 @NgModule({
     declarations: [
@@ -68,6 +70,8 @@ import { WarehouseService } from './main/warehouse/warehouse.service';
         LandingPageModule,
         Error404Module,
         Error500Module,
+        WarehouseModule,
+        CustomerServiceModule
     ],
     providers: [
         AppService,

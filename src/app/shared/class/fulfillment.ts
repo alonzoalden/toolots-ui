@@ -19,32 +19,21 @@ export class Fulfillment {
         public Action: string,
         public FulfillmentLines: FulfillmentLine[],
         public FulfillmentShipmentTrackings: FulfillmentShipmentTracking[],
-
-
+        public FulfillmentImages: FulfillmentImage[],
     ) {}
 }
 export class FulfillmentShipmentTracking {
     constructor(
-        public FulfillmentLineID: string,
-        public ItemID: string,
-        public ItemImagePath: string,
-        public ItemTPIN: string,
-        public ItemSKU: string,
-        public Quantity: number,
-        public IsNotFound: boolean,
-        public IsPicked: boolean,
-        public Unreachable: boolean,
-        public ConfirmedBy: string,
-        public ConfirmedOn: Date,
-        public FulfillmentLineInventoryDetails: FulfillmentLineInventoryDetail[],
-        public FulfillmentLineConfirms: FulfillmentLineConfirm[],
-        public confirmedQty: number
+        public ShipmentTrackingID: string,
+        public FulfillmentID: string,
+        public TrackingNumber: string,
     ) {}
 }
 export class FulfillmentLine {
     constructor(
         public FulfillmentLineID: string,
         public ItemID: string,
+        public ItemName: string,
         public ItemImagePath: string,
         public ItemTPIN: string,
         public ItemSKU: string,
@@ -72,5 +61,11 @@ export class FulfillmentLineConfirm {
         public BinNumber: string,
         public Quantity: number,
 
+    ) {}
+}
+export class FulfillmentImage {
+    constructor(
+        public FulfillmentID: string,
+        public ImagePath: string,
     ) {}
 }

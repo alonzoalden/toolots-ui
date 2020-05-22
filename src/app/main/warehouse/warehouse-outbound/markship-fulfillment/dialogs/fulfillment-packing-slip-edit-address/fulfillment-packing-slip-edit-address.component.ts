@@ -37,7 +37,7 @@ export class FulfillmentPackingSlipEditAddressDialogComponent implements OnInit,
         this._unsubscribeAll = new Subject();
         this.selected = new Fulfillment(
             null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, [], []
+            null, null, null, null, null, null, null, null, [], [], []
         );
         this.composeForm = this.createProductForm();
     }
